@@ -7,16 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CA2E855F2681AEEE001BE951 /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA2E855E2681AEEE001BE951 /* Home.swift */; };
+		CA2E856226823772001BE951 /* PlayerPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA2E856126823772001BE951 /* PlayerPicker.swift */; };
 		CA582E122681AC8F00248E51 /* FourteenthClue.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA582E112681AC8F00248E51 /* FourteenthClue.swift */; };
-		CA582E142681AC8F00248E51 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA582E132681AC8F00248E51 /* ContentView.swift */; };
 		CA582E162681AC9000248E51 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CA582E152681AC9000248E51 /* Assets.xcassets */; };
 		CA582E192681AC9000248E51 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CA582E182681AC9000248E51 /* Preview Assets.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		CA2E855E2681AEEE001BE951 /* Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
+		CA2E856126823772001BE951 /* PlayerPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerPicker.swift; sourceTree = "<group>"; };
 		CA582E0E2681AC8F00248E51 /* Fourteenth Clue.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Fourteenth Clue.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA582E112681AC8F00248E51 /* FourteenthClue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FourteenthClue.swift; sourceTree = "<group>"; };
-		CA582E132681AC8F00248E51 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		CA582E152681AC9000248E51 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CA582E182681AC9000248E51 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -35,10 +37,59 @@
 		CA2E85582681AD75001BE951 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				CA2E855B2681AE9E001BE951 /* Common */,
+				CA2E855A2681AE5E001BE951 /* Features */,
 				CA582E112681AC8F00248E51 /* FourteenthClue.swift */,
-				CA582E132681AC8F00248E51 /* ContentView.swift */,
 			);
 			path = Source;
+			sourceTree = "<group>";
+		};
+		CA2E85592681AE5A001BE951 /* Solver */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Solver;
+			sourceTree = "<group>";
+		};
+		CA2E855A2681AE5E001BE951 /* Features */ = {
+			isa = PBXGroup;
+			children = (
+				CA2E855D2681AEC9001BE951 /* Home */,
+				CA2E855C2681AEB3001BE951 /* Board */,
+				CA2E85592681AE5A001BE951 /* Solver */,
+			);
+			path = Features;
+			sourceTree = "<group>";
+		};
+		CA2E855B2681AE9E001BE951 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		CA2E855C2681AEB3001BE951 /* Board */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Board;
+			sourceTree = "<group>";
+		};
+		CA2E855D2681AEC9001BE951 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				CA2E85602681AEF1001BE951 /* Views */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		CA2E85602681AEF1001BE951 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				CA2E855E2681AEEE001BE951 /* Home.swift */,
+				CA2E856126823772001BE951 /* PlayerPicker.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		CA582E052681AC8F00248E51 = {
@@ -145,7 +196,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CA582E142681AC8F00248E51 /* ContentView.swift in Sources */,
+				CA2E855F2681AEEE001BE951 /* Home.swift in Sources */,
+				CA2E856226823772001BE951 /* PlayerPicker.swift in Sources */,
 				CA582E122681AC8F00248E51 /* FourteenthClue.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
