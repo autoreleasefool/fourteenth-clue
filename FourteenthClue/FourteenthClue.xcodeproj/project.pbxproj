@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		CA2E855F2681AEEE001BE951 /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA2E855E2681AEEE001BE951 /* Home.swift */; };
 		CA2E856226823772001BE951 /* PlayerPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA2E856126823772001BE951 /* PlayerPicker.swift */; };
+		CA2E856426823E13001BE951 /* Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA2E856326823E13001BE951 /* Assets.swift */; };
+		CA2E856626823FD5001BE951 /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA2E856526823FD5001BE951 /* Card.swift */; };
 		CA582E122681AC8F00248E51 /* FourteenthClue.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA582E112681AC8F00248E51 /* FourteenthClue.swift */; };
 		CA582E162681AC9000248E51 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CA582E152681AC9000248E51 /* Assets.xcassets */; };
 		CA582E192681AC9000248E51 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CA582E182681AC9000248E51 /* Preview Assets.xcassets */; };
@@ -17,6 +19,8 @@
 /* Begin PBXFileReference section */
 		CA2E855E2681AEEE001BE951 /* Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
 		CA2E856126823772001BE951 /* PlayerPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerPicker.swift; sourceTree = "<group>"; };
+		CA2E856326823E13001BE951 /* Assets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Assets.swift; sourceTree = "<group>"; };
+		CA2E856526823FD5001BE951 /* Card.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
 		CA582E0E2681AC8F00248E51 /* Fourteenth Clue.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Fourteenth Clue.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA582E112681AC8F00248E51 /* FourteenthClue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FourteenthClue.swift; sourceTree = "<group>"; };
 		CA582E152681AC9000248E51 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -64,6 +68,8 @@
 		CA2E855B2681AE9E001BE951 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				CA2E856326823E13001BE951 /* Assets.swift */,
+				CA2E856526823FD5001BE951 /* Card.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -196,8 +202,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CA2E856626823FD5001BE951 /* Card.swift in Sources */,
 				CA2E855F2681AEEE001BE951 /* Home.swift in Sources */,
 				CA2E856226823772001BE951 /* PlayerPicker.swift in Sources */,
+				CA2E856426823E13001BE951 /* Assets.swift in Sources */,
 				CA582E122681AC8F00248E51 /* FourteenthClue.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
