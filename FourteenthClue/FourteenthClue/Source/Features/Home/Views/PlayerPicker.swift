@@ -12,7 +12,7 @@ struct PlayerPicker: View {
 	var body: some View {
 		List {
 			ForEach(2..<7) { playerCount in
-				NavigationLink("\(playerCount) players", destination: EmptyView())
+				NavigationLink("\(playerCount) players", destination: GameBoard(playerCount: playerCount))
 			}
 		}
 		.navigationTitle("New game")
