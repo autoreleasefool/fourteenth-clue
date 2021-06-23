@@ -14,7 +14,7 @@ struct GameState {
 	var cards: CardSet
 
 	init(playerCount: Int) {
-		self.players = (0..<playerCount).map { Player(name: "Player \($0 + 1)") }
+		self.players = (0..<playerCount).map { _ in Player() }
 		self.secretInformants = Array(repeating: nil, count: 8 - ((playerCount - 2) * 2))
 		self.cards = CardSet(playerCount: playerCount)
 	}
@@ -26,7 +26,7 @@ struct GameState {
 extension GameState {
 
 	struct Player {
-		var name: String
+		var name: String = ""
 		var privateCards = PrivateCardSet()
 		var mystery = MysteryCardSet()
 	}

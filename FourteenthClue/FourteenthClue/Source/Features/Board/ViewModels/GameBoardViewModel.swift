@@ -13,8 +13,7 @@ class GameBoardViewModel: ObservableObject {
 
 	let solver: ClueSolver
 
-	init(playerCount: Int) {
-		let state = GameState(playerCount: playerCount)
+	init(state: GameState) {
 		self.state = state
 		self.solver = ClueSolver(initialState: state)
 	}

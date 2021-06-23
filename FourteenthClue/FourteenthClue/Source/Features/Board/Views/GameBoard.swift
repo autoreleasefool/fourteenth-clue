@@ -11,8 +11,8 @@ struct GameBoard: View {
 
 	@StateObject private var viewModel: GameBoardViewModel
 
-	init(playerCount: Int) {
-		self._viewModel = .init(wrappedValue: GameBoardViewModel(playerCount: playerCount))
+	init(state: GameState) {
+		self._viewModel = .init(wrappedValue: GameBoardViewModel(state: state))
 	}
 
 	var body: some View {
