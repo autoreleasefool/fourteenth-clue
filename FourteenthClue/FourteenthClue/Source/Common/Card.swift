@@ -108,15 +108,26 @@ extension Card {
 		}
 	}
 
+	static let purpleCards: Set<Card> = { Set(Card.allCases.filter { $0.color == .purple }) }()
+	static let pinkCards: Set<Card> = { Set(Card.allCases.filter { $0.color == .pink }) }()
+	static let redCards: Set<Card> = { Set(Card.allCases.filter { $0.color == .red }) }()
+	static let greenCards: Set<Card> = { Set(Card.allCases.filter { $0.color == .green }) }()
+	static let yellowCards: Set<Card> = { Set(Card.allCases.filter { $0.color == .yellow }) }()
+	static let blueCards: Set<Card> = { Set(Card.allCases.filter { $0.color == .blue }) }()
+	static let orangeCards: Set<Card> = { Set(Card.allCases.filter { $0.color == .orange }) }()
+	static let whiteCards: Set<Card> = { Set(Card.allCases.filter { $0.color == .white }) }()
+	static let brownCards: Set<Card> = { Set(Card.allCases.filter { $0.color == .brown }) }()
+	static let grayCards: Set<Card> = { Set(Card.allCases.filter { $0.color == .gray }) }()
+
 }
 
 // MARK: People
 
 extension Card {
 
-	static let people: Set<Card> = { Set(Card.allCases.filter { $0.category == .person }) }()
-	static let men: Set<Card> = [.butcher, .coachman, .duke, .officer, .sailor]
-	static let women: Set<Card> = [.countess, .dancer, .florist, .maid, .nurse]
+	static let peopleCards: Set<Card> = { Set(Card.allCases.filter { $0.category == .person }) }()
+	static let menCards: Set<Card> = [.butcher, .coachman, .duke, .officer, .sailor]
+	static let womenCards: Set<Card> = [.countess, .dancer, .florist, .maid, .nurse]
 
 }
 
@@ -124,9 +135,9 @@ extension Card {
 
 extension Card {
 
-	static let weapons: Set<Card> = { Set(Card.allCases.filter { $0.category == .weapon }) }()
-	static let ranged: Set<Card> = [.blowgun, .bow, .crossbow, .gun, .rifle]
-	static let melee: Set<Card> = [.candlestick, .hammer, .knife, .poison, .sword]
+	static let weaponsCards: Set<Card> = { Set(Card.allCases.filter { $0.category == .weapon }) }()
+	static let rangedCards: Set<Card> = [.blowgun, .bow, .crossbow, .gun, .rifle]
+	static let meleeCards: Set<Card> = [.candlestick, .hammer, .knife, .poison, .sword]
 
 }
 
@@ -134,8 +145,8 @@ extension Card {
 
 extension Card {
 
-	static let locations: Set<Card> = { Set(Card.allCases.filter { $0.category == .location }) }()
-	static let outdoors: Set<Card> = [.harbor, .market, .park, .plaza, .raceCourse]
-	static let indoors: Set<Card> = [.library, .museum, .parlor, .railCar, .theater]
+	static let locationsCards: Set<Card> = { Set(Card.allCases.filter { $0.category == .location }) }()
+	static let outdoorsCards: Set<Card> = [.harbor, .market, .park, .plaza, .raceCourse]
+	static let indoorsCards: Set<Card> = [.library, .museum, .parlor, .railCar, .theater]
 
 }

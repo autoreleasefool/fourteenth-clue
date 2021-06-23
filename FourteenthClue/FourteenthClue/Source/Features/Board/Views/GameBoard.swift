@@ -17,8 +17,10 @@ struct GameBoard: View {
 
 	var body: some View {
 		ScrollView {
-			VStack {
-				EmptyView()
+			ScrollView(.horizontal) {
+				ForEach(0..<viewModel.state.players.count) { player in
+					PlayerCardSet(player: viewModel.state.players[player])
+				}
 			}
 		}
 		.navigationTitle("13 Clues")

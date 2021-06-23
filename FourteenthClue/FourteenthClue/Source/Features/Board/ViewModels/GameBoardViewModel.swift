@@ -9,15 +9,19 @@ import Combine
 
 class GameBoardViewModel: ObservableObject {
 
-	let playerCount: Int
+	@Published private(set) var state: GameState
+
+	let solver: ClueSolver
 
 	init(playerCount: Int) {
-		self.playerCount = playerCount
+		let state = GameState(playerCount: playerCount)
+		self.state = state
+		self.solver = ClueSolver(initialState: state)
 	}
 
 	// View actions
 
 	func onAppear() {
-		print("Starting game with \(playerCount) players")
+		print("Starting game with \(state.players.count) players")
 	}
 }
