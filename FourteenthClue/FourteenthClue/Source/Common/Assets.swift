@@ -16,42 +16,42 @@ extension Assets {
 	enum Images {
 
 		enum Location {
-			static let harbor = UIImage(named: "harbor")!
-			static let library = UIImage(named: "library")!
-			static let market = UIImage(named: "market")!
-			static let museum = UIImage(named: "museum")!
-			static let park = UIImage(named: "park")!
-			static let parlor = UIImage(named: "parlor")!
-			static let plaza = UIImage(named: "plaza")!
-			static let raceCourse = UIImage(named: "racecourse")!
-			static let railCar = UIImage(named: "railcar")!
-			static let theater = UIImage(named: "theater")!
+			static let harbor = UIImage(named: "Cards/location/harbor")!
+			static let library = UIImage(named: "Cards/location/library")!
+			static let market = UIImage(named: "Cards/location/market")!
+			static let museum = UIImage(named: "Cards/location/museum")!
+			static let park = UIImage(named: "Cards/location/park")!
+			static let parlor = UIImage(named: "Cards/location/parlor")!
+			static let plaza = UIImage(named: "Cards/location/plaza")!
+			static let raceCourse = UIImage(named: "Cards/location/raceCourse")!
+			static let railCar = UIImage(named: "Cards/location/railCar")!
+			static let theater = UIImage(named: "Cards/location/theater")!
 		}
 
 		enum Person {
-			static let butcher = UIImage(named: "butcher")!
-			static let coachman = UIImage(named: "coachman")!
-			static let countess = UIImage(named: "countess")!
-			static let dancer = UIImage(named: "dancer")!
-			static let duke = UIImage(named: "duke")!
-			static let florist = UIImage(named: "florist")!
-			static let maid = UIImage(named: "maid")!
-			static let nurse = UIImage(named: "nurse")!
-			static let officer = UIImage(named: "officer")!
-			static let sailor = UIImage(named: "sailor")!
+			static let butcher = UIImage(named: "Cards/person/butcher")!
+			static let coachman = UIImage(named: "Cards/person/coachman")!
+			static let countess = UIImage(named: "Cards/person/countess")!
+			static let dancer = UIImage(named: "Cards/person/dancer")!
+			static let duke = UIImage(named: "Cards/person/duke")!
+			static let florist = UIImage(named: "Cards/person/florist")!
+			static let maid = UIImage(named: "Cards/person/maid")!
+			static let nurse = UIImage(named: "Cards/person/nurse")!
+			static let officer = UIImage(named: "Cards/person/officer")!
+			static let sailor = UIImage(named: "Cards/person/sailor")!
 		}
 
 		enum Weapon {
-			static let blowgun = UIImage(named: "blowgun")!
-			static let bow = UIImage(named: "bow")!
-			static let candlestick = UIImage(named: "candlestick")!
-			static let crossbow = UIImage(named: "crossbow")!
-			static let gun = UIImage(named: "gun")!
-			static let hammer = UIImage(named: "hammer")!
-			static let knife = UIImage(named: "knife")!
-			static let poison = UIImage(named: "poison")!
-			static let rifle = UIImage(named: "rifle")!
-			static let sword = UIImage(named: "sword")!
+			static let blowgun = UIImage(named: "Cards/weapon/blowgun")!
+			static let bow = UIImage(named: "Cards/weapon/bow")!
+			static let candlestick = UIImage(named: "Cards/weapon/candlestick")!
+			static let crossbow = UIImage(named: "Cards/weapon/crossbow")!
+			static let gun = UIImage(named: "Cards/weapon/gun")!
+			static let hammer = UIImage(named: "Cards/weapon/hammer")!
+			static let knife = UIImage(named: "Cards/weapon/knife")!
+			static let poison = UIImage(named: "Cards/weapon/poison")!
+			static let rifle = UIImage(named: "Cards/weapon/rifle")!
+			static let sword = UIImage(named: "Cards/weapon/sword")!
 		}
 
 	}
