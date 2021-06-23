@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-enum Card: CaseIterable {
+enum Card: String, CaseIterable {
 
 	case harbor
 	case library
@@ -42,13 +42,17 @@ enum Card: CaseIterable {
 	case rifle
 	case sword
 
+	var image: UIImage {
+		UIImage(named: "Cards/\(category.rawValue)/\(rawValue)")!
+	}
+
 }
 
 // MARK: Category
 
 extension Card {
 
-	enum Category {
+	enum Category: String {
 
 		case person
 		case location
