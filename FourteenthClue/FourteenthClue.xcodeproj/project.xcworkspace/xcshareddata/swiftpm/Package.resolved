@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "BottomSheet",
+        "repositoryURL": "https://github.com/adamfootdev/BottomSheet.git",
+        "state": {
+          "branch": null,
+          "revision": "40b8fbdd676b0d6b76643feccbeb645e97df9fb4",
+          "version": "0.1.6"
+        }
+      }
+    ]
+  },
+  "version": 1
+}
