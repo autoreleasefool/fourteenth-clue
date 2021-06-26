@@ -23,4 +23,27 @@ class GameBoardViewModel: ObservableObject {
 	func onAppear() {
 		print("Starting game with \(state.players.count) players")
 	}
+
+	func setCard(_ card: Card?, forPlayer player: Int, atPosition position: CardPosition) {
+		var player = state.players[player]
+		switch position {
+		case .leftCard:
+			player.privateCards.leftCard = card
+		case .rightCard:
+			player.privateCards.rightCard = card
+		case .person:
+			player.mystery.person = card
+		case .location:
+			player.mystery.location = card
+		case .weapon:
+			player.mystery.weapon = card
+		}
+
+		// TODO: do I need to set the player back here?
+		// state.players[player] = player
+	}
+
+	func setCard(_ card: Card?, forInformant informant: Int) {
+		state.secretInformants[informant] = card
+	}
 }

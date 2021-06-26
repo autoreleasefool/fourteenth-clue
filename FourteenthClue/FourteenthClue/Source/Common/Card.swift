@@ -46,6 +46,11 @@ enum Card: String, CaseIterable {
 		UIImage(named: "Cards/\(category.rawValue)/\(rawValue)")!
 	}
 
+	var name: String {
+		rawValue[rawValue.startIndex].uppercased()
+			+ rawValue[rawValue.index(after: rawValue.startIndex)...]
+	}
+
 }
 
 // MARK: Category
@@ -79,7 +84,7 @@ extension Card {
 
 extension Card {
 
-	enum Color {
+	enum Color: Int {
 
 		case purple
 		case pink

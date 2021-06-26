@@ -9,20 +9,23 @@ import SwiftUI
 
 struct GameBoard: View {
 
-	@StateObject private var viewModel: GameBoardViewModel
+	@StateObject var viewModel: GameBoardViewModel
 
 	init(state: GameState) {
 		self._viewModel = .init(wrappedValue: GameBoardViewModel(state: state))
 	}
 
 	var body: some View {
-		ScrollView {
-			ScrollView(.horizontal) {
-				ForEach(0..<viewModel.state.players.count) { player in
-					PlayerCardSet(player: viewModel.state.players[player])
+		TabView {
+			ForEach(0..<viewModel.state.players.count) { player in
+				ScrollView {
+					PlayerCardSet(player: viewModel.state.players[player]) { card, position in
+						viewModel.setCard(card, forPlayer: player, atPosition: position)
+					}
 				}
 			}
 		}
+		.tabViewStyle(.page)
 		.navigationTitle("13 Clues")
 		.navigationBarBackButtonHidden(true)
 		.onAppear {

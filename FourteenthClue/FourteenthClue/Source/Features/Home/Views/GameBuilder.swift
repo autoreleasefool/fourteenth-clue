@@ -9,8 +9,8 @@ import SwiftUI
 
 struct GameBuilder: View {
 
-	@State private var state: GameState
-	@State private var isPlaying = false
+	@State var state: GameState
+	@State var isPlaying = false
 
 	init(playerCount: Int) {
 		self._state = .init(initialValue: GameState(playerCount: playerCount))
