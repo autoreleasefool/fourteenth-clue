@@ -24,22 +24,22 @@ class GameBoardViewModel: ObservableObject {
 		print("Starting game with \(state.players.count) players")
 	}
 
-	func setCard(_ card: Card?, forPlayer playerIndex: Int, atPosition position: CardPosition) {
+	func setCard(_ card: Card?, forPlayer index: Int, atPosition position: CardPosition) {
 		switch position {
 		case .leftCard:
-			state.players[playerIndex].privateCards.leftCard = card
+			state = state.withPlayer(state.players[index].withPrivateCard(onLeft: card), at: index)
 		case .rightCard:
-			state.players[playerIndex].privateCards.rightCard = card
+			state = state.withPlayer(state.players[index].withPrivateCard(onRight: card), at: index)
 		case .person:
-			state.players[playerIndex].mystery.person = card
+			state = state.withPlayer(state.players[index].withMysteryPerson(card), at: index)
 		case .location:
-			state.players[playerIndex].mystery.location = card
+			state = state.withPlayer(state.players[index].withMysteryLocation(card), at: index)
 		case .weapon:
-			state.players[playerIndex].mystery.weapon = card
+			state = state.withPlayer(state.players[index].withMysteryWeapon(card), at: index)
 		}
 	}
 
 	func setCard(_ card: Card?, forInformant informant: Int) {
-		state.secretInformants[informant] = card
+		state = state.withSecretInformant(card, at: informant)
 	}
 }

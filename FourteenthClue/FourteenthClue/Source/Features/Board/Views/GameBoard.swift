@@ -15,7 +15,10 @@ struct GameBoard: View {
 		var state = state
 		for i in state.players.startIndex..<state.players.endIndex {
 			if state.players[i].name.isEmpty {
-				state.players[i].name = "Player \(i + 1)"
+				state = state.withPlayer(
+					state.players[i].withName("Player \(i + 1)"),
+					at: i
+				)
 			}
 		}
 		self._viewModel = .init(wrappedValue: GameBoardViewModel(state: state))

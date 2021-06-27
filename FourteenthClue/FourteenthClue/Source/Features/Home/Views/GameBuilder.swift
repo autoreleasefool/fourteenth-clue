@@ -40,7 +40,7 @@ struct GameBuilder: View {
 	private func getText(forIndex index: Int) -> Binding<String> {
 		Binding<String>(
 			get: { state.players[index].name },
-			set: { state.players[index].name = $0 }
+			set: { state = state.withPlayer(state.players[index].withName( $0), at: index) }
 		)
 	}
 

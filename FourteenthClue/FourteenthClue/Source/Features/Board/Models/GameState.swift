@@ -30,23 +30,23 @@ struct GameState {
 
 	// MARK: Mutations
 
-	func updatePlayer(at index: Int, to player: Player) -> GameState {
+	func withPlayer(_ player: Player, at index: Int) -> GameState {
 		var updatedPlayers = players
 		updatedPlayers[index] = player
 		return .init(players: updatedPlayers, secretInformants: secretInformants, clues: clues, cards: cards)
 	}
 
-	func updateSecretInformant(at index: Int, to card: Card?) -> GameState {
+	func withSecretInformant(_ card: Card?, at index: Int) -> GameState {
 		var updatedInformants = secretInformants
 		updatedInformants[index] = card
 		return .init(players: players, secretInformants: updatedInformants, clues: clues, cards: cards)
 	}
 
-	func addClue(_ clue: Clue) -> GameState {
+	func addingClue(_ clue: Clue) -> GameState {
 		.init(players: players, secretInformants: secretInformants, clues: clues + [clue], cards: cards)
 	}
 
-	func removeClue(_ clue: Clue) -> GameState {
+	func removingClue(_ clue: Clue) -> GameState {
 		guard let clueIndex = self.clues.firstIndex(of: clue) else { return self }
 		var clues = self.clues
 		clues.remove(at: clueIndex)
@@ -76,28 +76,28 @@ extension GameState {
 
 		// MARK: Mutations
 
-		func setName(to newName: String) -> Player {
+		func withName(_ newName: String) -> Player {
 			.init(name: newName, privateCards: privateCards, mystery: mystery)
 		}
 
-		func setPrivateCard(onLeft: Card? = nil) -> Player {
-			.init(name: name, privateCards: privateCards.setCard(onLeft: onLeft), mystery: mystery)
+		func withPrivateCard(onLeft: Card? = nil) -> Player {
+			.init(name: name, privateCards: privateCards.withCard(onLeft: onLeft), mystery: mystery)
 		}
 
-		func setPrivateCard(onRight: Card? = nil) -> Player {
-			.init(name: name, privateCards: privateCards.setCard(onRight: onRight), mystery: mystery)
+		func withPrivateCard(onRight: Card? = nil) -> Player {
+			.init(name: name, privateCards: privateCards.withCard(onRight: onRight), mystery: mystery)
 		}
 
-		func setMysteryPerson(toCard: Card? = nil) -> Player {
-			.init(name: name, privateCards: privateCards, mystery: mystery.setPerson(to: toCard))
+		func withMysteryPerson(_ toCard: Card? = nil) -> Player {
+			.init(name: name, privateCards: privateCards, mystery: mystery.withPerson(toCard))
 		}
 
-		func setMysteryLocation(toCard: Card? = nil) -> Player {
-			.init(name: name, privateCards: privateCards, mystery: mystery.setLocation(to: toCard))
+		func withMysteryLocation(_ toCard: Card? = nil) -> Player {
+			.init(name: name, privateCards: privateCards, mystery: mystery.withLocation(toCard))
 		}
 
-		func setMysteryWeapon(toCard: Card? = nil) -> Player {
-			.init(name: name, privateCards: privateCards, mystery: mystery.setWeapon(to: toCard))
+		func withMysteryWeapon(_ toCard: Card? = nil) -> Player {
+			.init(name: name, privateCards: privateCards, mystery: mystery.withWeapon(toCard))
 		}
 	}
 
@@ -118,11 +118,11 @@ extension GameState.Player {
 
 		// MARK: Mutations
 
-		func setCard(onLeft: Card?) -> PrivateCardSet {
+		func withCard(onLeft: Card?) -> PrivateCardSet {
 			.init(leftCard: onLeft, rightCard: rightCard)
 		}
 
-		func setCard(onRight: Card?) -> PrivateCardSet {
+		func withCard(onRight: Card?) -> PrivateCardSet {
 			.init(leftCard: leftCard, rightCard: onRight)
 		}
 	}
@@ -144,15 +144,15 @@ extension GameState.Player {
 
 		// MARK: Mutations
 
-		func setPerson(to newPerson: Card?) -> MysteryCardSet {
+		func withPerson(_ newPerson: Card?) -> MysteryCardSet {
 			.init(person: newPerson, location: location, weapon: weapon)
 		}
 
-		func setLocation(to newLocation: Card?) -> MysteryCardSet {
+		func withLocation(_ newLocation: Card?) -> MysteryCardSet {
 			.init(person: person, location: newLocation, weapon: weapon)
 		}
 
-		func setWeapon(to newWeapon: Card?) -> MysteryCardSet {
+		func withWeapon(_ newWeapon: Card?) -> MysteryCardSet {
 			.init(person: person, location: location, weapon: newWeapon)
 		}
 	}
