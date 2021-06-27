@@ -9,14 +9,32 @@ import SwiftUI
 
 struct GameState {
 
-	var players: [Player]
-	var secretInformants: [Card?]
-	var cards: CardSet
+	let players: [Player]
+	let secretInformants: [Card?]
+	let cards: CardSet
 
 	init(playerCount: Int) {
-		self.players = (0..<playerCount).map { _ in Player() }
+		self.players = (0..<playerCount).map { _ in .default }
 		self.secretInformants = Array(repeating: nil, count: 8 - ((playerCount - 2) * 2))
 		self.cards = CardSet(playerCount: playerCount)
+	}
+
+	private init(players: [Player], secretInformants: [Card?], cards: CardSet) {
+		self.players = players
+		self.secretInformants = secretInformants
+		self.cards = cards
+	}
+
+	func updatePlayer(at index: Int, to player: Player) -> GameState {
+		var updatedPlayers = players
+		updatedPlayers[index] = player
+		return .init(players: updatedPlayers, secretInformants: secretInformants, cards: cards)
+	}
+
+	func updateSecretInformant(at index: Int, to card: Card?) -> GameState {
+		var updatedInformants = secretInformants
+		updatedInformants[index] = card
+		return .init(players: players, secretInformants: updatedInformants, cards: cards)
 	}
 
 }
@@ -26,9 +44,43 @@ struct GameState {
 extension GameState {
 
 	struct Player {
-		var name: String = ""
-		var privateCards = PrivateCardSet()
-		var mystery = MysteryCardSet()
+		let name: String
+		let privateCards: PrivateCardSet
+		let mystery: MysteryCardSet
+
+		static var `default`: Player {
+			.init(name: "", privateCards: PrivateCardSet(), mystery: MysteryCardSet())
+		}
+
+		init(name: String, privateCards: PrivateCardSet, mystery: MysteryCardSet) {
+			self.name = name
+			self.privateCards = privateCards
+			self.mystery = mystery
+		}
+
+		func setName(to newName: String) -> Player {
+			.init(name: newName, privateCards: privateCards, mystery: mystery)
+		}
+
+		func setPrivateCard(onLeft: Card? = nil) -> Player {
+			.init(name: name, privateCards: privateCards.setCard(onLeft: onLeft), mystery: mystery)
+		}
+
+		func setPrivateCard(onRight: Card? = nil) -> Player {
+			.init(name: name, privateCards: privateCards.setCard(onRight: onRight), mystery: mystery)
+		}
+
+		func setMysteryPerson(toCard: Card? = nil) -> Player {
+			.init(name: name, privateCards: privateCards, mystery: mystery.setPerson(to: toCard))
+		}
+
+		func setMysteryLocation(toCard: Card? = nil) -> Player {
+			.init(name: name, privateCards: privateCards, mystery: mystery.setLocation(to: toCard))
+		}
+
+		func setMysteryWeapon(toCard: Card? = nil) -> Player {
+			.init(name: name, privateCards: privateCards, mystery: mystery.setWeapon(to: toCard))
+		}
 	}
 
 }
@@ -38,14 +90,27 @@ extension GameState {
 extension GameState.Player {
 
 	struct PrivateCardSet {
-		var leftCard: Card?
-		var rightCard: Card?
+		let leftCard: Card?
+		let rightCard: Card?
+
+		init(leftCard: Card? = nil, rightCard: Card? = nil) {
+			self.leftCard = leftCard
+			self.rightCard = rightCard
+		}
+
+		func setCard(onLeft: Card?) -> PrivateCardSet {
+			.init(leftCard: onLeft, rightCard: rightCard)
+		}
+
+		func setCard(onRight: Card?) -> PrivateCardSet {
+			.init(leftCard: leftCard, rightCard: onRight)
+		}
 	}
 
 	struct MysteryCardSet {
-		var person: Card?
-		var location: Card?
-		var weapon: Card?
+		let person: Card?
+		let location: Card?
+		let weapon: Card?
 
 		init(person: Card? = nil, location: Card? = nil, weapon: Card? = nil) {
 			assert(person == nil || person?.category == .person)
@@ -55,6 +120,18 @@ extension GameState.Player {
 			self.person = person
 			self.location = location
 			self.weapon = weapon
+		}
+
+		func setPerson(to newPerson: Card?) -> MysteryCardSet {
+			.init(person: newPerson, location: location, weapon: weapon)
+		}
+
+		func setLocation(to newLocation: Card?) -> MysteryCardSet {
+			.init(person: person, location: newLocation, weapon: weapon)
+		}
+
+		func setWeapon(to newWeapon: Card?) -> MysteryCardSet {
+			.init(person: person, location: location, weapon: newWeapon)
 		}
 	}
 
