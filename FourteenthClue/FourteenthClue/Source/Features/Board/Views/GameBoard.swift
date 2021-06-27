@@ -38,11 +38,13 @@ struct GameBoard: View {
 			.tabViewStyle(.page)
 			.background(Color.gray)
 			List {
-				Button("Add clue") {
-					
-				}
-				ForEach(0..<30) { _ in
-					Text("Hello")
+				Section("Clues") {
+					Button("Add new") {
+
+					}
+					ForEach(viewModel.state.clues) { clue in
+						Text(clue.description(withPlayer: viewModel.state.players[clue.player]))
+					}
 				}
 			}
 		}
@@ -53,4 +55,9 @@ struct GameBoard: View {
 		}
 	}
 
+	// MARK: Strings
+
+	private func label(for clue: Clue) -> String {
+		"\(viewModel.state.players[clue.player].name) sees "
+	}
 }

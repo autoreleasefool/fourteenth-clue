@@ -10,9 +10,9 @@ import SwiftUI
 struct PlayerCardSet: View {
 
 	let player: GameState.Player
-	let onSetCard: (Card?, CardPosition) -> Void
+	let onSetCard: (Card?, GameState.CardPosition) -> Void
 
-	@State var pickingCardPosition: CardPosition?
+	@State var pickingCardPosition: GameState.CardPosition?
 
 	var body: some View {
 		GeometryReader { fullView in
@@ -81,7 +81,7 @@ struct PlayerCardSet: View {
 			.padding()
 		}
 		.sheet(item: $pickingCardPosition) { cardPosition in
-			CardPicker(category: cardPosition.category) {
+			CardPicker(categories: cardPosition.categories) {
 				pickingCardPosition = nil
 				onSetCard($0, cardPosition)
 			}

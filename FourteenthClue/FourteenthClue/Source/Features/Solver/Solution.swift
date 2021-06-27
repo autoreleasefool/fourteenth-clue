@@ -55,10 +55,6 @@ extension Solution {
 		let weapon: [Card: Double]
 
 		init(person: [Card: Double], location: [Card: Double], weapon: [Card: Double]) {
-			assert(person.allSatisfy { $0.key.category == .person})
-			assert(location.allSatisfy { $0.key.category == .location})
-			assert(weapon.allSatisfy { $0.key.category == .weapon})
-
 			self.person = person
 			self.location = location
 			self.weapon = weapon

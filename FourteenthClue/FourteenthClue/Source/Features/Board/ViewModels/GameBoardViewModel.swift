@@ -24,7 +24,7 @@ class GameBoardViewModel: ObservableObject {
 		print("Starting game with \(state.players.count) players")
 	}
 
-	func setCard(_ card: Card?, forPlayer index: Int, atPosition position: CardPosition) {
+	func setCard(_ card: Card?, forPlayer index: Int, atPosition position: GameState.CardPosition) {
 		switch position {
 		case .leftCard:
 			state = state.withPlayer(state.players[index].withPrivateCard(onLeft: card), at: index)

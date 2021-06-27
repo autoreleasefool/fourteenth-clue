@@ -9,15 +9,15 @@ import SwiftUI
 
 struct CardPicker: View {
 
-	let category: Card.Category?
+	let categories: Set<Card.Category>
 	let pickableCards: [Card]
 	let onCardPicked: (Card?) -> Void
 
-	init(category: Card.Category? = nil, onCardPicked: @escaping (Card?) -> Void) {
-		self.category = category
+	init(categories: Set<Card.Category> = [], onCardPicked: @escaping (Card?) -> Void) {
+		self.categories = categories
 		self.onCardPicked = onCardPicked
 		self.pickableCards = Card.allCases
-			.filter { category == nil || $0.category == category }
+			.filter { categories.isEmpty || categories.contains($0.category) }
 			.sorted {
 				if $0.color.rawValue == $1.color.rawValue {
 					return $0.rawValue < $1.rawValue
@@ -29,7 +29,7 @@ struct CardPicker: View {
 
 	var body: some View {
 		List {
-			Section(title) {
+			Section("Select a card") {
 				cardRow(for: nil)
 				ForEach(pickableCards, id: \.rawValue) { card in
 					cardRow(for: card)
@@ -53,16 +53,6 @@ struct CardPicker: View {
 
 				Spacer()
 			}
-		}
-	}
-
-	// MARK: Strings
-
-	private var title: String {
-		if let category = category {
-			return "Select a \(category.rawValue)"
-		} else {
-			return "Select a card"
 		}
 	}
 

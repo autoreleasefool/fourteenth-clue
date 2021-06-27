@@ -105,6 +105,35 @@ extension GameState {
 
 // MARK: Player Cards
 
+extension GameState {
+
+	enum CardPosition: String, Identifiable {
+		case leftCard
+		case rightCard
+		case person
+		case location
+		case weapon
+
+		var categories: Set<Card.Category> {
+			switch self {
+			case .leftCard, .rightCard:
+				return []
+			case .person:
+				return [.person(.man), .person(.woman)]
+			case .location:
+				return [.location(.indoors), .location(.outdoors)]
+			case .weapon:
+				return [.weapon(.melee), .weapon(.ranged)]
+			}
+		}
+
+		var id: String {
+			rawValue
+		}
+	}
+
+}
+
 extension GameState.Player {
 
 	struct PrivateCardSet {
@@ -133,10 +162,6 @@ extension GameState.Player {
 		let weapon: Card?
 
 		init(person: Card? = nil, location: Card? = nil, weapon: Card? = nil) {
-			assert(person == nil || person?.category == .person)
-			assert(location == nil || location?.category == .location)
-			assert(weapon == nil || weapon?.category == .weapon)
-
 			self.person = person
 			self.location = location
 			self.weapon = weapon
