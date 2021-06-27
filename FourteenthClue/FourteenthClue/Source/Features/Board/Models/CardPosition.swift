@@ -5,7 +5,7 @@
 //  Created by Joseph Roque on 2021-06-23.
 //
 
-enum CardPosition {
+enum CardPosition: String, Identifiable {
 	case leftCard
 	case rightCard
 	case person
@@ -23,5 +23,9 @@ enum CardPosition {
 		case .weapon:
 			return .weapon
 		}
+	}
+
+	var id: String {
+		rawValue
 	}
 }

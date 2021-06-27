@@ -24,23 +24,19 @@ class GameBoardViewModel: ObservableObject {
 		print("Starting game with \(state.players.count) players")
 	}
 
-	func setCard(_ card: Card?, forPlayer player: Int, atPosition position: CardPosition) {
-		var player = state.players[player]
+	func setCard(_ card: Card?, forPlayer playerIndex: Int, atPosition position: CardPosition) {
 		switch position {
 		case .leftCard:
-			player.privateCards.leftCard = card
+			state.players[playerIndex].privateCards.leftCard = card
 		case .rightCard:
-			player.privateCards.rightCard = card
+			state.players[playerIndex].privateCards.rightCard = card
 		case .person:
-			player.mystery.person = card
+			state.players[playerIndex].mystery.person = card
 		case .location:
-			player.mystery.location = card
+			state.players[playerIndex].mystery.location = card
 		case .weapon:
-			player.mystery.weapon = card
+			state.players[playerIndex].mystery.weapon = card
 		}
-
-		// TODO: do I need to set the player back here?
-		// state.players[player] = player
 	}
 
 	func setCard(_ card: Card?, forInformant informant: Int) {

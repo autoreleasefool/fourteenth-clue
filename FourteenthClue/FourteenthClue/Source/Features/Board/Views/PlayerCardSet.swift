@@ -5,7 +5,6 @@
 //  Created by Joseph Roque on 2021-06-23.
 //
 
-import BottomSheet
 import SwiftUI
 
 struct PlayerCardSet: View {
@@ -18,26 +17,71 @@ struct PlayerCardSet: View {
 	var body: some View {
 		GeometryReader { fullView in
 			VStack {
-				Text("Player")
 				HStack {
-					Rectangle()
-						.fill(Color.red)
-						.frame(width: fullView.size.width / 3, height: 150)
+					Text(player.name)
+						.font(.headline)
+						.padding(.vertical, 8)
+						.padding(.leading, 16)
+					Spacer()
+				}
+
+				HStack {
+					Spacer()
+
+					Image(uiImage: player.mystery.person?.image ?? Assets.Images.Cards.back)
+						.resizable()
+						.frame(width: 80, height: 132)
+						.onTapGesture {
+							pickingCardPosition = .person
+						}
+
+					Spacer()
+
+					Image(uiImage: player.mystery.location?.image ?? Assets.Images.Cards.back)
+						.resizable()
+						.frame(width: 80, height: 132)
+						.onTapGesture {
+							pickingCardPosition = .location
+						}
+
+					Spacer()
+
+					Image(uiImage: player.mystery.weapon?.image ?? Assets.Images.Cards.back)
+						.resizable()
+						.frame(width: 80, height: 132)
+						.onTapGesture {
+							pickingCardPosition = .weapon
+						}
+
+					Spacer()
+				}
+
+				HStack {
+					Spacer()
+
+					Image(uiImage: player.privateCards.leftCard?.image ?? Assets.Images.Cards.back)
+						.resizable()
+						.frame(width: 60, height: 100)
 						.onTapGesture {
 							pickingCardPosition = .leftCard
 						}
-					Rectangle()
-						.fill(Color.blue)
-						.frame(width: fullView.size.width / 3, height: 150)
+
+					Spacer()
+
+					Image(uiImage: player.privateCards.rightCard?.image ?? Assets.Images.Cards.back)
+						.resizable()
+						.frame(width: 60, height: 100)
 						.onTapGesture {
 							pickingCardPosition = .rightCard
 						}
+
+					Spacer()
 				}
 			}
+			.padding()
 		}
-		.bottomSheet(item: $pickingCardPosition) {
-			CardPicker(category: pickingCardPosition?.category) {
-				guard let cardPosition = pickingCardPosition else { return }
+		.sheet(item: $pickingCardPosition) { cardPosition in
+			CardPicker(category: cardPosition.category) {
 				pickingCardPosition = nil
 				onSetCard($0, cardPosition)
 			}
