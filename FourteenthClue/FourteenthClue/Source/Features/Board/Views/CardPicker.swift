@@ -17,8 +17,12 @@ struct CardPicker: View {
 		self.pickableCards = cards
 	}
 
-	init(categories: Set<Card.Category> = [], onCardPicked: @escaping (Card?) -> Void) {
-		let cards = Card.allCases
+	init(
+		categories: Set<Card.Category> = [],
+		fromAvailableCards availableCards: Set<Card> = Set(Card.allCases),
+		onCardPicked: @escaping (Card?) -> Void
+	) {
+		let cards = availableCards
 			.filter { categories.isEmpty || categories.contains($0.category) }
 			.sorted()
 

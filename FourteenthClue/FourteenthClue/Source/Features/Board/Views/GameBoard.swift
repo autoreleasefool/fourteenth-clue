@@ -13,12 +13,9 @@ struct GameBoard: View {
 
 	init(state: GameState) {
 		var state = state
-		for i in state.players.startIndex..<state.players.endIndex {
-			if state.players[i].name.isEmpty {
-				state = state.withPlayer(
-					state.players[i].withName("Player \(i + 1)"),
-					at: i
-				)
+		for (index, player) in state.players.enumerated() {
+			if player.name.isEmpty {
+				state = state.withPlayer(player.withName("Player \(index + 1)"))
 			}
 		}
 		self._viewModel = .init(wrappedValue: GameBoardViewModel(state: state))
@@ -27,11 +24,9 @@ struct GameBoard: View {
 	var body: some View {
 		VStack(spacing: 0) {
 			TabView {
-				ForEach(0..<viewModel.players.count) { player in
+				ForEach(viewModel.players) { player in
 					ScrollView {
-						PlayerCardSet(player: viewModel.players[player]) { card, position in
-							viewModel.setCard(card, forPlayer: player, atPosition: position)
-						}
+						PlayerCardSet(viewModel: viewModel, player: player)
 					}
 				}
 			}
@@ -64,7 +59,7 @@ struct GameBoard: View {
 		.sheet(item: $viewModel.pickingSecretInformant) { secretInformant in
 			CardPicker(cards: viewModel.availableCards.sorted()) {
 				viewModel.pickingSecretInformant = nil
-				viewModel.setCard($0, forInformant: secretInformant.index)
+				viewModel.setCard($0, forInformant: secretInformant.informant)
 			}
 		}
 	}

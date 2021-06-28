@@ -24,6 +24,7 @@
 		CA8C07A12689837000B50233 /* GameState+Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8C07A02689837000B50233 /* GameState+Player.swift */; };
 		CA8C07A32689839800B50233 /* GameState+Cards.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8C07A22689839800B50233 /* GameState+Cards.swift */; };
 		CA8C07A52689842F00B50233 /* GameState+Clue.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8C07A42689842F00B50233 /* GameState+Clue.swift */; };
+		CA8C07A726898A5800B50233 /* GameState+SecretInformant.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8C07A626898A5800B50233 /* GameState+SecretInformant.swift */; };
 		CAED72F7268447190060086A /* CardPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAED72F6268447190060086A /* CardPicker.swift */; };
 		CAED72FA268447680060086A /* BottomSheet in Frameworks */ = {isa = PBXBuildFile; productRef = CAED72F9268447680060086A /* BottomSheet */; };
 /* End PBXBuildFile section */
@@ -47,6 +48,7 @@
 		CA8C07A02689837000B50233 /* GameState+Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GameState+Player.swift"; sourceTree = "<group>"; };
 		CA8C07A22689839800B50233 /* GameState+Cards.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GameState+Cards.swift"; sourceTree = "<group>"; };
 		CA8C07A42689842F00B50233 /* GameState+Clue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GameState+Clue.swift"; sourceTree = "<group>"; };
+		CA8C07A626898A5800B50233 /* GameState+SecretInformant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GameState+SecretInformant.swift"; sourceTree = "<group>"; };
 		CAED72F6268447190060086A /* CardPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardPicker.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -153,6 +155,7 @@
 				CA8C07A22689839800B50233 /* GameState+Cards.swift */,
 				CA8C07A42689842F00B50233 /* GameState+Clue.swift */,
 				CA8C07A02689837000B50233 /* GameState+Player.swift */,
+				CA8C07A626898A5800B50233 /* GameState+SecretInformant.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -275,6 +278,7 @@
 				CA2E856226823772001BE951 /* PlayerPicker.swift in Sources */,
 				CA2E856426823E13001BE951 /* Assets.swift in Sources */,
 				CA2E856F26826E3A001BE951 /* Solution.swift in Sources */,
+				CA8C07A726898A5800B50233 /* GameState+SecretInformant.swift in Sources */,
 				CA2E8573268399D0001BE951 /* PlayerCardSet.swift in Sources */,
 				CA8C07A52689842F00B50233 /* GameState+Clue.swift in Sources */,
 				CAED72F7268447190060086A /* CardPicker.swift in Sources */,

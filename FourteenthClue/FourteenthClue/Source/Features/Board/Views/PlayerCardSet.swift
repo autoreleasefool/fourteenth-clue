@@ -9,8 +9,9 @@ import SwiftUI
 
 struct PlayerCardSet: View {
 
+	@ObservedObject var viewModel: GameBoardViewModel
 	let player: GameState.Player
-	let onSetCard: (Card?, GameState.CardPosition) -> Void
+//	let onSetCard: (Card?, GameState.CardPosition) -> Void
 
 	@State var pickingCardPosition: GameState.CardPosition?
 
@@ -81,9 +82,10 @@ struct PlayerCardSet: View {
 			.padding()
 		}
 		.sheet(item: $pickingCardPosition) { cardPosition in
-			CardPicker(categories: cardPosition.categories) {
+			CardPicker(categories: cardPosition.categories, fromAvailableCards: viewModel.availableCards) {
 				pickingCardPosition = nil
-				onSetCard($0, cardPosition)
+				viewModel.setCard($0, forPlayer: player, atPosition: cardPosition)
+//				onSetCard($0, cardPosition)
 			}
 		}
 	}

@@ -6,6 +6,7 @@
 //
 
 import Combine
+import Foundation
 
 class GameBoardViewModel: ObservableObject {
 
@@ -25,45 +26,47 @@ class GameBoardViewModel: ObservableObject {
 		print("Starting game with \(state.players.count) players")
 	}
 
-	func setCard(_ card: Card?, forPlayer index: Int, atPosition position: GameState.CardPosition) {
+	func setCard(_ card: Card?, forPlayer player: GameState.Player, atPosition position: GameState.CardPosition) {
 		switch position {
 		case .leftCard:
-			state = state.withPlayer(state.players[index].withPrivateCard(onLeft: card), at: index)
+			state = state.withPlayer(player.withPrivateCard(onLeft: card))
 		case .rightCard:
-			state = state.withPlayer(state.players[index].withPrivateCard(onRight: card), at: index)
+			state = state.withPlayer(player.withPrivateCard(onRight: card))
 		case .person:
-			state = state.withPlayer(state.players[index].withMysteryPerson(card), at: index)
+			state = state.withPlayer(player.withMysteryPerson(card))
 		case .location:
-			state = state.withPlayer(state.players[index].withMysteryLocation(card), at: index)
+			state = state.withPlayer(player.withMysteryLocation(card))
 		case .weapon:
-			state = state.withPlayer(state.players[index].withMysteryWeapon(card), at: index)
+			state = state.withPlayer(player.withMysteryWeapon(card))
 		}
 	}
 
-	func setCard(_ card: Card?, forInformant informant: Int) {
-		state = state.withSecretInformant(card, at: informant)
+	func setCard(_ card: Card?, forInformant informant: GameState.SecretInformant) {
+		state = state.withSecretInformant(informant.withCard(card))
 	}
 
 	// MARK: Properties
 
 	struct SecretInformant: Identifiable, CustomStringConvertible {
+
+
 		let id: String
-		let index: Int
-		let card: Card?
+		let informant: GameState.SecretInformant
 
 		var description: String {
-			if let card = card {
+			if let card = informant.card {
 				return "\(id) - \(card)"
 			} else {
 				return "\(id) - ?"
 			}
 		}
+
 	}
 
 	var secretInformants: [SecretInformant] {
-		zip("ABCDEFGH", state.secretInformants).enumerated().map { index, idAndInformant in
-			let (id, informant) = idAndInformant
-			return SecretInformant(id: String(id), index: index, card: informant)
+		zip("ABCDEFGH", state.secretInformants).enumerated().map { index, nameAndInformant in
+			let (name, informant) = nameAndInformant
+			return SecretInformant(id: String(name), informant: informant)
 		}
 	}
 

@@ -21,8 +21,8 @@ struct GameBuilder: View {
 			NavigationLink("", destination: GameBoard(state: state), isActive: $isPlaying)
 			Form {
 				Section(header: Text("Players")) {
-					ForEach(0..<state.players.count) { index in
-						TextField("Player \(index + 1)", text: getText(forIndex: index))
+					ForEach(state.players) { player in
+						TextField(getTitle(forPlayer: player), text: getText(forPlayer: player))
 					}
 				}
 			}
@@ -37,10 +37,15 @@ struct GameBuilder: View {
 		}
 	}
 
-	private func getText(forIndex index: Int) -> Binding<String> {
+	private func getTitle(forPlayer player: GameState.Player) -> String {
+		guard let index = state.players.firstIndex(where: { $0.id == player.id }) else { return "" }
+		return "Player \(index + 1)"
+	}
+
+	private func getText(forPlayer player: GameState.Player) -> Binding<String> {
 		Binding<String>(
-			get: { state.players[index].name },
-			set: { state = state.withPlayer(state.players[index].withName( $0), at: index) }
+			get: { player.name },
+			set: { state = state.withPlayer(player.withName($0)) }
 		)
 	}
 

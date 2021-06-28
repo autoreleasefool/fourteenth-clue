@@ -10,13 +10,13 @@ import SwiftUI
 struct GameState {
 
 	let players: [Player]
-	let secretInformants: [Card?]
+	let secretInformants: [SecretInformant]
 	let cards: Set<Card>
 	let clues: [Clue]
 
 	init(playerCount: Int) {
 		self.players = (0..<playerCount).map { _ in .default }
-		self.secretInformants = Array(repeating: nil, count: 8 - ((playerCount - 2) * 2))
+		self.secretInformants = (0..<8 - ((playerCount - 2) * 2)).map { _ in .default }
 		self.clues = []
 
 		var availableCards = Set(Card.allCases)
@@ -39,7 +39,7 @@ struct GameState {
 		self.cards = availableCards
 	}
 
-	private init(players: [Player], secretInformants: [Card?], clues: [Clue], cards: Set<Card>) {
+	private init(players: [Player], secretInformants: [SecretInformant], clues: [Clue], cards: Set<Card>) {
 		self.players = players
 		self.secretInformants = secretInformants
 		self.clues = clues
@@ -48,15 +48,17 @@ struct GameState {
 
 	// MARK: Mutations
 
-	func withPlayer(_ player: Player, at index: Int) -> GameState {
+	func withPlayer(_ player: Player) -> GameState {
+		guard let index = players.firstIndex(where: { $0.id == player.id }) else { return self }
 		var updatedPlayers = players
 		updatedPlayers[index] = player
 		return .init(players: updatedPlayers, secretInformants: secretInformants, clues: clues, cards: cards)
 	}
 
-	func withSecretInformant(_ card: Card?, at index: Int) -> GameState {
+	func withSecretInformant(_ informant: SecretInformant) -> GameState {
+		guard let index = secretInformants.firstIndex(where: { $0.id == informant.id }) else { return self }
 		var updatedInformants = secretInformants
-		updatedInformants[index] = card
+		updatedInformants[index] = informant
 		return .init(players: players, secretInformants: updatedInformants, clues: clues, cards: cards)
 	}
 
@@ -77,7 +79,7 @@ struct GameState {
 		cards
 			.subtracting(players.flatMap { $0.mystery.cards })
 			.subtracting(players.flatMap { $0.privateCards.cards })
-			.subtracting(secretInformants.compactMap { $0 })
+			.subtracting(secretInformants.compactMap { $0.card })
 	}
 
 	var purpleCards: Set<Card> { cards.intersection(Card.purpleCards) }
