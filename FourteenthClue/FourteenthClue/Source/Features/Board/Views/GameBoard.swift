@@ -27,9 +27,9 @@ struct GameBoard: View {
 	var body: some View {
 		VStack(spacing: 0) {
 			TabView {
-				ForEach(0..<viewModel.state.players.count) { player in
+				ForEach(0..<viewModel.players.count) { player in
 					ScrollView {
-						PlayerCardSet(player: viewModel.state.players[player]) { card, position in
+						PlayerCardSet(player: viewModel.players[player]) { card, position in
 							viewModel.setCard(card, forPlayer: player, atPosition: position)
 						}
 					}
@@ -42,8 +42,16 @@ struct GameBoard: View {
 					Button("Add new") {
 
 					}
-					ForEach(viewModel.state.clues) { clue in
-						Text(clue.description(withPlayer: viewModel.state.players[clue.player]))
+					ForEach(viewModel.clues) { clue in
+						Text(clue.description(withPlayer: viewModel.players[clue.player]))
+					}
+				}
+
+				Section("Informants") {
+					ForEach(viewModel.secretInformants) { informant in
+						Button(informant.description) {
+							viewModel.pickingSecretInformant = informant
+						}
 					}
 				}
 			}
@@ -53,11 +61,17 @@ struct GameBoard: View {
 		.onAppear {
 			viewModel.onAppear()
 		}
+		.sheet(item: $viewModel.pickingSecretInformant) { secretInformant in
+			CardPicker(categories: []) {
+				viewModel.pickingSecretInformant = nil
+				viewModel.setCard($0, forInformant: secretInformant.index)
+			}
+		}
 	}
 
 	// MARK: Strings
 
 	private func label(for clue: Clue) -> String {
-		"\(viewModel.state.players[clue.player].name) sees "
+		"\(viewModel.players[clue.player].name) sees "
 	}
 }

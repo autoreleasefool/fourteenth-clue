@@ -9,7 +9,8 @@ import Combine
 
 class GameBoardViewModel: ObservableObject {
 
-	@Published private(set) var state: GameState
+	@Published var state: GameState
+	@Published var pickingSecretInformant: SecretInformant?
 
 	let solver: ClueSolver
 
@@ -18,7 +19,7 @@ class GameBoardViewModel: ObservableObject {
 		self.solver = ClueSolver(initialState: state)
 	}
 
-	// View actions
+	// MARK: View actions
 
 	func onAppear() {
 		print("Starting game with \(state.players.count) players")
@@ -42,4 +43,40 @@ class GameBoardViewModel: ObservableObject {
 	func setCard(_ card: Card?, forInformant informant: Int) {
 		state = state.withSecretInformant(card, at: informant)
 	}
+
+	// MARK: Properties
+
+	struct SecretInformant: Identifiable, CustomStringConvertible {
+		let id: String
+		let index: Int
+		let card: Card?
+
+		var description: String {
+			if let card = card {
+				return "\(id) - \(card)"
+			} else {
+				return "\(id) - ?"
+			}
+		}
+	}
+
+	var secretInformants: [SecretInformant] {
+		zip("ABCDEFGH", state.secretInformants).enumerated().map { index, idAndInformant in
+			let (id, informant) = idAndInformant
+			return SecretInformant(id: String(id), index: index, card: informant)
+		}
+	}
+
+	var players: [GameState.Player] {
+		state.players
+	}
+
+	var clues: [Clue] {
+		state.clues
+	}
+
+	var availableCards: [Card] {
+		state.availableCards
+	}
+
 }

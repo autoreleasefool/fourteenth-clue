@@ -27,17 +27,14 @@ extension Clue {
 	enum Detail: Equatable, CustomStringConvertible {
 
 		case color(Card.Color)
-//		case men
-//		case women
-//		case
-
+		case category(Card.Category)
 
 		var description: String {
 			switch self {
 			case .color(let color):
 				return color.description
-//			case .category(let category):
-//				if
+			case .category(let category):
+				return category.description
 			}
 		}
 

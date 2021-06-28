@@ -86,6 +86,23 @@ extension Card {
 			}
 		}
 
+		var description: String {
+			switch self {
+			case .person(.man):
+				return "male"
+			case .person(.woman):
+				return "female"
+			case .location(.indoors):
+				return "indoors"
+			case .location(.outdoors):
+				return "outdoors"
+			case .weapon(.melee):
+				return "melee"
+			case .weapon(.ranged):
+				return "ranged"
+			}
+		}
+
 	}
 
 	var category: Category {

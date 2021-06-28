@@ -9,14 +9,16 @@ import SwiftUI
 
 struct CardPicker: View {
 
-	let categories: Set<Card.Category>
 	let pickableCards: [Card]
 	let onCardPicked: (Card?) -> Void
 
-	init(categories: Set<Card.Category> = [], onCardPicked: @escaping (Card?) -> Void) {
-		self.categories = categories
+	init(cards: [Card], onCardPicked: @escaping (Card?) -> Void) {
 		self.onCardPicked = onCardPicked
-		self.pickableCards = Card.allCases
+		self.pickableCards = cards
+	}
+
+	init(categories: Set<Card.Category> = [], onCardPicked: @escaping (Card?) -> Void) {
+		let cards = Card.allCases
 			.filter { categories.isEmpty || categories.contains($0.category) }
 			.sorted {
 				if $0.color.rawValue == $1.color.rawValue {
@@ -25,6 +27,8 @@ struct CardPicker: View {
 					return $0.color.rawValue < $1.color.rawValue
 				}
 			}
+
+		self.init(cards: cards, onCardPicked: onCardPicked)
 	}
 
 	var body: some View {

@@ -11,14 +11,14 @@ struct GameState {
 
 	let players: [Player]
 	let secretInformants: [Card?]
-	let cards: CardSet
+	let cardSet: CardSet
 	let clues: [Clue]
 
 	init(playerCount: Int) {
 		self.players = (0..<playerCount).map { _ in .default }
 		self.secretInformants = Array(repeating: nil, count: 8 - ((playerCount - 2) * 2))
 		self.clues = []
-		self.cards = CardSet(playerCount: playerCount)
+		self.cardSet = CardSet(playerCount: playerCount)
 	}
 
 	private init(players: [Player], secretInformants: [Card?], clues: [Clue], cards: CardSet) {
@@ -33,24 +33,31 @@ struct GameState {
 	func withPlayer(_ player: Player, at index: Int) -> GameState {
 		var updatedPlayers = players
 		updatedPlayers[index] = player
-		return .init(players: updatedPlayers, secretInformants: secretInformants, clues: clues, cards: cards)
+		return .init(players: updatedPlayers, secretInformants: secretInformants, clues: clues, cards: cardSet)
 	}
 
 	func withSecretInformant(_ card: Card?, at index: Int) -> GameState {
 		var updatedInformants = secretInformants
 		updatedInformants[index] = card
-		return .init(players: players, secretInformants: updatedInformants, clues: clues, cards: cards)
+		return .init(players: players, secretInformants: updatedInformants, clues: clues, cards: cardSet)
 	}
 
 	func addingClue(_ clue: Clue) -> GameState {
-		.init(players: players, secretInformants: secretInformants, clues: clues + [clue], cards: cards)
+		.init(players: players, secretInformants: secretInformants, clues: clues + [clue], cards: cardSet)
 	}
 
 	func removingClue(_ clue: Clue) -> GameState {
 		guard let clueIndex = self.clues.firstIndex(of: clue) else { return self }
 		var clues = self.clues
 		clues.remove(at: clueIndex)
-		return .init(players: players, secretInformants: secretInformants, clues: clues, cards: cards)
+		return .init(players: players, secretInformants: secretInformants, clues: clues, cards: cardSet)
+	}
+
+	// MARK: Properties
+
+	var availableCards: [Card] {
+		cardSet.cards
+			.subtracting(<#T##other: Sequence##Sequence#>)
 	}
 
 }
