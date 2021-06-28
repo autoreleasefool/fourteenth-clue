@@ -71,7 +71,7 @@ struct GameBoard: View {
 
 	// MARK: Strings
 
-	private func label(for clue: Clue) -> String {
+	private func label(for clue: GameState.Clue) -> String {
 		"\(viewModel.players[clue.player].name) sees "
 	}
 }

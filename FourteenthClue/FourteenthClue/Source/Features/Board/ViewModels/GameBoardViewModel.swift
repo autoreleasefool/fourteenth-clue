@@ -71,11 +71,11 @@ class GameBoardViewModel: ObservableObject {
 		state.players
 	}
 
-	var clues: [Clue] {
+	var clues: [GameState.Clue] {
 		state.clues
 	}
 
-	var availableCards: [Card] {
+	var availableCards: Set<Card> {
 		state.availableCards
 	}
 
