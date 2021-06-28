@@ -62,7 +62,7 @@ struct GameBoard: View {
 			viewModel.onAppear()
 		}
 		.sheet(item: $viewModel.pickingSecretInformant) { secretInformant in
-			CardPicker(categories: []) {
+			CardPicker(cards: viewModel.availableCards.sorted()) {
 				viewModel.pickingSecretInformant = nil
 				viewModel.setCard($0, forInformant: secretInformant.index)
 			}

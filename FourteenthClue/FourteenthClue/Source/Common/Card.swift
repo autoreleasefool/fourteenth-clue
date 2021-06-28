@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-enum Card: String, CaseIterable {
+enum Card: String, CaseIterable, Comparable {
 
 	case harbor
 	case library
@@ -49,6 +49,14 @@ enum Card: String, CaseIterable {
 	var name: String {
 		rawValue[rawValue.startIndex].uppercased()
 			+ rawValue[rawValue.index(after: rawValue.startIndex)...]
+	}
+
+	static func < (lhs: Card, rhs: Card) -> Bool {
+		if lhs.color.rawValue == rhs.color.rawValue {
+			return lhs.rawValue < rhs.rawValue
+		} else {
+			return lhs.color.rawValue < rhs.color.rawValue
+		}
 	}
 
 }

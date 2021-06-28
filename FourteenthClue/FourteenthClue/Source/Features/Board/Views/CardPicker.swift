@@ -20,13 +20,7 @@ struct CardPicker: View {
 	init(categories: Set<Card.Category> = [], onCardPicked: @escaping (Card?) -> Void) {
 		let cards = Card.allCases
 			.filter { categories.isEmpty || categories.contains($0.category) }
-			.sorted {
-				if $0.color.rawValue == $1.color.rawValue {
-					return $0.rawValue < $1.rawValue
-				} else {
-					return $0.color.rawValue < $1.color.rawValue
-				}
-			}
+			.sorted()
 
 		self.init(cards: cards, onCardPicked: onCardPicked)
 	}
