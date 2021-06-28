@@ -73,6 +73,12 @@ struct GameState {
 		return .init(players: players, secretInformants: secretInformants, clues: clues, cards: cards)
 	}
 
+	func removingClues(atOffsets offsets: IndexSet) -> GameState {
+		var clues = self.clues
+		clues.remove(atOffsets: offsets)
+		return .init(players: players, secretInformants: secretInformants, clues: clues, cards: cards)
+	}
+
 	// MARK: - Cards
 
 	var availableCards: Set<Card> {

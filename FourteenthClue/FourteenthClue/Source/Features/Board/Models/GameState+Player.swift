@@ -9,7 +9,7 @@ import Foundation
 
 extension GameState {
 
-	struct Player: Identifiable {
+	struct Player: Identifiable, Hashable {
 
 		let id: UUID
 		let name: String

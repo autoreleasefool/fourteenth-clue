@@ -35,10 +35,13 @@ struct GameBoard: View {
 			List {
 				Section("Clues") {
 					Button("Add new") {
-
+						viewModel.addingClue = true
 					}
 					ForEach(viewModel.clues) { clue in
-						Text(clue.description(withPlayer: viewModel.players[clue.player]))
+						Text(clue.description(withPlayer: viewModel.player(withId: clue.player)))
+					}
+					.onDelete { indexSet in
+						viewModel.deleteClues(atOffsets: indexSet)
 					}
 				}
 
@@ -62,11 +65,11 @@ struct GameBoard: View {
 				viewModel.setCard($0, forInformant: secretInformant.informant)
 			}
 		}
+		.sheet(isPresented: $viewModel.addingClue) {
+			ClueForm(state: viewModel.state) { newClue in
+				viewModel.addClue(newClue)
+			}
+		}
 	}
 
-	// MARK: Strings
-
-	private func label(for clue: GameState.Clue) -> String {
-		"\(viewModel.players[clue.player].name) sees "
-	}
 }

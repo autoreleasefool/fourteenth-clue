@@ -35,7 +35,7 @@ extension GameState {
 
 	}
 
-	struct PrivateCardSet {
+	struct PrivateCardSet: Hashable {
 
 		let leftCard: Card?
 		let rightCard: Card?
@@ -63,7 +63,7 @@ extension GameState {
 
 	}
 
-	struct MysteryCardSet {
+	struct MysteryCardSet: Hashable {
 
 		let person: Card?
 		let location: Card?

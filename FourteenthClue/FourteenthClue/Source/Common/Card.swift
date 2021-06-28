@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-enum Card: String, CaseIterable, Comparable {
+enum Card: String, CaseIterable, Comparable, Hashable {
 
 	case harbor
 	case library
@@ -65,25 +65,37 @@ enum Card: String, CaseIterable, Comparable {
 
 extension Card {
 
-	enum Category: Hashable, Equatable {
+	enum Category: Hashable, Equatable, CaseIterable, Identifiable {
 
 		case person(Gender)
 		case location(Presence)
 		case weapon(Class)
 
-		enum Gender: Hashable, Equatable {
+		enum Gender: String, Hashable, Equatable, Identifiable {
 			case man
 			case woman
+
+			var id: String {
+				rawValue
+			}
 		}
 
-		enum Presence: Hashable, Equatable {
+		enum Presence: String, Hashable, Equatable, Identifiable {
 			case indoors
 			case outdoors
+
+			var id: String {
+				rawValue
+			}
 		}
 
-		enum Class: Hashable, Equatable {
+		enum Class: String, Hashable, Equatable, Identifiable {
 			case melee
 			case ranged
+
+			var id: String {
+				rawValue
+			}
 		}
 
 		fileprivate var basicDescription: String {
@@ -109,6 +121,14 @@ extension Card {
 			case .weapon(.ranged):
 				return "ranged"
 			}
+		}
+
+		var id: String {
+			description
+		}
+
+		static var allCases: [Card.Category] {
+			[.person(.man), .person(.woman), .location(.indoors), .location(.outdoors), .weapon(.melee), .weapon(.ranged)]
 		}
 
 	}
@@ -138,7 +158,7 @@ extension Card {
 
 extension Card {
 
-	enum Color: Int, CustomStringConvertible {
+	enum Color: Int, CaseIterable, CustomStringConvertible, Identifiable {
 
 		case purple
 		case pink
@@ -174,6 +194,10 @@ extension Card {
 			case .gray:
 				return "Gray"
 			}
+		}
+
+		var id: Int {
+			rawValue
 		}
 
 	}

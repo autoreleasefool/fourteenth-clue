@@ -12,11 +12,11 @@ extension GameState {
 	struct Clue: Equatable, Identifiable {
 
 		let id = UUID()
-		let player: Int
+		let player: UUID
 		let detail: Detail
 		let count: Int
 
-		init(player: Int, detail: Detail, count: Int) {
+		init(player: UUID, detail: Detail, count: Int) {
 			self.player = player
 			self.detail = detail
 			self.count = count
@@ -49,8 +49,8 @@ extension GameState.Clue {
 
 extension GameState.Clue {
 
-	func description(withPlayer player: GameState.Player) -> String {
-		"\(player.name) sees \(count) \(detail.description) cards"
+	func description(withPlayer player: GameState.Player?) -> String {
+		"\(player?.name ?? "Somebody") sees \(count) \(detail.description) cards"
 	}
 
 }

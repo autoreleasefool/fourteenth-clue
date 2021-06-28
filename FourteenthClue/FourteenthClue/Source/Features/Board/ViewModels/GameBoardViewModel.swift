@@ -12,6 +12,7 @@ class GameBoardViewModel: ObservableObject {
 
 	@Published var state: GameState
 	@Published var pickingSecretInformant: SecretInformant?
+	@Published var addingClue: Bool = false
 
 	let solver: ClueSolver
 
@@ -45,10 +46,17 @@ class GameBoardViewModel: ObservableObject {
 		state = state.withSecretInformant(informant.withCard(card))
 	}
 
+	func addClue(_ clue: GameState.Clue) {
+		state = state.addingClue(clue)
+	}
+
+	func deleteClues(atOffsets offsets: IndexSet) {
+		state = state.removingClues(atOffsets: offsets)
+	}
+
 	// MARK: Properties
 
 	struct SecretInformant: Identifiable, CustomStringConvertible {
-
 
 		let id: String
 		let informant: GameState.SecretInformant
@@ -80,6 +88,10 @@ class GameBoardViewModel: ObservableObject {
 
 	var availableCards: Set<Card> {
 		state.availableCards
+	}
+
+	func player(withId id: UUID) -> GameState.Player? {
+		state.players.first { $0.id == id }
 	}
 
 }
