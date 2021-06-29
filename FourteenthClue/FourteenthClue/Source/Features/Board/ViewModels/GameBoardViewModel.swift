@@ -10,21 +10,45 @@ import Foundation
 
 class GameBoardViewModel: ObservableObject {
 
-	@Published var state: GameState
+	@Published var state: GameState {
+		didSet {
+			solver.state = state
+		}
+	}
 	@Published var pickingSecretInformant: SecretInformant?
-	@Published var addingClue: Bool = false
+	@Published var addingClue = false
+	@Published var showingSolutions = false
+	@Published var possibleSolutions: [Solution] = []
+	private var solutionsCancellable: AnyCancellable?
 
-	let solver: ClueSolver
+	let solver = ClueSolver()
 
 	init(state: GameState) {
 		self.state = state
-		self.solver = ClueSolver(initialState: state)
 	}
 
 	// MARK: View actions
 
 	func onAppear() {
 		print("Starting game with \(state.players.count) players")
+		solutionsCancellable = solver
+			.solutions
+			.receive(on: RunLoop.main)
+			.sink { [weak self] solutions in
+				self?.possibleSolutions = solutions
+			}
+	}
+
+	func onDisappear() {
+		solutionsCancellable = nil
+	}
+
+	func addClue() {
+		addingClue = true
+	}
+
+	func showSolutions() {
+		showingSolutions = true
 	}
 
 	func setCard(_ card: Card?, forPlayer player: GameState.Player, atPosition position: GameState.CardPosition) {
@@ -86,8 +110,8 @@ class GameBoardViewModel: ObservableObject {
 		state.clues
 	}
 
-	var availableCards: Set<Card> {
-		state.availableCards
+	var unallocatedCards: Set<Card> {
+		state.unallocatedCards
 	}
 
 	func player(withId id: UUID) -> GameState.Player? {

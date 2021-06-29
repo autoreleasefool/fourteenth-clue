@@ -79,13 +79,54 @@ struct GameState {
 		return .init(players: players, secretInformants: secretInformants, clues: clues, cards: cards)
 	}
 
+	// MARK: Properties
+
+	func cardsVisible(toPlayer targetPlayer: Player) -> Set<Card> {
+		Set(players.flatMap { player in
+			return targetPlayer.id == player.id
+				? player.privateCards.cards
+				: player.mystery.cards
+		})
+	}
+
+	func cards(forFilter filter: Clue.Filter) -> Set<Card> {
+		switch filter {
+		case .color(let color):
+			switch color {
+			case .purple: return purpleCards
+			case .pink: return pinkCards
+			case .red: return redCards
+			case .green: return greenCards
+			case .yellow: return yellowCards
+			case .blue: return blueCards
+			case .orange: return orangeCards
+			case .white: return whiteCards
+			case .brown: return brownCards
+			case .gray: return grayCards
+			}
+		case .category(let category):
+			switch category {
+			case .person(.man): return menCards
+			case .person(.woman): return womenCards
+			case .location(.indoors): return indoorsCards
+			case .location(.outdoors): return outdoorsCards
+			case .weapon(.melee): return meleeCards
+			case .weapon(.ranged): return rangedCards
+			}
+		}
+	}
+
 	// MARK: - Cards
 
-	var availableCards: Set<Card> {
+	var unallocatedCards: Set<Card> {
 		cards
 			.subtracting(players.flatMap { $0.mystery.cards })
 			.subtracting(players.flatMap { $0.privateCards.cards })
 			.subtracting(secretInformants.compactMap { $0.card })
+	}
+
+	var allCards: Set<Card> {
+		cards
 	}
 
 	var purpleCards: Set<Card> { cards.intersection(Card.purpleCards) }

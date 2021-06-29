@@ -2,81 +2,25 @@
 //  Solution.swift
 //  Fourteenth Clue
 //
-//  Created by Joseph Roque on 2021-06-22.
+//  Created by Joseph Roque on 2021-06-28.
 //
 
 import Foundation
 
-struct Solution {
+struct Solution: Equatable, Comparable, Identifiable {
 
-	let players: [Player]
-	let secretInformants: [Card: Double]
+	let person: Card
+	let location: Card
+	let weapon: Card
 
-	init(playerCount: Int) {
-		self.players = (0..<playerCount).map { _ in
-			Player(privateCards: PrivateCardSet.allCards, mystery: MysteryCardSet.allCards)
-		}
+	let probability: Double
 
-		self.secretInformants = equalProbability(forAllCards: Card.allCases)
+	var id: String {
+		"\(person)/\(location)/\(weapon)"
 	}
 
-}
-
-// MARK: Players
-
-extension Solution {
-
-	struct Player {
-		let privateCards: PrivateCardSet
-		let mystery: MysteryCardSet
+	static func < (lhs: Solution, rhs: Solution) -> Bool {
+		lhs.probability < rhs.probability
 	}
 
-}
-
-// MARK: Cards
-
-extension Solution {
-
-	struct PrivateCardSet {
-		let leftCard: [Card: Double]
-		let rightCard: [Card: Double]
-
-		static var allCards: PrivateCardSet {
-			PrivateCardSet(
-				leftCard: equalProbability(forAllCards: Card.allCases),
-				rightCard: equalProbability(forAllCards: Card.allCases)
-			)
-		}
-	}
-
-	struct MysteryCardSet {
-		let person: [Card: Double]
-		let location: [Card: Double]
-		let weapon: [Card: Double]
-
-		init(person: [Card: Double], location: [Card: Double], weapon: [Card: Double]) {
-			self.person = person
-			self.location = location
-			self.weapon = weapon
-		}
-
-		static var allCards: MysteryCardSet {
-			MysteryCardSet(
-				person: equalProbability(forAllCards: Card.peopleCards),
-				location: equalProbability(forAllCards: Card.locationsCards),
-				weapon: equalProbability(forAllCards: Card.weaponsCards)
-			)
-		}
-	}
-
-}
-
-// MARK: Probability
-
-private func equalProbability<C: Collection>(
-	forAllCards cards: C
-) -> [Card: Double] where C.Element == Card {
-	cards.reduce(into: [Card: Double]()) { result, card in
-		result[card] = 100.0 / Double(cards.count)
-	}
 }

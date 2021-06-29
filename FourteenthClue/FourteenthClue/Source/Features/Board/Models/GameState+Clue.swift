@@ -13,12 +13,12 @@ extension GameState {
 
 		let id = UUID()
 		let player: UUID
-		let detail: Detail
+		let filter: Filter
 		let count: Int
 
-		init(player: UUID, detail: Detail, count: Int) {
+		init(player: UUID, filter: Filter, count: Int) {
 			self.player = player
-			self.detail = detail
+			self.filter = filter
 			self.count = count
 		}
 
@@ -28,7 +28,7 @@ extension GameState {
 
 extension GameState.Clue {
 
-	enum Detail: Equatable, CustomStringConvertible {
+	enum Filter: Equatable, CustomStringConvertible {
 		case color(Card.Color)
 		case category(Card.Category)
 
@@ -50,7 +50,7 @@ extension GameState.Clue {
 extension GameState.Clue {
 
 	func description(withPlayer player: GameState.Player?) -> String {
-		"\(player?.name ?? "Somebody") sees \(count) \(detail.description) cards"
+		"\(player?.name ?? "Somebody") sees \(count) \(filter.description) cards"
 	}
 
 }

@@ -152,6 +152,28 @@ extension Card {
 		}
 	}
 
+	static func allCardsMatching(filter: GameState.Clue.Filter) -> Set<Card> {
+		Set(Card.allCases.filter { card in
+			switch filter {
+			case .color(let color):
+				return color == card.color
+			case .category(let category):
+				return category == card.category
+			}
+		})
+	}
+
+	static func allCardsMatching(category: Card.Category) -> Set<Card> {
+		Set(Card.allCases.filter { card in
+			switch (category, card.category) {
+			case (.person, .person), (.location, .location), (.weapon, .weapon):
+				return true
+			default:
+				return false
+			}
+		})
+	}
+
 }
 
 // MARK: Color
@@ -267,5 +289,27 @@ extension Card {
 	static let outdoorsCards: Set<Card> = { Set(Card.allCases.filter { $0.category == .location(.outdoors) }) }()
 	static let indoorsCards: Set<Card> = { Set(Card.allCases.filter { $0.category == .location(.indoors) }) }()
 	static let locationsCards: Set<Card> = { outdoorsCards.union(indoorsCards) }()
+
+}
+
+// MARK: Clues
+
+extension Set where Element == Card {
+
+	var people: Set<Card> {
+		self.intersection(Card.peopleCards)
+	}
+
+	var locations: Set<Card> {
+		self.intersection(Card.locationsCards)
+	}
+
+	var weapons: Set<Card> {
+		self.intersection(Card.weaponsCards)
+	}
+
+	func matching(filter: GameState.Clue.Filter) -> Set<Card> {
+		self.intersection(Card.allCardsMatching(filter: filter))
+	}
 
 }

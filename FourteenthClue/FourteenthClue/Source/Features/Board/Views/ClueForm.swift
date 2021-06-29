@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ClueForm: View {
-	@Environment(\.presentationMode) var presentationMode
+	@Environment(\.dismiss) private var dismiss
 
 	let state: GameState
 	let onAddClue: (GameState.Clue) -> Void
@@ -33,72 +33,70 @@ struct ClueForm: View {
 	}
 
 	var body: some View {
-		NavigationView {
-			Form {
-				Section {
-					Picker("Player", selection: $selectedPlayer) {
-						ForEach(state.players) { player in
-							Text(player.name)
-								.tag(player)
-						}
-					}
-				}
-
-				Section {
-					Picker("Type", selection: $clueType) {
-						ForEach(ClueType.allCases) { type in
-							Text(type.rawValue.capitalized)
-								.tag(type)
-						}
-					}
-
-					switch clueType {
-					case .color:
-						Picker("Color", selection: $clueColor) {
-							ForEach(Card.Color.allCases) { color in
-								Text(color.description.capitalized)
-									.tag(color)
-							}
-						}
-					case .category:
-						Picker("Category", selection: $clueCategory) {
-							ForEach(Card.Category.allCases) { category in
-								Text(category.description.capitalized)
-									.tag(category)
-							}
-						}
-					}
-				}
-
-				Section {
-					TextField("Count", value: $count, formatter: countFormatter)
-						.keyboardType(.numberPad)
-				}
-
-				Section {
-					Button("Submit") {
-						guard let count = count else { return }
-
-						let detail: GameState.Clue.Detail
-						switch clueType {
-						case .color:
-							detail = .color(clueColor)
-						case .category:
-							detail = .category(clueCategory)
-						}
-
-						onAddClue(GameState.Clue(
-							player: selectedPlayer.id,
-							detail: detail,
-							count: count
-						))
-
-						presentationMode.wrappedValue.dismiss()
+		Form {
+			Section {
+				Picker("Player", selection: $selectedPlayer) {
+					ForEach(state.players) { player in
+						Text(player.name)
+							.tag(player)
 					}
 				}
 			}
-			.navigationTitle("Add clue")
+
+			Section {
+				Picker("Type", selection: $clueType) {
+					ForEach(ClueType.allCases) { type in
+						Text(type.rawValue.capitalized)
+							.tag(type)
+					}
+				}
+
+				switch clueType {
+				case .color:
+					Picker("Color", selection: $clueColor) {
+						ForEach(Card.Color.allCases) { color in
+							Text(color.description.capitalized)
+								.tag(color)
+						}
+					}
+				case .category:
+					Picker("Category", selection: $clueCategory) {
+						ForEach(Card.Category.allCases) { category in
+							Text(category.description.capitalized)
+								.tag(category)
+						}
+					}
+				}
+			}
+
+			Section {
+				TextField("Count", value: $count, formatter: countFormatter)
+					.keyboardType(.numberPad)
+			}
+
+			Section {
+				Button("Submit") {
+					guard let count = count else { return }
+
+					let filter: GameState.Clue.Filter
+					switch clueType {
+					case .color:
+						filter = .color(clueColor)
+					case .category:
+						filter = .category(clueCategory)
+					}
+
+					onAddClue(GameState.Clue(
+						player: selectedPlayer.id,
+						filter: filter,
+						count: count
+					))
+
+					dismiss()
+				}
+			}
 		}
+		.navigationTitle("Add clue")
 	}
 
 }

@@ -53,6 +53,12 @@ extension GameState {
 			.init(id: id, name: name, privateCards: privateCards, mystery: mystery.withWeapon(toCard))
 		}
 
+		// MARK: Properties
+
+		var cards: [Card] {
+			mystery.cards + privateCards.cards
+		}
+
 	}
 
 }

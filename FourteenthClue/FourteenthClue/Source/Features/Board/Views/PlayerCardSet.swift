@@ -82,7 +82,7 @@ struct PlayerCardSet: View {
 			.padding()
 		}
 		.sheet(item: $pickingCardPosition) { cardPosition in
-			CardPicker(categories: cardPosition.categories, fromAvailableCards: viewModel.availableCards) {
+			CardPicker(categories: cardPosition.categories, fromAvailableCards: viewModel.unallocatedCards) {
 				pickingCardPosition = nil
 				viewModel.setCard($0, forPlayer: player, atPosition: cardPosition)
 //				onSetCard($0, cardPosition)

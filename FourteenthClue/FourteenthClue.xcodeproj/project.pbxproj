@@ -13,7 +13,6 @@
 		CA2E856626823FD5001BE951 /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA2E856526823FD5001BE951 /* Card.swift */; };
 		CA2E856926826830001BE951 /* GameBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA2E856826826830001BE951 /* GameBoard.swift */; };
 		CA2E856C268268C7001BE951 /* GameBoardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA2E856B268268C7001BE951 /* GameBoardViewModel.swift */; };
-		CA2E856F26826E3A001BE951 /* Solution.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA2E856E26826E3A001BE951 /* Solution.swift */; };
 		CA2E85712682706F001BE951 /* ClueSolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA2E85702682706F001BE951 /* ClueSolver.swift */; };
 		CA2E8573268399D0001BE951 /* PlayerCardSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA2E8572268399D0001BE951 /* PlayerCardSet.swift */; };
 		CA2E85752683C378001BE951 /* GameState.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA2E85742683C378001BE951 /* GameState.swift */; };
@@ -26,6 +25,8 @@
 		CA8C07A52689842F00B50233 /* GameState+Clue.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8C07A42689842F00B50233 /* GameState+Clue.swift */; };
 		CA8C07A726898A5800B50233 /* GameState+SecretInformant.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8C07A626898A5800B50233 /* GameState+SecretInformant.swift */; };
 		CA8C07A9268993B400B50233 /* ClueForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8C07A8268993B400B50233 /* ClueForm.swift */; };
+		CA8C07AD268A636B00B50233 /* Solution.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8C07AC268A636B00B50233 /* Solution.swift */; };
+		CAB5E4E9268AD2FD0070DD97 /* SolutionList.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAB5E4E8268AD2FD0070DD97 /* SolutionList.swift */; };
 		CAED72F7268447190060086A /* CardPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAED72F6268447190060086A /* CardPicker.swift */; };
 		CAED72FA268447680060086A /* BottomSheet in Frameworks */ = {isa = PBXBuildFile; productRef = CAED72F9268447680060086A /* BottomSheet */; };
 /* End PBXBuildFile section */
@@ -37,7 +38,6 @@
 		CA2E856526823FD5001BE951 /* Card.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
 		CA2E856826826830001BE951 /* GameBoard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameBoard.swift; sourceTree = "<group>"; };
 		CA2E856B268268C7001BE951 /* GameBoardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameBoardViewModel.swift; sourceTree = "<group>"; };
-		CA2E856E26826E3A001BE951 /* Solution.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Solution.swift; sourceTree = "<group>"; };
 		CA2E85702682706F001BE951 /* ClueSolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClueSolver.swift; sourceTree = "<group>"; };
 		CA2E8572268399D0001BE951 /* PlayerCardSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerCardSet.swift; sourceTree = "<group>"; };
 		CA2E85742683C378001BE951 /* GameState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameState.swift; sourceTree = "<group>"; };
@@ -51,6 +51,8 @@
 		CA8C07A42689842F00B50233 /* GameState+Clue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GameState+Clue.swift"; sourceTree = "<group>"; };
 		CA8C07A626898A5800B50233 /* GameState+SecretInformant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GameState+SecretInformant.swift"; sourceTree = "<group>"; };
 		CA8C07A8268993B400B50233 /* ClueForm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClueForm.swift; sourceTree = "<group>"; };
+		CA8C07AC268A636B00B50233 /* Solution.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Solution.swift; sourceTree = "<group>"; };
+		CAB5E4E8268AD2FD0070DD97 /* SolutionList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolutionList.swift; sourceTree = "<group>"; };
 		CAED72F6268447190060086A /* CardPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardPicker.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -80,7 +82,7 @@
 			isa = PBXGroup;
 			children = (
 				CA2E85702682706F001BE951 /* ClueSolver.swift */,
-				CA2E856E26826E3A001BE951 /* Solution.swift */,
+				CA8C07AC268A636B00B50233 /* Solution.swift */,
 			);
 			path = Solver;
 			sourceTree = "<group>";
@@ -139,6 +141,7 @@
 				CA8C07A8268993B400B50233 /* ClueForm.swift */,
 				CA2E856826826830001BE951 /* GameBoard.swift */,
 				CA2E8572268399D0001BE951 /* PlayerCardSet.swift */,
+				CAB5E4E8268AD2FD0070DD97 /* SolutionList.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -281,7 +284,7 @@
 				CA2E856226823772001BE951 /* PlayerPicker.swift in Sources */,
 				CA8C07A9268993B400B50233 /* ClueForm.swift in Sources */,
 				CA2E856426823E13001BE951 /* Assets.swift in Sources */,
-				CA2E856F26826E3A001BE951 /* Solution.swift in Sources */,
+				CA8C07AD268A636B00B50233 /* Solution.swift in Sources */,
 				CA8C07A726898A5800B50233 /* GameState+SecretInformant.swift in Sources */,
 				CA2E8573268399D0001BE951 /* PlayerCardSet.swift in Sources */,
 				CA8C07A52689842F00B50233 /* GameState+Clue.swift in Sources */,
@@ -289,6 +292,7 @@
 				CA2E856926826830001BE951 /* GameBoard.swift in Sources */,
 				CA8C07A12689837000B50233 /* GameState+Player.swift in Sources */,
 				CA2E85772683CFDF001BE951 /* GameBuilder.swift in Sources */,
+				CAB5E4E9268AD2FD0070DD97 /* SolutionList.swift in Sources */,
 				CA582E122681AC8F00248E51 /* FourteenthClue.swift in Sources */,
 				CA2E85752683C378001BE951 /* GameState.swift in Sources */,
 			);
