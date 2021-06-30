@@ -89,6 +89,13 @@ struct GameState {
 		})
 	}
 
+	func mysteryCardsVisibleToMe(excludingPlayer excludedPlayer: UUID) -> Set<Card> {
+		Set(players.dropFirst().flatMap { player -> [Card] in
+			guard player.id != excludedPlayer else { return [] }
+			return player.mystery.cards
+		})
+	}
+
 	func cards(forFilter filter: Clue.Filter) -> Set<Card> {
 		switch filter {
 		case .color(let color):

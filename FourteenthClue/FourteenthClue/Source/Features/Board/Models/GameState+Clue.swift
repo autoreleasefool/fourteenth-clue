@@ -22,6 +22,10 @@ extension GameState {
 			self.count = count
 		}
 
+		var cards: Set<Card> {
+			Card.allCardsMatching(filter: filter)
+		}
+
 	}
 
 }

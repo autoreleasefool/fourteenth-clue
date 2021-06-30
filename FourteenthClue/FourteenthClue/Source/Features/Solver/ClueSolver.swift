@@ -50,78 +50,96 @@ class ClueSolver {
 	}
 
 	private func solve(state: GameState) {
-		let me = state.players.first!
+		var solutions = state.allPossibleSolutions
+		var clues = state.clues
+		removeImpossibleSolutions(state, &solutions)
+		resolveCluesInIsolation(state, &clues, &solutions)
+		resolveCluesInCombination(state, clues, &solutions)
 
-		var possibleCards = state.cards
-		removeObviousCards(state, &possibleCards)
-		resolveClues(state, &possibleCards)
-
-		buildSolutions(from: possibleCards)
+		solutionsSubject.send(solutions)
 	}
 
-	private func removeObviousCards(_ state: GameState, _ possibleCards: inout Set<Card>) {
+	private func removeImpossibleSolutions(_ state: GameState, _ solutions: inout [Solution]) {
 		let me = state.players.first!
 		let others = state.players.dropFirst()
 
-		// Remove cards that other players have
-		possibleCards.subtract(others.flatMap { $0.cards })
+		// Remove solutions with cards that other players have
+		let allOthersCards = others.flatMap { $0.cards }
+		solutions.removeAll { !$0.cards.isDisjoint(with: allOthersCards) }
 
-		// Remove my private cards
-		possibleCards.subtract(me.privateCards.cards)
+		// Remove solutions with cards in my private cards
+		solutions.removeAll { !$0.cards.isDisjoint(with: me.privateCards.cards) }
 
-		// Remove secret informants
-		possibleCards.subtract(state.secretInformants.compactMap { $0.card })
+		// Remove solutions with secret informants
+		solutions.removeAll { !$0.cards.isDisjoint(with: state.secretInformants.compactMap { $0.card })}
 
-		// Remove any cards that are the same type as one I have already confirmed
+		// Remove any solutions that do not match confirmed cards
 		me.mystery.cards.forEach { confirmedCard in
-			possibleCards.subtract(
-				Card
-					.allCardsMatching(category: confirmedCard.category)
-					.subtracting([confirmedCard])
-			)
+			solutions.removeAll { !$0.cards.contains(confirmedCard) }
 		}
 	}
 
-	private func resolveClues(_ state: GameState, _ possibleCards: inout Set<Card>) {
+	private func resolveCluesInIsolation(_ state: GameState, _ clues: inout [GameState.Clue], _ solutions: inout [Solution]) {
 		let me = state.players.first!
-		let others = state.players.dropFirst()
+		let cluesToRemove = IndexSet()
 
-		let informants = Set(state.secretInformants.compactMap { $0.card })
-		let visibleToMe = state.cardsVisible(toPlayer: me)
-		let visibleToOthers: [UUID: Set<Card>] = others
-			.reduce(into: [UUID: Set<Card>]()) { visible, player in
-				visible[player.id] = state.cardsVisible(toPlayer: player)
+		clues
+			.drop { $0.player == me.id }
+			.enumerated()
+			.forEach { index, clue in
+				guard clue.count > 0 else {
+					solutions.removeAll { !$0.cards.isDisjoint(with: clue.cards) }
+					return
+				}
+
+				let mysteryCardsVisibleToMe = state.mysteryCardsVisibleToMe(excludingPlayer: clue.player)
+				
 			}
 
-		for clue in state.clues.drop(while: { $0.player == me.id }) {
-			let visibleToPlayer = visibleToOthers[clue.player]!
-			let clueCards = Card.allCardsMatching(filter: clue.filter)
-				.intersection(state.allCards)
-
-
-		}
+		clues.remove(atOffsets: cluesToRemove)
 	}
 
-	private func buildSolutions(from possibleCards: Set<Card>) {
-		let people = possibleCards.people
-		let locations = possibleCards.locations
-		let weapons = possibleCards.weapons
+	private func resolveCluesInCombination(_ state: GameState, _ clues: [GameState.Clue], _ solutions: inout [Solution]) {
 
-		var solutions: [Solution] = []
-		for person in people {
-			for location in locations {
-				for weapon in weapons {
-					solutions.append(Solution(
+	}
+
+//	private func resolveClues(_ state: GameState, _ possibleCards: inout Set<Card>) {
+//		let me = state.players.first!
+//		let others = state.players.dropFirst()
+//
+//		let informants = Set(state.secretInformants.compactMap { $0.card })
+//		let visibleToMe = state.cardsVisible(toPlayer: me)
+//		let visibleToOthers: [UUID: Set<Card>] = others
+//			.reduce(into: [UUID: Set<Card>]()) { visible, player in
+//				visible[player.id] = state.cardsVisible(toPlayer: player)
+//			}
+//
+//		for clue in state.clues.drop(while: { $0.player == me.id }) {
+//			let visibleToPlayer = visibleToOthers[clue.player]!
+//			let clueCards = Card.allCardsMatching(filter: clue.filter)
+//				.intersection(state.allCards)
+//
+//
+//		}
+//	}
+
+}
+
+private extension GameState {
+
+	var allPossibleSolutions: [Solution] {
+		cards.people.flatMap { person in
+			cards.locations.flatMap { location in
+				cards.weapons.map { weapon in
+					Solution(
 						person: person,
 						location: location,
 						weapon: weapon,
 						probability: 0
-					))
+					)
 				}
 			}
 		}
-
-		solutionsSubject.send(solutions.sorted())
 	}
 
 }

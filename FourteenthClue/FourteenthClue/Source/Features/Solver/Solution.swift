@@ -19,6 +19,10 @@ struct Solution: Equatable, Comparable, Identifiable {
 		"\(person)/\(location)/\(weapon)"
 	}
 
+	var cards: Set<Card> {
+		[person, location, weapon]
+	}
+
 	static func < (lhs: Solution, rhs: Solution) -> Bool {
 		lhs.probability < rhs.probability
 	}
