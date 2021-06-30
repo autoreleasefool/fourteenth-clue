@@ -95,6 +95,7 @@ class ClueSolver {
 				let mysteryCardsVisibleToMe = state.mysteryCardsVisibleToMe(excludingPlayer: clue.player)
 				
 			}
+		
 
 		clues.remove(atOffsets: cluesToRemove)
 	}

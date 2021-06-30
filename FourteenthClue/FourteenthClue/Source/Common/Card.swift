@@ -59,6 +59,28 @@ enum Card: String, CaseIterable, Comparable, Hashable {
 		}
 	}
 
+	static func cardSet(forPlayerCount playerCount: Int) -> Set<Card> {
+		var availableCards = Set(Card.allCases)
+
+		switch playerCount {
+		case 2:
+			availableCards.subtract(Card.orangeCards)
+			fallthrough
+		case 3:
+			availableCards.subtract(Card.whiteCards)
+			fallthrough
+		case 4:
+			availableCards.subtract(Card.brownCards)
+			fallthrough
+		case 5:
+			availableCards.subtract(Card.grayCards)
+		default:
+			break
+		}
+
+		return availableCards
+	}
+
 }
 
 // MARK: Category

@@ -18,25 +18,7 @@ struct GameState {
 		self.players = (0..<playerCount).map { _ in .default }
 		self.secretInformants = (0..<8 - ((playerCount - 2) * 2)).map { _ in .default }
 		self.clues = []
-
-		var availableCards = Set(Card.allCases)
-		switch playerCount {
-		case 2:
-			availableCards = availableCards.subtracting(Card.orangeCards)
-			fallthrough
-		case 3:
-			availableCards = availableCards.subtracting(Card.whiteCards)
-			fallthrough
-		case 4:
-			availableCards = availableCards.subtracting(Card.brownCards)
-			fallthrough
-		case 5:
-			availableCards = availableCards.subtracting(Card.grayCards)
-		default:
-			break
-		}
-
-		self.cards = availableCards
+		self.cards = Card.cardSet(forPlayerCount: playerCount)
 	}
 
 	private init(players: [Player], secretInformants: [SecretInformant], clues: [Clue], cards: Set<Card>) {
@@ -164,5 +146,55 @@ struct GameState {
 	var weaponsCards: Set<Card> { cards.intersection(Card.weaponsCards) }
 	var rangedCards: Set<Card> { cards.intersection(Card.rangedCards) }
 	var meleeCards: Set<Card> { cards.intersection(Card.meleeCards) }
+
+}
+
+// MARK: Examples
+
+extension GameState {
+
+	var example1: GameState {
+		.init(
+			players: [
+				.init(
+					name: "Me",
+					privateCards: .init(leftCard: .butcher, rightCard: .dancer),
+					mystery: .init(person: nil, location: nil, weapon: nil)
+//					mystery: .init(person: .nurse, location: .parlor, weapon: .gun)
+				),
+				.init(
+					name: "Player 2",
+					privateCards: .init(leftCard: nil, rightCard: nil),
+//					privateCards: .init(leftCard: .plaza, rightCard: .crossbow),
+					mystery: .init(person: .officer, location: .market, weapon: .sword)
+				),
+				.init(
+					name: "Player 3",
+					privateCards: .init(leftCard: nil, rightCard: nil),
+//					privateCards: .init(leftCard: .library, rightCard: .rifle),
+					mystery: .init(person: .duke, location: .harbor, weapon: .blowgun)
+				),
+				.init(
+					name: "Player 4",
+					privateCards: .init(leftCard: nil, rightCard: nil),
+//					privateCards: .init(leftCard: .museum, rightCard: .theater),
+					mystery: .init(person: .maid, location: .park, weapon: .candlestick)
+				),
+			],
+			secretInformants: [
+				.init(card: nil),
+				.init(card: nil),
+				.init(card: nil),
+				.init(card: nil),
+//				.init(card: .sailor),
+//				.init(card: .countess),
+//				.init(card: .knife),
+//				.init(card: .poison),
+			],
+			clues: [
+			],
+			cards: Card.cardSet(forPlayerCount: 4)
+		)
+	}
 
 }
