@@ -51,7 +51,7 @@ class GameBoardViewModel: ObservableObject {
 		showingSolutions = true
 	}
 
-	func setCard(_ card: Card?, forPlayer player: GameState.Player, atPosition position: GameState.CardPosition) {
+	func setCard(_ card: Card?, forPlayer player: Player, atPosition position: CardPosition) {
 		switch position {
 		case .leftCard:
 			state = state.withPlayer(player.withPrivateCard(onLeft: card))
@@ -66,11 +66,11 @@ class GameBoardViewModel: ObservableObject {
 		}
 	}
 
-	func setCard(_ card: Card?, forInformant informant: GameState.SecretInformant) {
+	func setCard(_ card: Card?, forInformant informant: SecretInformant) {
 		state = state.withSecretInformant(informant.withCard(card))
 	}
 
-	func addClue(_ clue: GameState.Clue) {
+	func addClue(_ clue: Clue) {
 		state = state.addingClue(clue)
 	}
 
@@ -78,35 +78,16 @@ class GameBoardViewModel: ObservableObject {
 		state = state.removingClues(atOffsets: offsets)
 	}
 
-	// MARK: Properties
-
-	struct SecretInformant: Identifiable, CustomStringConvertible {
-
-		let id: String
-		let informant: GameState.SecretInformant
-
-		var description: String {
-			if let card = informant.card {
-				return "\(id) - \(card)"
-			} else {
-				return "\(id) - ?"
-			}
-		}
-
+	var secretInformants: [(String, SecretInformant)] {
+		zip("ABCDEFGH", state.secretInformants)
+			.map { name, informant in (String(name), informant) }
 	}
 
-	var secretInformants: [SecretInformant] {
-		zip("ABCDEFGH", state.secretInformants).enumerated().map { index, nameAndInformant in
-			let (name, informant) = nameAndInformant
-			return SecretInformant(id: String(name), informant: informant)
-		}
-	}
-
-	var players: [GameState.Player] {
+	var players: [Player] {
 		state.players
 	}
 
-	var clues: [GameState.Clue] {
+	var clues: [Clue] {
 		state.clues
 	}
 
@@ -114,7 +95,7 @@ class GameBoardViewModel: ObservableObject {
 		state.unallocatedCards
 	}
 
-	func player(withId id: UUID) -> GameState.Player? {
+	func player(withId id: UUID) -> Player? {
 		state.players.first { $0.id == id }
 	}
 

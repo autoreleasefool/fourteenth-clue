@@ -37,12 +37,12 @@ struct GameBuilder: View {
 		}
 	}
 
-	private func getTitle(forPlayer player: GameState.Player) -> String {
+	private func getTitle(forPlayer player: Player) -> String {
 		guard let index = state.players.firstIndex(where: { $0.id == player.id }) else { return "" }
 		return "Player \(index + 1)"
 	}
 
-	private func getText(forPlayer player: GameState.Player) -> Binding<String> {
+	private func getText(forPlayer player: Player) -> Binding<String> {
 		Binding<String>(
 			get: { player.name },
 			set: { state = state.withPlayer(player.withName($0)) }

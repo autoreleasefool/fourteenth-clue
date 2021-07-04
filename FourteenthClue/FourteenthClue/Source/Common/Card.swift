@@ -174,7 +174,7 @@ extension Card {
 		}
 	}
 
-	static func allCardsMatching(filter: GameState.Clue.Filter) -> Set<Card> {
+	static func allCardsMatching(filter: Clue.Filter) -> Set<Card> {
 		Set(Card.allCases.filter { card in
 			switch filter {
 			case .color(let color):
@@ -330,7 +330,7 @@ extension Set where Element == Card {
 		self.intersection(Card.weaponsCards)
 	}
 
-	func matching(filter: GameState.Clue.Filter) -> Set<Card> {
+	func matching(filter: Clue.Filter) -> Set<Card> {
 		self.intersection(Card.allCardsMatching(filter: filter))
 	}
 

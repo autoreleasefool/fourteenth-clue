@@ -43,7 +43,7 @@ struct GameBoard: View {
 		.sheet(item: $viewModel.pickingSecretInformant) { secretInformant in
 			CardPicker(cards: viewModel.unallocatedCards.sorted()) {
 				viewModel.pickingSecretInformant = nil
-				viewModel.setCard($0, forInformant: secretInformant.informant)
+				viewModel.setCard($0, forInformant: secretInformant)
 			}
 		}
 		.sheet(isPresented: $viewModel.addingClue) {
@@ -89,11 +89,19 @@ struct GameBoard: View {
 
 	private var informants: some View {
 		Section("Informants") {
-			ForEach(viewModel.secretInformants) { informant in
-				Button(informant.description) {
-					viewModel.pickingSecretInformant = informant
+			ForEach(viewModel.secretInformants, id: \.0) { informant in
+				Button(label(for: informant.1, withName: informant.0)) {
+					viewModel.pickingSecretInformant = informant.1
 				}
 			}
+		}
+	}
+
+	private func label(for informant: SecretInformant, withName name: String) -> String {
+		if let card = informant.card {
+			return "\(name) - \(card)"
+		} else {
+			return "\(name) - ?"
 		}
 	}
 

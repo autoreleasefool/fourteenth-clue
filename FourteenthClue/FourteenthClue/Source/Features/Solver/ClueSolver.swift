@@ -79,7 +79,7 @@ class ClueSolver {
 		}
 	}
 
-	private func resolveCluesInIsolation(_ state: GameState, _ clues: inout [GameState.Clue], _ solutions: inout [Solution]) {
+	private func resolveCluesInIsolation(_ state: GameState, _ clues: inout [Clue], _ solutions: inout [Solution]) {
 		let me = state.players.first!
 		let cluesToRemove = IndexSet()
 
@@ -100,7 +100,7 @@ class ClueSolver {
 		clues.remove(atOffsets: cluesToRemove)
 	}
 
-	private func resolveCluesInCombination(_ state: GameState, _ clues: [GameState.Clue], _ solutions: inout [Solution]) {
+	private func resolveCluesInCombination(_ state: GameState, _ clues: [Clue], _ solutions: inout [Solution]) {
 
 	}
 

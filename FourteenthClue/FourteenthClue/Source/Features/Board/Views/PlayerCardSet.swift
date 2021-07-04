@@ -10,10 +10,10 @@ import SwiftUI
 struct PlayerCardSet: View {
 
 	@ObservedObject var viewModel: GameBoardViewModel
-	let player: GameState.Player
+	let player: Player
 //	let onSetCard: (Card?, GameState.CardPosition) -> Void
 
-	@State var pickingCardPosition: GameState.CardPosition?
+	@State var pickingCardPosition: CardPosition?
 
 	var body: some View {
 		GeometryReader { fullView in
