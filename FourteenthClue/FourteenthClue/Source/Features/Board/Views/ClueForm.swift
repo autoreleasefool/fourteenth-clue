@@ -11,7 +11,7 @@ struct ClueForm: View {
 	@Environment(\.dismiss) private var dismiss
 
 	let state: GameState
-	let onAddClue: (Clue) -> Void
+	let onAddClue: (AnyClue) -> Void
 
 	@State private var selectedPlayer: Player
 	@State private var clueType: ClueType = .color
@@ -26,7 +26,7 @@ struct ClueForm: View {
 		return formatter
 	}()
 
-	init(state: GameState, onAddClue: @escaping (Clue) -> Void) {
+	init(state: GameState, onAddClue: @escaping (AnyClue) -> Void) {
 		self.state = state
 		self.onAddClue = onAddClue
 		self._selectedPlayer = .init(wrappedValue: state.players.first!)
@@ -78,7 +78,7 @@ struct ClueForm: View {
 				Button("Submit") {
 					guard let count = count else { return }
 
-					let filter: Clue.Filter
+					let filter: Inquisition.Filter
 					switch clueType {
 					case .color:
 						filter = .color(clueColor)
@@ -86,11 +86,11 @@ struct ClueForm: View {
 						filter = .category(clueCategory)
 					}
 
-					onAddClue(Clue(
+					onAddClue(AnyClue(Inquisition(
 						player: selectedPlayer.id,
 						filter: filter,
 						count: count
-					))
+						)))
 
 					dismiss()
 				}

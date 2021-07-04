@@ -79,7 +79,7 @@ class ClueSolver {
 		}
 	}
 
-	private func resolveCluesInIsolation(_ state: GameState, _ clues: inout [Clue], _ solutions: inout [Solution]) {
+	private func resolveCluesInIsolation(_ state: GameState, _ clues: inout [AnyClue], _ solutions: inout [Solution]) {
 		let me = state.players.first!
 		let cluesToRemove = IndexSet()
 
@@ -87,9 +87,16 @@ class ClueSolver {
 			.drop { $0.player == me.id }
 			.enumerated()
 			.forEach { index, clue in
-				guard clue.count > 0 else {
-					solutions.removeAll { !$0.cards.isDisjoint(with: clue.cards) }
-					return
+				switch clue.wrappedValue {
+				case let inq as Inquisition:
+					guard inq.count > 0 else {
+						solutions.removeAll { !$0.cards.isDisjoint(with: inq.cards) }
+						return
+					}
+				case let acc as Accusation:
+					break
+				default:
+					break
 				}
 
 				let mysteryCardsVisibleToMe = state.mysteryCardsVisibleToMe(excludingPlayer: clue.player)

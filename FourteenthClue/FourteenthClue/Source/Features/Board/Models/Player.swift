@@ -53,8 +53,8 @@ struct Player: Identifiable, Hashable {
 
 	// MARK: Properties
 
-	var cards: [Card] {
-		mystery.cards + privateCards.cards
+	var cards: Set<Card> {
+		mystery.cards.union(privateCards.cards)
 	}
 
 }

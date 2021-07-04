@@ -7,7 +7,55 @@
 
 import Foundation
 
-struct Clue: Equatable, Identifiable {
+protocol Clue {
+	var id: UUID { get }
+	var player: UUID { get }
+	var cards: Set<Card> { get }
+
+	func description(withPlayer player: Player?) -> String
+	func isEqual(to other: Clue) -> Bool
+}
+
+extension Clue where Self: Equatable {
+
+	func isEqual(to other: Clue) -> Bool {
+		guard let other = other as? Self else { return false }
+		return self == other
+	}
+
+}
+
+// MARK: - AnyClue
+
+struct AnyClue: Clue, Identifiable {
+
+	let wrappedValue: Clue
+
+	var id: UUID { wrappedValue.id }
+	var player: UUID { wrappedValue.player }
+	var cards: Set<Card> { wrappedValue.cards }
+
+	init(_ clue: Clue) {
+		self.wrappedValue = clue
+	}
+
+	func description(withPlayer player: Player?) -> String {
+		wrappedValue.description(withPlayer: player)
+	}
+
+}
+
+extension AnyClue: Equatable {
+
+	static func == (lhs: AnyClue, rhs: AnyClue) -> Bool {
+		return lhs.wrappedValue.isEqual(to: rhs.wrappedValue)
+	}
+
+}
+
+// MARK: - Inquisition
+
+struct Inquisition: Clue, Equatable {
 
 	let id = UUID()
 	let player: UUID
@@ -24,9 +72,13 @@ struct Clue: Equatable, Identifiable {
 		Card.allCardsMatching(filter: filter)
 	}
 
+	func description(withPlayer player: Player?) -> String {
+		"\(player?.name ?? "Somebody") sees \(count) \(filter.description) cards"
+	}
+
 }
 
-extension Clue {
+extension Inquisition {
 
 	enum Filter: Equatable, CustomStringConvertible {
 		case color(Card.Color)
@@ -45,12 +97,28 @@ extension Clue {
 
 }
 
-// MARK: Strings
+// MARK: - Accusation
 
-extension Clue {
+struct Accusation: Clue, Equatable {
+
+	let id = UUID()
+	let player: UUID
+	let accusation: MysteryCardSet
+
+	var cards: Set<Card> {
+		accusation.cards
+	}
+
+	init(player: UUID, accusation: MysteryCardSet) {
+		self.player = player
+		self.accusation = accusation
+	}
 
 	func description(withPlayer player: Player?) -> String {
-		"\(player?.name ?? "Somebody") sees \(count) \(filter.description) cards"
+		guard let person = accusation.person,
+					let location = accusation.location,
+					let weapon = accusation.weapon else { return "Invalid accusation" }
+		return "\(player?.name ?? "Somebody") has made an accusation: \(person.rawValue.capitalized), \(location.rawValue.capitalized), \(weapon.rawValue.capitalized)"
 	}
 
 }

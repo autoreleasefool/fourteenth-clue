@@ -70,7 +70,7 @@ class GameBoardViewModel: ObservableObject {
 		state = state.withSecretInformant(informant.withCard(card))
 	}
 
-	func addClue(_ clue: Clue) {
+	func addClue(_ clue: AnyClue) {
 		state = state.addingClue(clue)
 	}
 
@@ -87,7 +87,7 @@ class GameBoardViewModel: ObservableObject {
 		state.players
 	}
 
-	var clues: [Clue] {
+	var clues: [AnyClue] {
 		state.clues
 	}
 

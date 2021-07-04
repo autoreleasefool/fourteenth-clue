@@ -29,8 +29,8 @@ struct PrivateCardSet: Hashable {
 
 	// MARK: Properties
 
-	var cards: [Card] {
-		[leftCard, rightCard].compactMap { $0 }
+	var cards: Set<Card> {
+		Set([leftCard, rightCard].compactMap { $0 })
 	}
 
 }
@@ -63,8 +63,8 @@ struct MysteryCardSet: Hashable {
 
 	// MARK: Properties
 
-	var cards: [Card] {
-		[person, location, weapon].compactMap { $0 }
+	var cards: Set<Card> {
+		Set([person, location, weapon].compactMap { $0 })
 	}
 
 }

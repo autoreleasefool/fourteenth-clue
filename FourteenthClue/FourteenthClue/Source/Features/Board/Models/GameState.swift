@@ -12,7 +12,7 @@ struct GameState {
 	let players: [Player]
 	let secretInformants: [SecretInformant]
 	let cards: Set<Card>
-	let clues: [Clue]
+	let clues: [AnyClue]
 
 	init(playerCount: Int) {
 		self.players = (0..<playerCount).map { _ in .default }
@@ -21,7 +21,7 @@ struct GameState {
 		self.cards = Card.cardSet(forPlayerCount: playerCount)
 	}
 
-	private init(players: [Player], secretInformants: [SecretInformant], clues: [Clue], cards: Set<Card>) {
+	private init(players: [Player], secretInformants: [SecretInformant], clues: [AnyClue], cards: Set<Card>) {
 		self.players = players
 		self.secretInformants = secretInformants
 		self.clues = clues
@@ -44,11 +44,11 @@ struct GameState {
 		return .init(players: players, secretInformants: updatedInformants, clues: clues, cards: cards)
 	}
 
-	func addingClue(_ clue: Clue) -> GameState {
+	func addingClue(_ clue: AnyClue) -> GameState {
 		.init(players: players, secretInformants: secretInformants, clues: clues + [clue], cards: cards)
 	}
 
-	func removingClue(_ clue: Clue) -> GameState {
+	func removingClue(_ clue: AnyClue) -> GameState {
 		guard let clueIndex = self.clues.firstIndex(of: clue) else { return self }
 		var clues = self.clues
 		clues.remove(at: clueIndex)
@@ -72,13 +72,14 @@ struct GameState {
 	}
 
 	func mysteryCardsVisibleToMe(excludingPlayer excludedPlayer: UUID) -> Set<Card> {
-		Set(players.dropFirst().flatMap { player -> [Card] in
-			guard player.id != excludedPlayer else { return [] }
-			return player.mystery.cards
-		})
+		players.dropFirst()
+			.reduce(into: Set<Card>()) { cards, player in
+				guard player.id != excludedPlayer else { return }
+				cards.formUnion(player.mystery.cards)
+			}
 	}
 
-	func cards(forFilter filter: Clue.Filter) -> Set<Card> {
+	func cards(forFilter filter: Inquisition.Filter) -> Set<Card> {
 		switch filter {
 		case .color(let color):
 			switch color {
