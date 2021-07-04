@@ -52,11 +52,7 @@ enum Card: String, CaseIterable, Comparable, Hashable {
 	}
 
 	static func < (lhs: Card, rhs: Card) -> Bool {
-		if lhs.color.rawValue == rhs.color.rawValue {
-			return lhs.rawValue < rhs.rawValue
-		} else {
-			return lhs.color.rawValue < rhs.color.rawValue
-		}
+		(lhs.color, lhs.category, lhs.rawValue) < (rhs.color, rhs.category, rhs.rawValue)
 	}
 
 	static func cardSet(forPlayerCount playerCount: Int) -> Set<Card> {
@@ -87,7 +83,7 @@ enum Card: String, CaseIterable, Comparable, Hashable {
 
 extension Card {
 
-	enum Category: Hashable, Equatable, CaseIterable, Identifiable {
+	enum Category: Hashable, Equatable, CaseIterable, Identifiable, Comparable {
 
 		case person(Gender)
 		case location(Presence)
@@ -149,8 +145,20 @@ extension Card {
 			description
 		}
 
-		static var allCases: [Card.Category] {
+		static var allCases: [Category] {
 			[.person(.man), .person(.woman), .location(.indoors), .location(.outdoors), .weapon(.melee), .weapon(.ranged)]
+		}
+
+		static func < (lhs: Category, rhs: Category) -> Bool {
+			switch (lhs, rhs) {
+			case (.person, .location), (.person, .weapon):
+				return true
+			case (.location, .weapon):
+				return true
+			case (.person, person), (.location, .person), (.location, .location),
+				(.weapon, .person), (.weapon, .location), (.weapon, .weapon):
+				return false
+			}
 		}
 
 	}
@@ -202,7 +210,7 @@ extension Card {
 
 extension Card {
 
-	enum Color: Int, CaseIterable, CustomStringConvertible, Identifiable {
+	enum Color: Int, CaseIterable, CustomStringConvertible, Identifiable, Comparable {
 
 		case purple
 		case pink
@@ -242,6 +250,10 @@ extension Card {
 
 		var id: Int {
 			rawValue
+		}
+
+		static func < (lhs: Color, rhs: Color) -> Bool {
+			lhs.rawValue < rhs.rawValue
 		}
 
 	}
