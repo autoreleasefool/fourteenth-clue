@@ -13,85 +13,26 @@ struct ClueForm: View {
 	let state: GameState
 	let onAddClue: (AnyClue) -> Void
 
-	@State private var selectedPlayer: Player
-	@State private var clueType: ClueType = .color
-	@State private var clueColor: Card.Color = Card.Color.allCases.first!
-	@State private var clueCategory: Card.Category = Card.Category.allCases.first!
-	@State private var count: Int?
+	@State private var clueType: ClueType = .inquisition
 
-	let countFormatter: NumberFormatter = {
-		let formatter = NumberFormatter()
-		formatter.numberStyle = .decimal
-		formatter.allowsFloats = false
-		return formatter
-	}()
-
-	init(state: GameState, onAddClue: @escaping (AnyClue) -> Void) {
-		self.state = state
-		self.onAddClue = onAddClue
-		self._selectedPlayer = .init(wrappedValue: state.players.first!)
-	}
-
-	var body: some View {
+	var body: some View	{
 		Form {
-			Section {
-				Picker("Player", selection: $selectedPlayer) {
-					ForEach(state.players) { player in
-						Text(player.name)
-							.tag(player)
-					}
+			Picker("Type of clue", selection: $clueType) {
+				ForEach(ClueType.allCases) { clueType in
+					Text(clueType.name)
+						.tag(clueType)
 				}
 			}
 
-			Section {
-				Picker("Type", selection: $clueType) {
-					ForEach(ClueType.allCases) { type in
-						Text(type.rawValue.capitalized)
-							.tag(type)
-					}
+			switch clueType {
+			case .inquisition:
+				InquisitionForm(state: state) { clue in
+					onAddClue(clue)
+					dismiss()
 				}
-
-				switch clueType {
-				case .color:
-					Picker("Color", selection: $clueColor) {
-						ForEach(Card.Color.allCases) { color in
-							Text(color.description.capitalized)
-								.tag(color)
-						}
-					}
-				case .category:
-					Picker("Category", selection: $clueCategory) {
-						ForEach(Card.Category.allCases) { category in
-							Text(category.description.capitalized)
-								.tag(category)
-						}
-					}
-				}
-			}
-
-			Section {
-				TextField("Count", value: $count, formatter: countFormatter)
-					.keyboardType(.numberPad)
-			}
-
-			Section {
-				Button("Submit") {
-					guard let count = count else { return }
-
-					let filter: Inquisition.Filter
-					switch clueType {
-					case .color:
-						filter = .color(clueColor)
-					case .category:
-						filter = .category(clueCategory)
-					}
-
-					onAddClue(AnyClue(Inquisition(
-						player: selectedPlayer.id,
-						filter: filter,
-						count: count
-						)))
-
+			case .accusation:
+				AccusationForm(state: state) { clue in
+					onAddClue(clue)
 					dismiss()
 				}
 			}
@@ -104,13 +45,16 @@ struct ClueForm: View {
 extension ClueForm {
 
 	enum ClueType: String, CaseIterable, Identifiable {
-		case color
-		case category
+		case inquisition
+		case accusation
 
 		var id: String {
 			rawValue
 		}
 
+		var name: String {
+			rawValue.capitalized
+		}
 	}
 
 }

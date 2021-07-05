@@ -17,6 +17,8 @@
 		CA2E8573268399D0001BE951 /* PlayerCardSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA2E8572268399D0001BE951 /* PlayerCardSet.swift */; };
 		CA2E85752683C378001BE951 /* GameState.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA2E85742683C378001BE951 /* GameState.swift */; };
 		CA2E85772683CFDF001BE951 /* GameBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA2E85762683CFDF001BE951 /* GameBuilder.swift */; };
+		CA35608C26927D70004B41AF /* InquisitionForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA35608B26927D70004B41AF /* InquisitionForm.swift */; };
+		CA35608E26927D83004B41AF /* AccusationForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA35608D26927D83004B41AF /* AccusationForm.swift */; };
 		CA582E122681AC8F00248E51 /* FourteenthClue.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA582E112681AC8F00248E51 /* FourteenthClue.swift */; };
 		CA582E162681AC9000248E51 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CA582E152681AC9000248E51 /* Assets.xcassets */; };
 		CA582E192681AC9000248E51 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CA582E182681AC9000248E51 /* Preview Assets.xcassets */; };
@@ -42,6 +44,8 @@
 		CA2E8572268399D0001BE951 /* PlayerCardSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerCardSet.swift; sourceTree = "<group>"; };
 		CA2E85742683C378001BE951 /* GameState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameState.swift; sourceTree = "<group>"; };
 		CA2E85762683CFDF001BE951 /* GameBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameBuilder.swift; sourceTree = "<group>"; };
+		CA35608B26927D70004B41AF /* InquisitionForm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InquisitionForm.swift; sourceTree = "<group>"; };
+		CA35608D26927D83004B41AF /* AccusationForm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccusationForm.swift; sourceTree = "<group>"; };
 		CA582E0E2681AC8F00248E51 /* Fourteenth Clue.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Fourteenth Clue.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA582E112681AC8F00248E51 /* FourteenthClue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FourteenthClue.swift; sourceTree = "<group>"; };
 		CA582E152681AC9000248E51 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -138,10 +142,12 @@
 			isa = PBXGroup;
 			children = (
 				CAED72F6268447190060086A /* CardPicker.swift */,
-				CA8C07A8268993B400B50233 /* ClueForm.swift */,
 				CA2E856826826830001BE951 /* GameBoard.swift */,
 				CA2E8572268399D0001BE951 /* PlayerCardSet.swift */,
 				CAB5E4E8268AD2FD0070DD97 /* SolutionList.swift */,
+				CA8C07A8268993B400B50233 /* ClueForm.swift */,
+				CA35608B26927D70004B41AF /* InquisitionForm.swift */,
+				CA35608D26927D83004B41AF /* AccusationForm.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -280,6 +286,7 @@
 				CA2E855F2681AEEE001BE951 /* Home.swift in Sources */,
 				CA2E856C268268C7001BE951 /* GameBoardViewModel.swift in Sources */,
 				CA8C07A32689839800B50233 /* CardSet.swift in Sources */,
+				CA35608C26927D70004B41AF /* InquisitionForm.swift in Sources */,
 				CA2E85712682706F001BE951 /* ClueSolver.swift in Sources */,
 				CA2E856226823772001BE951 /* PlayerPicker.swift in Sources */,
 				CA8C07A9268993B400B50233 /* ClueForm.swift in Sources */,
@@ -294,6 +301,7 @@
 				CA2E85772683CFDF001BE951 /* GameBuilder.swift in Sources */,
 				CAB5E4E9268AD2FD0070DD97 /* SolutionList.swift in Sources */,
 				CA582E122681AC8F00248E51 /* FourteenthClue.swift in Sources */,
+				CA35608E26927D83004B41AF /* AccusationForm.swift in Sources */,
 				CA2E85752683C378001BE951 /* GameState.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
