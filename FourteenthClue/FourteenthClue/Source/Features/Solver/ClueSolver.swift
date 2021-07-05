@@ -49,20 +49,27 @@ class ClueSolver {
 		queue.async(execute: workItem)
 	}
 
+	private var me: Player {
+		state!.players.first!
+	}
+
+	private var others: ArraySlice<Player> {
+		state!.players.dropFirst()
+	}
+
 	private func solve(state: GameState) {
 		var solutions = state.allPossibleSolutions
 		var clues = state.clues
 		removeImpossibleSolutions(state, &solutions)
-		resolveCluesInIsolation(state, &clues, &solutions)
-		resolveCluesInCombination(state, clues, &solutions)
+		resolveMyAccusations(state, &clues, &solutions)
+		resolveOpponentAccusations(state, &clues, &solutions)
+		resolveInquisitionsInIsolation(state, &clues, &solutions)
+		resolveInquisitionsInCombination(state, &clues, &solutions)
 
 		solutionsSubject.send(solutions)
 	}
 
 	private func removeImpossibleSolutions(_ state: GameState, _ solutions: inout [Solution]) {
-		let me = state.players.first!
-		let others = state.players.dropFirst()
-
 		// Remove solutions with cards that other players have
 		let allOthersCards = others.flatMap { $0.cards }
 		solutions.removeAll { !$0.cards.isDisjoint(with: allOthersCards) }
@@ -79,57 +86,86 @@ class ClueSolver {
 		}
 	}
 
-	private func resolveCluesInIsolation(_ state: GameState, _ clues: inout [AnyClue], _ solutions: inout [Solution]) {
-		let me = state.players.first!
-		let cluesToRemove = IndexSet()
+	private func resolveMyAccusations(
+		_ state: GameState,
+		_ clues: inout [AnyClue],
+		_ solutions: inout [Solution]
+	) {
+		var cluesToRemove = IndexSet()
 
 		clues
-			.drop { $0.player == me.id }
 			.enumerated()
-			.forEach { index, clue in
-				switch clue.wrappedValue {
-				case let inq as Inquisition:
-					guard inq.count > 0 else {
-						solutions.removeAll { !$0.cards.isDisjoint(with: inq.cards) }
-						return
-					}
-				case let acc as Accusation:
-					break
-				default:
-					break
-				}
-
-				let mysteryCardsVisibleToMe = state.mysteryCardsVisibleToMe(excludingPlayer: clue.player)
-				
+			.drop { $0.element.player != me.id }
+			.compactMap { offset, clue -> (Int, Accusation)? in
+				guard let accusation = clue.wrappedValue as? Accusation else { return nil }
+				return (offset, accusation)
 			}
-		
+			.forEach { offset, accusation in
+				// Remove solution if the accusation was already made (and was incorrect)
+				solutions.removeAll { $0.cards == accusation.cards }
+				cluesToRemove.insert(offset)
+			}
 
 		clues.remove(atOffsets: cluesToRemove)
 	}
 
-	private func resolveCluesInCombination(_ state: GameState, _ clues: [Clue], _ solutions: inout [Solution]) {
+	private func resolveOpponentAccusations(
+		_ state: GameState,
+		_ clues: inout [AnyClue],
+		_ solutions: inout [Solution]
+	) {
+		var cluesToRemove = IndexSet()
 
+		clues
+			.enumerated()
+			.drop { $0.element.player == me.id }
+			.compactMap { offset, clue -> (Int, Accusation)? in
+				guard let accusation = clue.wrappedValue as? Accusation else { return nil }
+				return (offset, accusation)
+			}
+			.forEach { offset, accusation in
+				// Remove solution if any cards are in the accusation (opponents cannot guess cards they can see)
+				solutions.removeAll { !$0.cards.isDisjoint(with: accusation.cards) }
+				cluesToRemove.insert(offset)
+			}
+
+		clues.remove(atOffsets: cluesToRemove)
 	}
 
-//	private func resolveClues(_ state: GameState, _ possibleCards: inout Set<Card>) {
-//		let me = state.players.first!
-//		let others = state.players.dropFirst()
-//
-//		let informants = Set(state.secretInformants.compactMap { $0.card })
-//		let visibleToMe = state.cardsVisible(toPlayer: me)
-//		let visibleToOthers: [UUID: Set<Card>] = others
-//			.reduce(into: [UUID: Set<Card>]()) { visible, player in
-//				visible[player.id] = state.cardsVisible(toPlayer: player)
-//			}
-//
-//		for clue in state.clues.drop(while: { $0.player == me.id }) {
-//			let visibleToPlayer = visibleToOthers[clue.player]!
-//			let clueCards = Card.allCardsMatching(filter: clue.filter)
-//				.intersection(state.allCards)
-//
-//
-//		}
-//	}
+	private func resolveInquisitionsInIsolation(
+		_ state: GameState,
+		_ clues: inout [AnyClue],
+		_ solutions: inout [Solution]
+	) {
+		var cluesToRemove = IndexSet()
+
+		clues
+			.enumerated()
+			.drop { $0.element.player == me.id }
+			.compactMap { offset, clue -> (Int, Inquisition)? in
+				guard let inquisition = clue.wrappedValue as? Inquisition else { return nil }
+				return (offset, inquisition)
+			}
+			.forEach { offset, inquisition in
+				guard inquisition.count > 0 else {
+					solutions.removeAll { !$0.cards.isDisjoint(with: inquisition.cards) }
+					cluesToRemove.insert(offset)
+					return
+				}
+
+				let mysteryCardsVisibleToMe = state.mysteryCardsVisibleToMe(excludingPlayer: inquisition.player)
+			}
+
+		clues.remove(atOffsets: cluesToRemove)
+	}
+
+	private func resolveInquisitionsInCombination(
+		_ state: GameState,
+		_ clues: inout [AnyClue],
+		_ solutions: inout [Solution]
+	) {
+
+	}
 
 }
 
