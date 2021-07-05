@@ -21,7 +21,7 @@ class GameBoardViewModel: ObservableObject {
 	@Published var possibleSolutions: [Solution] = []
 	private var solutionsCancellable: AnyCancellable?
 
-	let solver = ClueSolver()
+	var solver: ClueSolver = SolutionEliminationSolver()
 
 	init(state: GameState) {
 		self.state = state
