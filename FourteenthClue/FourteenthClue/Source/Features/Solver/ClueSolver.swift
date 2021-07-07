@@ -9,7 +9,10 @@ import Combine
 import Foundation
 
 protocol ClueSolver {
+	var isEnabled: Bool { get set }
 	var state: GameState? { get set }
 	var solutions: AnyPublisher<[Solution], Never> { get }
+
+	func cancel()
 }
 

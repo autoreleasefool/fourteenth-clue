@@ -22,7 +22,9 @@ class SolutionEliminationSolver: ClueSolver {
 		}
 	}
 
-	private let queue = DispatchQueue(label: "ca.josephroque.FourteenthClue.Solver")
+	var isEnabled: Bool = false
+
+	private let queue = DispatchQueue(label: "ca.josephroque.FourteenthClue.SolutionElimination")
 
 	private var currentWorkItem: DispatchWorkItem?
 	private var isRunning: Bool {
@@ -34,27 +36,21 @@ class SolutionEliminationSolver: ClueSolver {
 		solutionsSubject.eraseToAnyPublisher()
 	}
 
-	private func cancel() {
+	func cancel() {
 		solutionsSubject.send([])
 		currentWorkItem?.cancel()
 		currentWorkItem = nil
 	}
 
 	private func startSolving(state: GameState) {
+		guard isEnabled else { return }
+
 		let workItem = DispatchWorkItem { [weak self] in
 			self?.solve(state: state)
 		}
 
 		currentWorkItem = workItem
 		queue.async(execute: workItem)
-	}
-
-	private var me: Player {
-		state!.players.first!
-	}
-
-	private var others: ArraySlice<Player> {
-		state!.players.dropFirst()
 	}
 
 	private func solve(state: GameState) {
@@ -70,6 +66,9 @@ class SolutionEliminationSolver: ClueSolver {
 	}
 
 	private func removeImpossibleSolutions(_ state: GameState, _ solutions: inout [Solution]) {
+		let me = state.players.first!
+		let others = state.players.dropFirst()
+
 		// Remove solutions with cards that other players have
 		let allOthersCards = others.flatMap { $0.cards }
 		solutions.removeAll { !$0.cards.isDisjoint(with: allOthersCards) }
@@ -91,6 +90,7 @@ class SolutionEliminationSolver: ClueSolver {
 		_ clues: inout [AnyClue],
 		_ solutions: inout [Solution]
 	) {
+		let me = state.players.first!
 		var cluesToRemove = IndexSet()
 
 		clues
@@ -114,6 +114,7 @@ class SolutionEliminationSolver: ClueSolver {
 		_ clues: inout [AnyClue],
 		_ solutions: inout [Solution]
 	) {
+		let me = state.players.first!
 		var cluesToRemove = IndexSet()
 
 		clues
@@ -137,6 +138,7 @@ class SolutionEliminationSolver: ClueSolver {
 		_ clues: inout [AnyClue],
 		_ solutions: inout [Solution]
 	) {
+		let me = state.players.first!
 		var cluesToRemove = IndexSet()
 
 		clues
