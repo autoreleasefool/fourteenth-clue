@@ -71,7 +71,7 @@ struct GameState {
 		})
 	}
 
-	func mysteryCardsVisibleToMe(excludingPlayer excludedPlayer: UUID) -> Set<Card> {
+	func mysteryCardsVisibleToMe(excludingPlayer excludedPlayer: String) -> Set<Card> {
 		players.dropFirst()
 			.reduce(into: Set<Card>()) { cards, player in
 				guard player.id != excludedPlayer else { return }

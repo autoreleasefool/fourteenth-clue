@@ -95,7 +95,7 @@ class GameBoardViewModel: ObservableObject {
 		state.unallocatedCards
 	}
 
-	func player(withId id: UUID) -> Player? {
+	func player(withId id: String) -> Player? {
 		state.players.first { $0.id == id }
 	}
 

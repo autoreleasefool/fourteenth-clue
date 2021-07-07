@@ -9,7 +9,7 @@ import Foundation
 
 protocol Clue {
 	var id: UUID { get }
-	var player: UUID { get }
+	var player: String { get }
 	var cards: Set<Card> { get }
 
 	func description(withPlayer player: Player?) -> String
@@ -32,7 +32,7 @@ struct AnyClue: Clue, Identifiable {
 	let wrappedValue: Clue
 
 	var id: UUID { wrappedValue.id }
-	var player: UUID { wrappedValue.player }
+	var player: String { wrappedValue.player }
 	var cards: Set<Card> { wrappedValue.cards }
 
 	init(_ clue: Clue) {
@@ -58,11 +58,11 @@ extension AnyClue: Equatable {
 struct Inquisition: Clue, Equatable {
 
 	let id = UUID()
-	let player: UUID
+	let player: String
 	let filter: Filter
 	let count: Int
 
-	init(player: UUID, filter: Filter, count: Int) {
+	init(player: String, filter: Filter, count: Int) {
 		self.player = player
 		self.filter = filter
 		self.count = count
@@ -102,14 +102,14 @@ extension Inquisition {
 struct Accusation: Clue, Equatable {
 
 	let id = UUID()
-	let player: UUID
+	let player: String
 	let accusation: MysteryCardSet
 
 	var cards: Set<Card> {
 		accusation.cards
 	}
 
-	init(player: UUID, accusation: MysteryCardSet) {
+	init(player: String, accusation: MysteryCardSet) {
 		self.player = player
 		self.accusation = accusation
 	}
