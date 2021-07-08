@@ -29,27 +29,24 @@ struct PlayerCardSet: View {
 				HStack {
 					Spacer()
 
-					Image(uiImage: player.mystery.person?.image ?? Assets.Images.Cards.back)
-						.resizable()
-						.frame(width: 80, height: 132)
+					CardImage(card: player.mystery.person)
+						.size(.large)
 						.onTapGesture {
 							pickingCardPosition = .person
 						}
 
 					Spacer()
 
-					Image(uiImage: player.mystery.location?.image ?? Assets.Images.Cards.back)
-						.resizable()
-						.frame(width: 80, height: 132)
+					CardImage(card: player.mystery.location)
+						.size(.large)
 						.onTapGesture {
 							pickingCardPosition = .location
 						}
 
 					Spacer()
 
-					Image(uiImage: player.mystery.weapon?.image ?? Assets.Images.Cards.back)
-						.resizable()
-						.frame(width: 80, height: 132)
+					CardImage(card: player.mystery.weapon)
+						.size(.large)
 						.onTapGesture {
 							pickingCardPosition = .weapon
 						}
@@ -60,18 +57,16 @@ struct PlayerCardSet: View {
 				HStack {
 					Spacer()
 
-					Image(uiImage: player.privateCards.leftCard?.image ?? Assets.Images.Cards.back)
-						.resizable()
-						.frame(width: 60, height: 100)
+					CardImage(card: player.privateCards.leftCard)
+						.size(.medium)
 						.onTapGesture {
 							pickingCardPosition = .leftCard
 						}
 
 					Spacer()
 
-					Image(uiImage: player.privateCards.rightCard?.image ?? Assets.Images.Cards.back)
-						.resizable()
-						.frame(width: 60, height: 100)
+					CardImage(card: player.privateCards.rightCard)
+						.size(.medium)
 						.onTapGesture {
 							pickingCardPosition = .rightCard
 						}

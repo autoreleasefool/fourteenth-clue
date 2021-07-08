@@ -32,6 +32,7 @@
 		CA8C07AD268A636B00B50233 /* Solution.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8C07AC268A636B00B50233 /* Solution.swift */; };
 		CA97C1F626968005004AC3A6 /* NavigationLink+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA97C1F526968005004AC3A6 /* NavigationLink+Extensions.swift */; };
 		CA97C1F92696C7AE004AC3A6 /* SeedState.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA97C1F82696C7AE004AC3A6 /* SeedState.swift */; };
+		CA97C1FB26978A76004AC3A6 /* CardImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA97C1FA26978A76004AC3A6 /* CardImage.swift */; };
 		CAB5E4E9268AD2FD0070DD97 /* SolutionList.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAB5E4E8268AD2FD0070DD97 /* SolutionList.swift */; };
 		CAED72F7268447190060086A /* CardPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAED72F6268447190060086A /* CardPicker.swift */; };
 		CAED72FA268447680060086A /* BottomSheet in Frameworks */ = {isa = PBXBuildFile; productRef = CAED72F9268447680060086A /* BottomSheet */; };
@@ -64,6 +65,7 @@
 		CA8C07AC268A636B00B50233 /* Solution.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Solution.swift; sourceTree = "<group>"; };
 		CA97C1F526968005004AC3A6 /* NavigationLink+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NavigationLink+Extensions.swift"; sourceTree = "<group>"; };
 		CA97C1F82696C7AE004AC3A6 /* SeedState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedState.swift; sourceTree = "<group>"; };
+		CA97C1FA26978A76004AC3A6 /* CardImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardImage.swift; sourceTree = "<group>"; };
 		CAB5E4E8268AD2FD0070DD97 /* SolutionList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolutionList.swift; sourceTree = "<group>"; };
 		CAED72F6268447190060086A /* CardPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardPicker.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -222,6 +224,7 @@
 			isa = PBXGroup;
 			children = (
 				CA97C1F526968005004AC3A6 /* NavigationLink+Extensions.swift */,
+				CA97C1FA26978A76004AC3A6 /* CardImage.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -329,6 +332,7 @@
 				CA3560932692BF69004B41AF /* PossibleStateEliminationSolver.swift in Sources */,
 				CA2E856926826830001BE951 /* GameBoard.swift in Sources */,
 				CA3560912692BEFF004B41AF /* SolutionEliminationSolver.swift in Sources */,
+				CA97C1FB26978A76004AC3A6 /* CardImage.swift in Sources */,
 				CA8C07A12689837000B50233 /* Player.swift in Sources */,
 				CA2E85772683CFDF001BE951 /* GameBuilder.swift in Sources */,
 				CAB5E4E9268AD2FD0070DD97 /* SolutionList.swift in Sources */,

@@ -16,15 +16,15 @@ struct SolutionList: View {
 			ForEach(solutions) { solution in
 				HStack {
 					Text("\(solution.probability)")
-					Image(uiImage: solution.person.image)
-						.resizable()
-						.frame(width: 60, height: 100)
-					Image(uiImage: solution.location.image)
-						.resizable()
-						.frame(width: 60, height: 100)
-					Image(uiImage: solution.weapon.image)
-						.resizable()
-						.frame(width: 60, height: 100)
+
+					CardImage(card: solution.person)
+						.size(.medium)
+
+					CardImage(card: solution.location)
+						.size(.medium)
+
+					CardImage(card: solution.weapon)
+						.size(.medium)
 				}
 			}
 		}

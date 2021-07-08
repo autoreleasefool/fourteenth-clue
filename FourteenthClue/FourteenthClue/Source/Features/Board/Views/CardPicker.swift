@@ -52,12 +52,10 @@ struct CardPicker: View {
 			dismiss()
 		} label: {
 			HStack {
-				Image(uiImage: card?.image ?? Assets.Images.Cards.back)
-					.resizable()
-					.clipShape(RoundedRectangle(cornerRadius: 8))
-					.frame(width: 60, height: 100)
-
-				Text(card?.name ?? "Remove card")
+				CardImage(card: card)
+					.showingCardName()
+					.overridingNilName(with: "Remove card?")
+					.size(.medium)
 					.foregroundColor(card == nil ? .red : .black)
 
 				Spacer()

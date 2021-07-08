@@ -62,17 +62,10 @@ struct AccusationForm: View {
 		Button {
 			pickingCardPosition = cardPosition
 		} label: {
-			HStack {
-				if let card = card(for: cardPosition) {
-					Image(uiImage: card.image)
-						.resizable()
-						.clipShape(RoundedRectangle(cornerRadius: 8))
-						.frame(width: 60, height: 100)
-
-					Text(card.name)
-				}
-
-				Spacer()
+			if let card = card(for: cardPosition) {
+				CardImage(card: card)
+					.showingCardName()
+					.size(.medium)
 			}
 		}
 	}
