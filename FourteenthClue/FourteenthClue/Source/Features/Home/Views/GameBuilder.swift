@@ -9,62 +9,68 @@ import SwiftUI
 
 struct GameBuilder: View {
 
-	@State var state: GameState
-	@State var isPlaying = false
+	private let playerCount: Int
+	@State var playerNames: [String]
+	@State var playerIDs: [String]
+	@State var initialState: GameState?
 
 	@State var initialJSONState: String = ""
 
 	init(playerCount: Int) {
-		self._state = .init(initialValue: GameState(playerCount: playerCount))
+		self.playerCount = playerCount
+		self._playerNames = .init(initialValue: Array(repeating: "", count: playerCount))
+		self._playerIDs = .init(initialValue: (0..<playerCount).map { _ in UUID() }.map { $0.uuidString })
 	}
 
 	var body: some View {
-		ZStack {
-			NavigationLink("", destination: GameBoard(state: state), isActive: $isPlaying)
+		Form {
+			ForEach(0..<playerCount) { index in
+				Section(header: Text(getTitle(forPlayer: index))) {
+					TextField(getTitle(forPlayer: index), text: getText(forPlayer: index))
+					TextField("ID", text: getIdText(forPlayer: index))
+				}
+			}
 
-			Form {
-				ForEach(state.players) { player in
-					Section(header: Text(getTitle(forPlayer: player))) {
-						TextField(getTitle(forPlayer: player), text: getText(forPlayer: player))
-						TextField("ID", text: getIdText(forPlayer: player))
+			Section(header: Text("Initial state")) {
+				TextEditor(text: $initialJSONState)
+					.font(.caption)
+					.onChange(of: initialJSONState) { _ in
+						formatJson()
 					}
-				}
-
-				Section(header: Text("Initial state")) {
-					TextEditor(text: $initialJSONState)
-						.font(.caption)
-						.onChange(of: initialJSONState) { _ in
-							formatJson()
-						}
-				}
 			}
 		}
 		.navigationTitle("Create new game")
 		.navigationBarItems(trailing: startButton)
+		.navigate(using: $initialState) { initialState in
+			GameBoard(state: initialState)
+		}
 	}
 
 	private var startButton: some View {
 		Button("Start") {
-			isPlaying = true
+			if initialJSONState.isEmpty {
+				initialState = GameState(playerNames: playerNames)
+			} else {
+				initialState = GameState(playerNames: playerNames, playerIDs: playerIDs, seed: initialJSONState)
+			}
 		}
 	}
 
-	private func getTitle(forPlayer player: Player) -> String {
-		guard let index = state.players.firstIndex(where: { $0.id == player.id }) else { return "" }
-		return "Player \(index + 1)"
+	private func getTitle(forPlayer index: Int) -> String {
+		"Player \(index + 1)"
 	}
 
-	private func getText(forPlayer player: Player) -> Binding<String> {
+	private func getText(forPlayer index: Int) -> Binding<String> {
 		Binding<String>(
-			get: { player.name },
-			set: { state = state.withPlayer(player.withName($0)) }
+			get: { playerNames[index] },
+			set: { playerNames[index] = $0 }
 		)
 	}
 
-	private func getIdText(forPlayer player: Player) -> Binding<String> {
+	private func getIdText(forPlayer index: Int) -> Binding<String> {
 		Binding<String>(
-			get: { player.id },
-			set: { state = state.withPlayer(player.withId($0)) }
+			get: { playerIDs[index] },
+			set: { playerIDs[index] = $0 }
 		)
 	}
 

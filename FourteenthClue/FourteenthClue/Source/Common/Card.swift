@@ -16,8 +16,8 @@ enum Card: String, CaseIterable, Comparable, Hashable {
 	case park
 	case parlor
 	case plaza
-	case raceCourse
-	case railCar
+	case racecourse
+	case railcar
 	case theater
 
 	case butcher
@@ -41,6 +41,11 @@ enum Card: String, CaseIterable, Comparable, Hashable {
 	case poison
 	case rifle
 	case sword
+
+	init?(fromSeed seedName: String) {
+		guard let card = Card(rawValue: seedName.lowercased()) else { return nil }
+		self = card
+	}
 
 	var image: UIImage {
 		UIImage(named: "Cards/\(category.basicDescription)/\(rawValue)")!
@@ -165,9 +170,9 @@ extension Card {
 
 	var category: Category {
 		switch self {
-		case .harbor, .market, .park, .plaza, .raceCourse:
+		case .harbor, .market, .park, .plaza, .racecourse:
 			return .location(.outdoors)
-		case .library, .museum, .parlor, .railCar, .theater:
+		case .library, .museum, .parlor, .railcar, .theater:
 			return .location(.indoors)
 
 		case .butcher, .coachman, .duke, .officer, .sailor:
@@ -276,9 +281,9 @@ extension Card {
 			return .orange
 		case .sailor, .plaza, .candlestick:
 			return .white
-		case .florist, .railCar, .hammer:
+		case .florist, .railcar, .hammer:
 			return .brown
-		case .coachman, .raceCourse, .bow:
+		case .coachman, .racecourse, .bow:
 			return .gray
 		}
 	}

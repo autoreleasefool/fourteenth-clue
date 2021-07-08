@@ -22,7 +22,13 @@ class PossibleStateEliminationSolver: ClueSolver {
 		}
 	}
 
-	var isEnabled: Bool = false
+	var isEnabled: Bool = false {
+		didSet {
+			if !isEnabled {
+				cancel()
+			}
+		}
+	}
 
 	// MARK: Scheduling
 

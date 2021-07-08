@@ -15,10 +15,72 @@ struct GameState {
 	let clues: [AnyClue]
 
 	init(playerCount: Int) {
-		self.players = (0..<playerCount).map { _ in .default }
-		self.secretInformants = (0..<8 - ((playerCount - 2) * 2)).map { _ in .default }
-		self.clues = []
-		self.cards = Card.cardSet(forPlayerCount: playerCount)
+		self.init(
+			players: (0..<playerCount).map { _ in .default },
+			secretInformants: GameState.secretInformants(forPlayerCount: playerCount),
+			clues: [],
+			cards: Card.cardSet(forPlayerCount: playerCount)
+		)
+	}
+
+	init(playerNames: [String]) {
+		self.init(
+			players: playerNames.map {
+				Player(
+					name: $0,
+					privateCards: PrivateCardSet(),
+					mystery: MysteryCardSet()
+				)
+			},
+			secretInformants: GameState.secretInformants(forPlayerCount: playerNames.count),
+			clues: [],
+			cards: Card.cardSet(forPlayerCount: playerNames.count)
+		)
+	}
+
+	init?(playerNames: [String], playerIDs: [String], seed: String) {
+		guard let data = seed.data(using: .utf8),
+					let seedState = try? JSONDecoder().decode(SeedState.self, from: data)
+		else {
+			return nil
+		}
+
+		self.init(
+			players: zip(playerNames, playerIDs)
+				.enumerated()
+				.map { index, nameAndID in
+					let (name, id) = nameAndID
+					let seed = seedState[id]!.compactMap { Card(fromSeed: $0.name) }
+
+					if seed.count == 2 {
+						return Player(
+							id: id,
+							name: name,
+							privateCards: PrivateCardSet(
+								leftCard: seed.first!,
+								rightCard: seed.last!
+							),
+							mystery: MysteryCardSet()
+						)
+					} else {
+						let seedSet = Set(seed)
+
+						return Player(
+							id: id,
+							name: name,
+							privateCards: PrivateCardSet(),
+							mystery: MysteryCardSet(
+								person: seedSet.people.first!,
+								location: seedSet.locations.first!,
+								weapon: seedSet.weapons.first!
+							)
+						)
+					}
+				},
+			secretInformants: GameState.secretInformants(forPlayerCount: playerNames.count),
+			clues: [],
+			cards: Card.cardSet(forPlayerCount: playerNames.count)
+		)
 	}
 
 	private init(players: [Player], secretInformants: [SecretInformant], clues: [AnyClue], cards: Set<Card>) {
@@ -26,6 +88,10 @@ struct GameState {
 		self.secretInformants = secretInformants
 		self.clues = clues
 		self.cards = cards
+	}
+
+	static func secretInformants(forPlayerCount playerCount: Int) -> [SecretInformant] {
+		(0..<8 - ((playerCount - 2) * 2)).map { _ in .default }
 	}
 
 	// MARK: Mutations

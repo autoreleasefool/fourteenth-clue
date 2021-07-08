@@ -22,7 +22,13 @@ class SolutionEliminationSolver: ClueSolver {
 		}
 	}
 
-	var isEnabled: Bool = false
+	var isEnabled: Bool = false {
+		didSet {
+			if !isEnabled {
+				cancel()
+			}
+		}
+	}
 
 	private let queue = DispatchQueue(label: "ca.josephroque.FourteenthClue.SolutionElimination")
 
@@ -189,3 +195,20 @@ private extension GameState {
 	}
 
 }
+//
+//var initialGameStateForCopy = null;
+//var orig = gameui.notif_onCombinaisonAssigned;
+//gameui.notif_onCombinaisonAssigned = function (e) {
+//		try {
+//				console.log(e.args.visible_cards_players);
+//				initialGameStateForCopy = JSON.stringify(e.args.visible_cards_players);
+//				console.log(initialGameStateForCopy)
+//				orig.call(this, e);
+//		} catch (e) {
+//				console.log("joseph" + e);
+//		}
+//}
+//
+//
+
+//[Log] {"83959368":[{"name":"Park","type":"Location","subtype":"Outdoor","color":"Green","id":"3","type_arg":"14"},{"name":"Candlestick","type":"Weapon","subtype":"Up Close","color":"White","id":"14","type_arg":"28"},{"name":"Maid","type":"Person","subtype":"Female","color":"Blue","id":"18","type_arg":"6"}],"85268622":[{"name":"Officer","type":"Person","subtype":"Male","color":"Purple","id":"9","type_arg":"1"},{"name":"Sword","type":"Weapon","subtype":"Up Close","color":"Green","id":"12","type_arg":"24"},{"name":"Market","type":"Location","subtype":"Outdoor","color":"Pink","id":"16","type_arg":"12"}],"87792535":[{"name":"Duke","type":"Person","subtype":"Male","color":"Pink","id":"5","type_arg":"2"},{"name":"Harbor","type":"Location","subtype":"Outdoor","color":"Blue","id":"8","type_arg":"16"},{"name":"Blowgun","type":"Weapon","subtype":"Ranged","color":"Yellow","id":"10","type_arg":"25"}],"88584546":[{"name":"Butcher","type":"Person","subtype":"Male","color":"Red","id":"2","type_arg":"3"},{"name":"Dancer","type":"Person","subtype":"Female","color":"Orange","id":"7","type_arg":"7"}]}
