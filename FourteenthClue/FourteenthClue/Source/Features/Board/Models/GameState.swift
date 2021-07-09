@@ -83,6 +83,48 @@ struct GameState {
 		)
 	}
 
+	init?(seed: String) {
+		guard let data = seed.data(using: .utf8),
+					let seedState = try? JSONDecoder().decode(SeedState.self, from: data)
+		else {
+			return nil
+		}
+
+		let firstPlayerSeed = seedState
+			.first(where: { $0.value.count == 2 })!
+		let firstPlayerCards = firstPlayerSeed.value.compactMap { Card(fromSeed: $0.name) }
+		let otherSeeds = seedState.filter { $0.value.count == 3 }
+
+		self.init(
+			players: [
+				Player(
+					id: firstPlayerSeed.key,
+					name: "",
+					privateCards: PrivateCardSet(
+						leftCard: firstPlayerCards.first!,
+						rightCard: firstPlayerCards.last!
+					),
+					mystery: MysteryCardSet()
+				)
+			] + otherSeeds.map {
+				let cards = Set($0.value.compactMap { Card(fromSeed: $0.name) })
+				return Player(
+					id: $0.key,
+					name: "",
+					privateCards: PrivateCardSet(),
+					mystery: MysteryCardSet(
+						person: cards.people.first!,
+						location: cards.locations.first!,
+						weapon: cards.weapons.first!
+					)
+				)
+			},
+			secretInformants: GameState.secretInformants(forPlayerCount: seedState.count),
+			clues: [],
+			cards: Card.cardSet(forPlayerCount: seedState.count)
+		)
+	}
+
 	private init(players: [Player], secretInformants: [SecretInformant], clues: [AnyClue], cards: Set<Card>) {
 		self.players = players
 		self.secretInformants = secretInformants

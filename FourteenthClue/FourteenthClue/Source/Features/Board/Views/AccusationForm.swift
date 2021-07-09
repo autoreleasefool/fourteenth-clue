@@ -13,9 +13,9 @@ struct AccusationForm: View {
 	private let onAddClue: (AnyClue) -> Void
 
 	@State private var selectedPlayer: Player
-	@State private var person: Card = Card.peopleCards.first!
-	@State private var location: Card = Card.locationsCards.first!
-	@State private var weapon: Card = Card.weaponsCards.first!
+	@State private var person: Card = Card.peopleCards.sorted().first!
+	@State private var location: Card = Card.locationsCards.sorted().first!
+	@State private var weapon: Card = Card.weaponsCards.sorted().first!
 	@State private var pickingCardPosition: CardPosition?
 
 	init(state: GameState, onAddClue: @escaping (AnyClue) -> Void) {
