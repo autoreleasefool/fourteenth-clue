@@ -33,6 +33,7 @@
 		CA97C1F626968005004AC3A6 /* NavigationLink+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA97C1F526968005004AC3A6 /* NavigationLink+Extensions.swift */; };
 		CA97C1F92696C7AE004AC3A6 /* SeedState.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA97C1F82696C7AE004AC3A6 /* SeedState.swift */; };
 		CA97C1FB26978A76004AC3A6 /* CardImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA97C1FA26978A76004AC3A6 /* CardImage.swift */; };
+		CA97C202269A425B004AC3A6 /* Algorithms in Frameworks */ = {isa = PBXBuildFile; productRef = CA97C201269A425B004AC3A6 /* Algorithms */; };
 		CAB5E4E9268AD2FD0070DD97 /* SolutionList.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAB5E4E8268AD2FD0070DD97 /* SolutionList.swift */; };
 		CAED72F7268447190060086A /* CardPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAED72F6268447190060086A /* CardPicker.swift */; };
 		CAED72FA268447680060086A /* BottomSheet in Frameworks */ = {isa = PBXBuildFile; productRef = CAED72F9268447680060086A /* BottomSheet */; };
@@ -75,6 +76,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CA97C202269A425B004AC3A6 /* Algorithms in Frameworks */,
 				CAED72FA268447680060086A /* BottomSheet in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -255,6 +257,7 @@
 			name = "Fourteenth Clue";
 			packageProductDependencies = (
 				CAED72F9268447680060086A /* BottomSheet */,
+				CA97C201269A425B004AC3A6 /* Algorithms */,
 			);
 			productName = "Fourteenth Clue";
 			productReference = CA582E0E2681AC8F00248E51 /* Fourteenth Clue.app */;
@@ -286,6 +289,7 @@
 			mainGroup = CA582E052681AC8F00248E51;
 			packageReferences = (
 				CAED72F8268447680060086A /* XCRemoteSwiftPackageReference "BottomSheet" */,
+				CA97C200269A425B004AC3A6 /* XCRemoteSwiftPackageReference "swift-algorithms" */,
 			);
 			productRefGroup = CA582E0F2681AC8F00248E51 /* Products */;
 			projectDirPath = "";
@@ -545,6 +549,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		CA97C200269A425B004AC3A6 /* XCRemoteSwiftPackageReference "swift-algorithms" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/swift-algorithms.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.2.1;
+			};
+		};
 		CAED72F8268447680060086A /* XCRemoteSwiftPackageReference "BottomSheet" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/adamfootdev/BottomSheet.git";
@@ -556,6 +568,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		CA97C201269A425B004AC3A6 /* Algorithms */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CA97C200269A425B004AC3A6 /* XCRemoteSwiftPackageReference "swift-algorithms" */;
+			productName = Algorithms;
+		};
 		CAED72F9268447680060086A /* BottomSheet */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = CAED72F8268447680060086A /* XCRemoteSwiftPackageReference "BottomSheet" */;
