@@ -24,7 +24,9 @@ class SolutionEliminationSolver: ClueSolver {
 
 	var isEnabled: Bool = false {
 		didSet {
-			if !isEnabled {
+			if isEnabled, let state = state {
+				startSolving(state: state)
+			} else if !isEnabled {
 				cancel()
 			}
 		}
@@ -210,5 +212,60 @@ private extension GameState {
 //}
 //
 //
+
+// 2 Players
+
+/*
+{
+	"85268622":[{"name":"Officer"},{"name":"Sword"},{"name":"Park"}],
+	"88584546":[{"name":"Butcher"},{"name":"Nurse"}]
+}
+*/
+
+// 3 Players
+
+/*
+{
+	"85268622":[{"name":"Officer"},{"name":"Sword"},{"name":"Park"}],
+	"87792535":[{"name":"Duke"},{"name":"Harbor"},{"name":"Blowgun"}],
+	"88584546":[{"name":"Butcher"},{"name":"Countess"}]
+}
+*/
+
+// 4 Players
+
+/*
+{
+	"85268622":[{"name":"Officer"},{"name":"Sword"},{"name":"Park"}],
+	"87792535":[{"name":"Duke"},{"name":"Harbor"},{"name":"Blowgun"}],
+	"87978988":[{"name":"Countess"},{"name":"Library"},{"name":"Knife"}],
+	"88584546":[{"name":"Butcher"},{"name":"Nurse"}]
+}
+*/
+
+// 5 Players
+
+/*
+{
+	"85268622":[{"name":"Officer"},{"name":"Sword"},{"name":"Park"}],
+	"87792535":[{"name":"Duke"},{"name":"Harbor"},{"name":"Blowgun"}],
+	"87978988":[{"name":"Countess"},{"name":"Library"},{"name":"Knife"}],
+	"43278232":[{"name":"Dancer"},{"name":"Theater"},{"name":"Poison"}],
+	"88584546":[{"name":"Butcher"},{"name":"Nurse"}]
+}
+*/
+
+// 6 Players
+
+/*
+{
+	"85268622":[{"name":"Officer"},{"name":"Sword"},{"name":"Park"}],
+	"87792535":[{"name":"Duke"},{"name":"Harbor"},{"name":"Blowgun"}],
+	"87978988":[{"name":"Countess"},{"name":"Library"},{"name":"Knife"}],
+	"43278232":[{"name":"Dancer"},{"name":"Theater"},{"name":"Poison"}],
+	"71239847":[{"name":"Florist"},{"name":"Racecourse"},{"name":"Gun"}],
+	"88584546":[{"name":"Butcher"},{"name":"Nurse"}]
+}
+*/
 
 //[Log] {"83959368":[{"name":"Park","type":"Location","subtype":"Outdoor","color":"Green","id":"3","type_arg":"14"},{"name":"Candlestick","type":"Weapon","subtype":"Up Close","color":"White","id":"14","type_arg":"28"},{"name":"Maid","type":"Person","subtype":"Female","color":"Blue","id":"18","type_arg":"6"}],"85268622":[{"name":"Officer","type":"Person","subtype":"Male","color":"Purple","id":"9","type_arg":"1"},{"name":"Sword","type":"Weapon","subtype":"Up Close","color":"Green","id":"12","type_arg":"24"},{"name":"Market","type":"Location","subtype":"Outdoor","color":"Pink","id":"16","type_arg":"12"}],"87792535":[{"name":"Duke","type":"Person","subtype":"Male","color":"Pink","id":"5","type_arg":"2"},{"name":"Harbor","type":"Location","subtype":"Outdoor","color":"Blue","id":"8","type_arg":"16"},{"name":"Blowgun","type":"Weapon","subtype":"Ranged","color":"Yellow","id":"10","type_arg":"25"}],"88584546":[{"name":"Butcher","type":"Person","subtype":"Male","color":"Red","id":"2","type_arg":"3"},{"name":"Dancer","type":"Person","subtype":"Female","color":"Orange","id":"7","type_arg":"7"}]}

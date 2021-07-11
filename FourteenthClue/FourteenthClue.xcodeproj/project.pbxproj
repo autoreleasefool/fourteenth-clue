@@ -33,6 +33,7 @@
 		CA97C1F626968005004AC3A6 /* NavigationLink+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA97C1F526968005004AC3A6 /* NavigationLink+Extensions.swift */; };
 		CA97C1F92696C7AE004AC3A6 /* SeedState.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA97C1F82696C7AE004AC3A6 /* SeedState.swift */; };
 		CA97C1FB26978A76004AC3A6 /* CardImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA97C1FA26978A76004AC3A6 /* CardImage.swift */; };
+		CA97C1FF269A3730004AC3A6 /* PossibleState.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA97C1FE269A372F004AC3A6 /* PossibleState.swift */; };
 		CA97C202269A425B004AC3A6 /* Algorithms in Frameworks */ = {isa = PBXBuildFile; productRef = CA97C201269A425B004AC3A6 /* Algorithms */; };
 		CAB5E4E9268AD2FD0070DD97 /* SolutionList.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAB5E4E8268AD2FD0070DD97 /* SolutionList.swift */; };
 		CAED72F7268447190060086A /* CardPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAED72F6268447190060086A /* CardPicker.swift */; };
@@ -67,6 +68,7 @@
 		CA97C1F526968005004AC3A6 /* NavigationLink+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NavigationLink+Extensions.swift"; sourceTree = "<group>"; };
 		CA97C1F82696C7AE004AC3A6 /* SeedState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedState.swift; sourceTree = "<group>"; };
 		CA97C1FA26978A76004AC3A6 /* CardImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardImage.swift; sourceTree = "<group>"; };
+		CA97C1FE269A372F004AC3A6 /* PossibleState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PossibleState.swift; sourceTree = "<group>"; };
 		CAB5E4E8268AD2FD0070DD97 /* SolutionList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolutionList.swift; sourceTree = "<group>"; };
 		CAED72F6268447190060086A /* CardPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardPicker.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -97,10 +99,10 @@
 		CA2E85592681AE5A001BE951 /* Solver */ = {
 			isa = PBXGroup;
 			children = (
+				CA97C1FC269A3716004AC3A6 /* StateElimination */,
 				CA2E85702682706F001BE951 /* ClueSolver.swift */,
 				CA8C07AC268A636B00B50233 /* Solution.swift */,
 				CA3560902692BEFF004B41AF /* SolutionEliminationSolver.swift */,
-				CA3560922692BF69004B41AF /* PossibleStateEliminationSolver.swift */,
 			);
 			path = Solver;
 			sourceTree = "<group>";
@@ -239,6 +241,15 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		CA97C1FC269A3716004AC3A6 /* StateElimination */ = {
+			isa = PBXGroup;
+			children = (
+				CA3560922692BF69004B41AF /* PossibleStateEliminationSolver.swift */,
+				CA97C1FE269A372F004AC3A6 /* PossibleState.swift */,
+			);
+			path = StateElimination;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -336,6 +347,7 @@
 				CA3560932692BF69004B41AF /* PossibleStateEliminationSolver.swift in Sources */,
 				CA2E856926826830001BE951 /* GameBoard.swift in Sources */,
 				CA3560912692BEFF004B41AF /* SolutionEliminationSolver.swift in Sources */,
+				CA97C1FF269A3730004AC3A6 /* PossibleState.swift in Sources */,
 				CA97C1FB26978A76004AC3A6 /* CardImage.swift in Sources */,
 				CA8C07A12689837000B50233 /* Player.swift in Sources */,
 				CA2E85772683CFDF001BE951 /* GameBuilder.swift in Sources */,
