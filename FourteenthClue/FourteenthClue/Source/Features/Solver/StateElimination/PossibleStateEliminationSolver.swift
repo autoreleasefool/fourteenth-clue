@@ -5,7 +5,7 @@
 //  Created by Joseph Roque on 2021-07-04.
 //
 
-//import Algorithms
+import Algorithms
 import Combine
 import Foundation
 
@@ -80,8 +80,8 @@ private extension GameState {
 
 		for me in allPossibleSolutions() {
 			var remainingCards = unallocatedCards.subtracting(me.cards)
-			let cardPairs = combos(elements: Array(remainingCards), k: 2)
-			let possibleHiddenSets = combos(elements: cardPairs, k: numberOfPlayers - 1)
+			let cardPairs = remainingCards.combinations(ofCount: 2)
+			let possibleHiddenSets = Array(cardPairs).combinations(ofCount: numberOfPlayers - 1)
 
 			for possibleHiddenSet in possibleHiddenSets {
 				let otherPlayers = possibleHiddenSet.enumerated().map { index, hiddenSet in
@@ -106,23 +106,6 @@ private extension GameState {
 		}
 
 		return possibleStates
-//		return allPossibleSolutions().flatMap { me in
-//			let remainingCards = unallocatedCards.subtracting(me.cards)
-//			let cardPairs: [[Card]] = combos(elements: Array(remainingCards), k: 2)
-//			let possibleHiddenSets: [[[Card]]] = combos(elements: cardPairs, k: numberOfPlayers - 1)
-//
-//			return poss.map { hiddenSets in
-//
-//			}
-//			let remainingCards = unallocatedCards.subtracting(me.cards)
-//			let cardPairs = remainingCards.combinations(ofCount: numberOfPlayers - 1)
-//			let possibleHiddenSets = Array(cardPairs.combinations(ofCount: numberOfPlayers - 1))
-//
-//			return Array(possibleHiddenSets.permutations())
-//				.map { hiddenSets in
-////					hiddenSet.
-//				}
-//		}
 	}
 
 	/// Returns all combinations of person/location/weapon with cards that have not already been
@@ -166,26 +149,4 @@ private extension GameState {
 		}
 	}
 
-}
-
-// TODO: Remove and replace with Swift Algorithms
-func combos<T>(elements: ArraySlice<T>, k: Int) -> [[T]] {
-	if k == 0 {
-		return [[]]
-	}
-
-	guard let first = elements.first else {
-		return []
-	}
-
-	let head = [first]
-	let subcombos = combos(elements: elements, k: k - 1)
-	var ret = subcombos.map { head + $0 }
-	ret += combos(elements: elements.dropFirst(), k: k)
-
-	return ret
-}
-
-func combos<T>(elements: Array<T>, k: Int) -> [[T]] {
-	return combos(elements: ArraySlice(elements), k: k)
 }
