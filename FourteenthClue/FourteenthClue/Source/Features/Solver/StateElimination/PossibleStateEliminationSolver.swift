@@ -67,8 +67,123 @@ class PossibleStateEliminationSolver: ClueSolver {
 	// MARK: Solving
 
 	private func solve(state: GameState) {
-		var states = state.allPossibleStates()
-		print("Total states: \(states.count)")
+		var possibleStates = state.allPossibleStates()
+		var clues = state.clues
+
+		resolveMyAccusations(state, &clues, &possibleStates)
+		resolveOpponentAccusations(state, &clues, &possibleStates)
+		resolveInquisitionsInIsolation(state, &clues, &possibleStates)
+		resolveInquisitionsInCombination(state, &clues, &possibleStates)
+	}
+
+	private func resolveMyAccusations(
+		_ state: GameState,
+		_ clues: inout [AnyClue],
+		_ possibleStates: inout [PossibleState]
+	) {
+		let me = state.players.first!
+		var cluesToRemove = IndexSet()
+
+		clues.enumerated()
+			// Filter out clues from opponents
+			.filter { $0.element.player == me.id }
+			// Only look at accusations
+			.compactMap { offset, clue -> (Int, Accusation)? in
+				guard let accusation = clue.wrappedValue as? Accusation else { return nil }
+				return (offset, accusation)
+			}
+			.forEach { offset, accusation in
+				// Remove state if the solution is identical to any accusation already made
+				possibleStates.removeAll { $0.solution.cards == accusation.cards }
+				cluesToRemove.insert(offset)
+			}
+
+		clues.remove(atOffsets: cluesToRemove)
+	}
+
+	private func resolveOpponentAccusations(
+		_ state: GameState,
+		_ clues: inout [AnyClue],
+		_ possibleStates: inout [PossibleState]
+	) {
+		let me = state.players.first!
+		var cluesToRemove = IndexSet()
+
+		clues.enumerated()
+			// Filter out clues from me
+			.filter { $0.element.player != me.id }
+			// Only look at accusations
+			.compactMap { offset, clue -> (Int, Accusation)? in
+				guard let accusation = clue.wrappedValue as? Accusation else { return nil }
+				return (offset, accusation)
+			}
+			.forEach { offset, accusation in
+				// Remove state if any cards in the accusation appear in the solution (opponents cannot guess cards they can see)
+				possibleStates.removeAll { !$0.solution.cards.isDisjoint(with: accusation.cards) }
+				cluesToRemove.insert(offset)
+			}
+
+		clues.remove(atOffsets: cluesToRemove)
+	}
+
+	private func resolveInquisitionsInIsolation(
+		_ state: GameState,
+		_ clues: inout [AnyClue],
+		_ possibleStates: inout [PossibleState]
+	) {
+		let me = state.players.first!
+		var cluesToRemove = IndexSet()
+
+		clues.enumerated()
+			// Filter out clues from me
+			.filter { $0.element.player != me.id }
+			// Only look at inquisitions (ignore accusations)
+			.compactMap { offset, clue -> (Int, Inquisition)? in
+				guard let inquisition = clue.wrappedValue as? Inquisition else { return nil }
+				return (offset, inquisition)
+			}
+			.forEach { offset, inquisition in
+				// If the player sees no cards of a category, we can remove all the cards
+				// that belong to that category
+				guard inquisition.count > 0 else {
+					possibleStates.removeAll { !$0.solution.cards.isDisjoint(with: inquisition.cards) }
+					cluesToRemove.insert(offset)
+					return
+				}
+
+				let clueCards = inquisition.cards.intersection(state.cards)
+				let numberOfCardsSeen = inquisition.count
+				let cardsISeeThatPlayerSees = state.mysteryCardsVisibleToMe(excludingPlayer: inquisition.player)
+
+//				if numberOfCardsSeen < mysteryCardsVisibleToMe.count {
+
+			}
+
+
+		clues.remove(atOffsets: cluesToRemove)
+	}
+
+	private func resolveInquisitionsInCombination(
+		_ state: GameState,
+		_ clues: inout [AnyClue],
+		_ possibleStates: inout [PossibleState]
+	) {
+//		let me = state.players.first!
+//		var cluesToRemove = IndexSet()
+//
+//		clues.enumerated()
+//			// Filter out clues from me
+//			.filter { $0.element.player != me.id }
+//			// Only look at inquisitions (ignore accusations)
+//			.compactMap { offset, clue -> (Int, Inquisition)? in
+//				guard let inquisition = clue.wrappedValue as? Inquisition else { return nil }
+//				return (offset, inquisition)
+//			}
+//			.forEach { offset, inquisition in
+//
+//			}
+//
+//		clues.remove(atOffsets: cluesToRemove)
 	}
 }
 
@@ -83,24 +198,26 @@ private extension GameState {
 			let cardPairs = remainingCards.combinations(ofCount: 2)
 			let possibleHiddenSets = Array(cardPairs).combinations(ofCount: numberOfPlayers - 1)
 
-			for possibleHiddenSet in possibleHiddenSets {
-				let otherPlayers = possibleHiddenSet.enumerated().map { index, hiddenSet in
-					return PossiblePlayer(
-						id: players[index + 1].id,
-						hidden: PossibleHiddenSet(hiddenSet),
-						mystery: PossibleMysterySet(players[index + 1].mystery)
-					)
-				}
+			for sets in Array(possibleHiddenSets).permutations() {
+				for possibleHiddenSet in sets {
+					let otherPlayers = possibleHiddenSet.enumerated().map { index, hiddenSet in
+						return PossiblePlayer(
+							id: players[index + 1].id,
+							hidden: PossibleHiddenSet(hiddenSet),
+							mystery: PossibleMysterySet(players[index + 1].mystery)
+						)
+					}
 
-				remainingCards.subtract(otherPlayers.cards)
+					remainingCards.subtract(otherPlayers.cards)
 
-				possibleStates.append(PossibleState(
-					players: [me] + otherPlayers,
-					secretInformants: remainingCards
-				))
+					possibleStates.append(PossibleState(
+						players: [me] + otherPlayers,
+						secretInformants: remainingCards
+					))
 
-				if possibleStates.count % 1_000_000 == 0 {
-					print("States so far: \(possibleStates.count)")
+					if possibleStates.count % 1_000_000 == 0 {
+						print("States so far: \(possibleStates.count)")
+					}
 				}
 			}
 		}

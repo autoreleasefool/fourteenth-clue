@@ -10,6 +10,10 @@ import Foundation
 struct PossibleState {
 	let players: [PossiblePlayer]
 	let secretInformants: Set<Card>
+
+	var solution: PossibleMysterySet {
+		players.first!.mystery
+	}
 }
 
 struct PossiblePlayer {
