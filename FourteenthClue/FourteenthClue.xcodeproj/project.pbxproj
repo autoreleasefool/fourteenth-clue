@@ -97,10 +97,10 @@
 		CA2E85592681AE5A001BE951 /* Solver */ = {
 			isa = PBXGroup;
 			children = (
+				CA3670DB26B9029800D644CF /* SolutionElimination */,
+				CA3670DA26B9029100D644CF /* StateElimination */,
 				CA2E85702682706F001BE951 /* ClueSolver.swift */,
 				CA8C07AC268A636B00B50233 /* Solution.swift */,
-				CA3560902692BEFF004B41AF /* SolutionEliminationSolver.swift */,
-				CA3560922692BF69004B41AF /* PossibleStateEliminationSolver.swift */,
 			);
 			path = Solver;
 			sourceTree = "<group>";
@@ -186,6 +186,22 @@
 				CA8C07A626898A5800B50233 /* SecretInformant.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		CA3670DA26B9029100D644CF /* StateElimination */ = {
+			isa = PBXGroup;
+			children = (
+				CA3560922692BF69004B41AF /* PossibleStateEliminationSolver.swift */,
+			);
+			path = StateElimination;
+			sourceTree = "<group>";
+		};
+		CA3670DB26B9029800D644CF /* SolutionElimination */ = {
+			isa = PBXGroup;
+			children = (
+				CA3560902692BEFF004B41AF /* SolutionEliminationSolver.swift */,
+			);
+			path = SolutionElimination;
 			sourceTree = "<group>";
 		};
 		CA582E052681AC8F00248E51 = {
