@@ -10,56 +10,16 @@ import Foundation
 
 class SolutionEliminationSolver: ClueSolver {
 
-	var state: GameState? = nil {
-		didSet {
-			if isRunning {
-				cancel()
-			}
+	private let subject: PassthroughSubject<[Solution], Never>
 
-			if let state = state {
-				startSolving(state: state)
-			}
-		}
+	init() {
+		let subject = PassthroughSubject<[Solution], Never>()
+		self.subject = subject
+		super.init(solutionsSubject: subject)
 	}
 
-	var isEnabled: Bool = false {
-		didSet {
-			if !isEnabled {
-				cancel()
-			}
-		}
-	}
-
-	private let queue = DispatchQueue(label: "ca.josephroque.FourteenthClue.SolutionElimination")
-
-	private var currentWorkItem: DispatchWorkItem?
-	private var isRunning: Bool {
-		currentWorkItem?.isCancelled == false
-	}
-
-	private let solutionsSubject = PassthroughSubject<[Solution], Never>()
-	var solutions: AnyPublisher<[Solution], Never> {
-		solutionsSubject.eraseToAnyPublisher()
-	}
-
-	func cancel() {
-		solutionsSubject.send([])
-		currentWorkItem?.cancel()
-		currentWorkItem = nil
-	}
-
-	private func startSolving(state: GameState) {
-		guard isEnabled else { return }
-
-		let workItem = DispatchWorkItem { [weak self] in
-			self?.solve(state: state)
-		}
-
-		currentWorkItem = workItem
-		queue.async(execute: workItem)
-	}
-
-	private func solve(state: GameState) {
+	override func solve(state: GameState) {
+		guard state.id == self.state?.id else { return }
 		var solutions = state.allPossibleSolutions()
 		var clues = state.clues
 		removeImpossibleSolutions(state, &solutions)
@@ -68,10 +28,12 @@ class SolutionEliminationSolver: ClueSolver {
 		resolveInquisitionsInIsolation(state, &clues, &solutions)
 		resolveInquisitionsInCombination(state, &clues, &solutions)
 
-		solutionsSubject.send(solutions)
+		subject.send(solutions)
 	}
 
 	private func removeImpossibleSolutions(_ state: GameState, _ solutions: inout [Solution]) {
+		guard state.id == self.state?.id else { return }
+
 		let me = state.players.first!
 		let others = state.players.dropFirst()
 
@@ -96,6 +58,8 @@ class SolutionEliminationSolver: ClueSolver {
 		_ clues: inout [AnyClue],
 		_ solutions: inout [Solution]
 	) {
+		guard state.id == self.state?.id else { return }
+
 		let me = state.players.first!
 		var cluesToRemove = IndexSet()
 
@@ -120,6 +84,8 @@ class SolutionEliminationSolver: ClueSolver {
 		_ clues: inout [AnyClue],
 		_ solutions: inout [Solution]
 	) {
+		guard state.id == self.state?.id else { return }
+
 		let me = state.players.first!
 		var cluesToRemove = IndexSet()
 
@@ -144,6 +110,8 @@ class SolutionEliminationSolver: ClueSolver {
 		_ clues: inout [AnyClue],
 		_ solutions: inout [Solution]
 	) {
+		guard state.id == self.state?.id else { return }
+
 		let me = state.players.first!
 		var cluesToRemove = IndexSet()
 
@@ -172,7 +140,7 @@ class SolutionEliminationSolver: ClueSolver {
 		_ clues: inout [AnyClue],
 		_ solutions: inout [Solution]
 	) {
-
+		guard state.id == self.state?.id else { return }
 	}
 
 }

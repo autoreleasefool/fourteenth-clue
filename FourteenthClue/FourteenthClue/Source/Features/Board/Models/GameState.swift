@@ -9,6 +9,7 @@ import SwiftUI
 
 struct GameState {
 
+	let id = UUID()
 	let players: [Player]
 	let secretInformants: [SecretInformant]
 	let cards: Set<Card>
