@@ -8,9 +8,24 @@
 extension GameState {
 
 	func allPossibleSolutions() -> [Solution] {
-		cards.people.flatMap { person in
-			cards.locations.flatMap { location in
-				cards.weapons.map { weapon in
+		let me = players.first!
+		let cardsForSolutions = unallocatedCards
+
+		let possiblePeople = me.mystery.person != nil
+			? [me.mystery.person!]
+			: cardsForSolutions.people
+
+		let possibleLocations = me.mystery.location != nil
+			? [me.mystery.location!]
+			: cardsForSolutions.locations
+
+		let possibleWeapons = me.mystery.weapon != nil
+			? [me.mystery.weapon!]
+			: cardsForSolutions.weapons
+
+		return possiblePeople.flatMap { person in
+			possibleLocations.flatMap { location in
+				possibleWeapons.map { weapon in
 					Solution(
 						person: person,
 						location: location,

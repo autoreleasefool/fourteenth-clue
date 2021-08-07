@@ -11,7 +11,6 @@ struct PlayerCardSet: View {
 
 	@ObservedObject var viewModel: GameBoardViewModel
 	let player: Player
-//	let onSetCard: (Card?, GameState.CardPosition) -> Void
 
 	@State var pickingCardPosition: CardPosition?
 
@@ -80,7 +79,6 @@ struct PlayerCardSet: View {
 			CardPicker(categories: cardPosition.categories, fromAvailableCards: viewModel.unallocatedCards) {
 				pickingCardPosition = nil
 				viewModel.setCard($0, forPlayer: player, atPosition: cardPosition)
-//				onSetCard($0, cardPosition)
 			}
 		}
 	}
