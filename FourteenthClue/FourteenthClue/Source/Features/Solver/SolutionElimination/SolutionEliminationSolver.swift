@@ -101,7 +101,7 @@ class SolutionEliminationSolver: ClueSolver {
 
 		clues
 			.enumerated()
-			.drop { $0.element.player != me.id }
+			.filter { $0.element.player == me.id }
 			.compactMap { offset, clue -> (Int, Accusation)? in
 				guard let accusation = clue.wrappedValue as? Accusation else { return nil }
 				return (offset, accusation)
@@ -125,7 +125,7 @@ class SolutionEliminationSolver: ClueSolver {
 
 		clues
 			.enumerated()
-			.drop { $0.element.player == me.id }
+			.filter { $0.element.player != me.id }
 			.compactMap { offset, clue -> (Int, Accusation)? in
 				guard let accusation = clue.wrappedValue as? Accusation else { return nil }
 				return (offset, accusation)
@@ -149,7 +149,7 @@ class SolutionEliminationSolver: ClueSolver {
 
 		clues
 			.enumerated()
-			.drop { $0.element.player == me.id }
+			.filter { $0.element.player != me.id }
 			.compactMap { offset, clue -> (Int, Inquisition)? in
 				guard let inquisition = clue.wrappedValue as? Inquisition else { return nil }
 				return (offset, inquisition)
