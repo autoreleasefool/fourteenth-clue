@@ -30,7 +30,7 @@ class GameBoardViewModel: ObservableObject {
 	// MARK: View actions
 
 	func onAppear() {
-		print("Starting game with \(state.players.count) players")
+		print("Starting game with \(state.numberOfPlayers) players")
 		solver.isEnabled = true
 		solutionsCancellable = solver
 			.solutions
