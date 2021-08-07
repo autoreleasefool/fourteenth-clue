@@ -228,6 +228,12 @@ struct GameState {
 			.subtracting(secretInformants.compactMap { $0.card })
 	}
 
+	var initialUnknownCards: Set<Card> {
+		cards
+			.subtracting(players.first!.privateCards.cards)
+			.subtracting(players.dropFirst().flatMap { $0.mystery.cards })
+	}
+
 	var allCards: Set<Card> {
 		cards
 	}

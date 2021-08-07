@@ -22,6 +22,8 @@
 		CA3560912692BEFF004B41AF /* SolutionEliminationSolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA3560902692BEFF004B41AF /* SolutionEliminationSolver.swift */; };
 		CA3560932692BF69004B41AF /* PossibleStateEliminationSolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA3560922692BF69004B41AF /* PossibleStateEliminationSolver.swift */; };
 		CA3670DD26B902EB00D644CF /* GameState+Solutions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA3670DC26B902EB00D644CF /* GameState+Solutions.swift */; };
+		CA3670DF26B9034500D644CF /* GameState+PossibleStates.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA3670DE26B9034500D644CF /* GameState+PossibleStates.swift */; };
+		CA3670E126B9046000D644CF /* PossibleState.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA3670E026B9046000D644CF /* PossibleState.swift */; };
 		CA582E122681AC8F00248E51 /* FourteenthClue.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA582E112681AC8F00248E51 /* FourteenthClue.swift */; };
 		CA582E162681AC9000248E51 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CA582E152681AC9000248E51 /* Assets.xcassets */; };
 		CA582E192681AC9000248E51 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CA582E182681AC9000248E51 /* Preview Assets.xcassets */; };
@@ -56,6 +58,8 @@
 		CA3560902692BEFF004B41AF /* SolutionEliminationSolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolutionEliminationSolver.swift; sourceTree = "<group>"; };
 		CA3560922692BF69004B41AF /* PossibleStateEliminationSolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PossibleStateEliminationSolver.swift; sourceTree = "<group>"; };
 		CA3670DC26B902EB00D644CF /* GameState+Solutions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GameState+Solutions.swift"; sourceTree = "<group>"; };
+		CA3670DE26B9034500D644CF /* GameState+PossibleStates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GameState+PossibleStates.swift"; sourceTree = "<group>"; };
+		CA3670E026B9046000D644CF /* PossibleState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PossibleState.swift; sourceTree = "<group>"; };
 		CA582E0E2681AC8F00248E51 /* Fourteenth Clue.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Fourteenth Clue.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA582E112681AC8F00248E51 /* FourteenthClue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FourteenthClue.swift; sourceTree = "<group>"; };
 		CA582E152681AC9000248E51 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -193,6 +197,8 @@
 		CA3670DA26B9029100D644CF /* StateElimination */ = {
 			isa = PBXGroup;
 			children = (
+				CA3670DE26B9034500D644CF /* GameState+PossibleStates.swift */,
+				CA3670E026B9046000D644CF /* PossibleState.swift */,
 				CA3560922692BF69004B41AF /* PossibleStateEliminationSolver.swift */,
 			);
 			path = StateElimination;
@@ -336,6 +342,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CA3670E126B9046000D644CF /* PossibleState.swift in Sources */,
 				CA2E856626823FD5001BE951 /* Card.swift in Sources */,
 				CA2E855F2681AEEE001BE951 /* Home.swift in Sources */,
 				CA2E856C268268C7001BE951 /* GameBoardViewModel.swift in Sources */,
@@ -360,6 +367,7 @@
 				CA8C07A12689837000B50233 /* Player.swift in Sources */,
 				CA2E85772683CFDF001BE951 /* GameBuilder.swift in Sources */,
 				CAB5E4E9268AD2FD0070DD97 /* SolutionList.swift in Sources */,
+				CA3670DF26B9034500D644CF /* GameState+PossibleStates.swift in Sources */,
 				CA582E122681AC8F00248E51 /* FourteenthClue.swift in Sources */,
 				CA35608E26927D83004B41AF /* AccusationForm.swift in Sources */,
 				CA2E85752683C378001BE951 /* GameState.swift in Sources */,
