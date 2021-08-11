@@ -27,6 +27,10 @@
 		CA582E122681AC8F00248E51 /* FourteenthClue.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA582E112681AC8F00248E51 /* FourteenthClue.swift */; };
 		CA582E162681AC9000248E51 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CA582E152681AC9000248E51 /* Assets.xcassets */; };
 		CA582E192681AC9000248E51 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CA582E182681AC9000248E51 /* Preview Assets.xcassets */; };
+		CA85561926C38DA000A7F1F0 /* Loaf in Frameworks */ = {isa = PBXBuildFile; productRef = CA85561826C38DA000A7F1F0 /* Loaf */; };
+		CA85561B26C38E8700A7F1F0 /* Toaster.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA85561A26C38E8700A7F1F0 /* Toaster.swift */; };
+		CA85561E26C38ED600A7F1F0 /* LoafState.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA85561D26C38ED600A7F1F0 /* LoafState.swift */; };
+		CA85562126C38FC400A7F1F0 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA85562026C38FC400A7F1F0 /* Store.swift */; };
 		CA8C07A12689837000B50233 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8C07A02689837000B50233 /* Player.swift */; };
 		CA8C07A32689839800B50233 /* CardSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8C07A22689839800B50233 /* CardSet.swift */; };
 		CA8C07A52689842F00B50233 /* Clue.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8C07A42689842F00B50233 /* Clue.swift */; };
@@ -64,6 +68,9 @@
 		CA582E112681AC8F00248E51 /* FourteenthClue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FourteenthClue.swift; sourceTree = "<group>"; };
 		CA582E152681AC9000248E51 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CA582E182681AC9000248E51 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		CA85561A26C38E8700A7F1F0 /* Toaster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toaster.swift; sourceTree = "<group>"; };
+		CA85561D26C38ED600A7F1F0 /* LoafState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoafState.swift; sourceTree = "<group>"; };
+		CA85562026C38FC400A7F1F0 /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
 		CA8C07A02689837000B50233 /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		CA8C07A22689839800B50233 /* CardSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardSet.swift; sourceTree = "<group>"; };
 		CA8C07A42689842F00B50233 /* Clue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Clue.swift; sourceTree = "<group>"; };
@@ -84,6 +91,7 @@
 			files = (
 				CA97C202269A425B004AC3A6 /* Algorithms in Frameworks */,
 				CAED72FA268447680060086A /* BottomSheet in Frameworks */,
+				CA85561926C38DA000A7F1F0 /* Loaf in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -124,8 +132,10 @@
 		CA2E855B2681AE9E001BE951 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				CA85561F26C38FBD00A7F1F0 /* Utils */,
 				CA2E856326823E13001BE951 /* Assets.swift */,
 				CA2E856526823FD5001BE951 /* Card.swift */,
+				CA85561C26C38E9F00A7F1F0 /* Toaster */,
 				CA97C1F426967FB8004AC3A6 /* View */,
 			);
 			path = Common;
@@ -247,6 +257,23 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
+		CA85561C26C38E9F00A7F1F0 /* Toaster */ = {
+			isa = PBXGroup;
+			children = (
+				CA85561A26C38E8700A7F1F0 /* Toaster.swift */,
+				CA85561D26C38ED600A7F1F0 /* LoafState.swift */,
+			);
+			path = Toaster;
+			sourceTree = "<group>";
+		};
+		CA85561F26C38FBD00A7F1F0 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				CA85562026C38FC400A7F1F0 /* Store.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
 		CA97C1F426967FB8004AC3A6 /* View */ = {
 			isa = PBXGroup;
 			children = (
@@ -283,6 +310,7 @@
 			packageProductDependencies = (
 				CAED72F9268447680060086A /* BottomSheet */,
 				CA97C201269A425B004AC3A6 /* Algorithms */,
+				CA85561826C38DA000A7F1F0 /* Loaf */,
 			);
 			productName = "Fourteenth Clue";
 			productReference = CA582E0E2681AC8F00248E51 /* Fourteenth Clue.app */;
@@ -315,6 +343,7 @@
 			packageReferences = (
 				CAED72F8268447680060086A /* XCRemoteSwiftPackageReference "BottomSheet" */,
 				CA97C200269A425B004AC3A6 /* XCRemoteSwiftPackageReference "swift-algorithms" */,
+				CA85561726C38DA000A7F1F0 /* XCRemoteSwiftPackageReference "Loaf" */,
 			);
 			productRefGroup = CA582E0F2681AC8F00248E51 /* Products */;
 			projectDirPath = "";
@@ -350,8 +379,10 @@
 				CA8C07A32689839800B50233 /* CardSet.swift in Sources */,
 				CA35608C26927D70004B41AF /* InquisitionForm.swift in Sources */,
 				CA2E85712682706F001BE951 /* ClueSolver.swift in Sources */,
+				CA85561B26C38E8700A7F1F0 /* Toaster.swift in Sources */,
 				CA97C1F92696C7AE004AC3A6 /* SeedState.swift in Sources */,
 				CA2E856226823772001BE951 /* PlayerPicker.swift in Sources */,
+				CA85561E26C38ED600A7F1F0 /* LoafState.swift in Sources */,
 				CA8C07A9268993B400B50233 /* ClueForm.swift in Sources */,
 				CA2E856426823E13001BE951 /* Assets.swift in Sources */,
 				CA8C07AD268A636B00B50233 /* Solution.swift in Sources */,
@@ -359,6 +390,7 @@
 				CA97C1F626968005004AC3A6 /* NavigationLink+Extensions.swift in Sources */,
 				CA2E8573268399D0001BE951 /* PlayerCardSet.swift in Sources */,
 				CA8C07A52689842F00B50233 /* Clue.swift in Sources */,
+				CA85562126C38FC400A7F1F0 /* Store.swift in Sources */,
 				CAED72F7268447190060086A /* CardPicker.swift in Sources */,
 				CA3560932692BF69004B41AF /* PossibleStateEliminationSolver.swift in Sources */,
 				CA2E856926826830001BE951 /* GameBoard.swift in Sources */,
@@ -577,6 +609,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		CA85561726C38DA000A7F1F0 /* XCRemoteSwiftPackageReference "Loaf" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/autoreleasefool/Loaf";
+			requirement = {
+				branch = swiftui;
+				kind = branch;
+			};
+		};
 		CA97C200269A425B004AC3A6 /* XCRemoteSwiftPackageReference "swift-algorithms" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/apple/swift-algorithms.git";
@@ -596,6 +636,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		CA85561826C38DA000A7F1F0 /* Loaf */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CA85561726C38DA000A7F1F0 /* XCRemoteSwiftPackageReference "Loaf" */;
+			productName = Loaf;
+		};
 		CA97C201269A425B004AC3A6 /* Algorithms */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = CA97C200269A425B004AC3A6 /* XCRemoteSwiftPackageReference "swift-algorithms" */;

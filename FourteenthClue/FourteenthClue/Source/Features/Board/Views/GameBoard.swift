@@ -9,6 +9,8 @@ import BottomSheet
 import SwiftUI
 
 struct GameBoard: View {
+	@Environment(\.presentationMode) var presentation
+	@Environment(\.toaster) private var toaster
 
 	@StateObject var viewModel: GameBoardViewModel
 
@@ -30,11 +32,12 @@ struct GameBoard: View {
 				informants
 			}
 		}
-		.navigationTitle("13 Clues")
+		.navigationBarTitle("13 Clues", displayMode: .inline)
 		.navigationBarBackButtonHidden(true)
 		.navigationBarItems(trailing: solutionsButton)
 		.onAppear { viewModel.onAppear() }
 		.onDisappear { viewModel.onDisappear() }
+		.onReceive(viewModel.loafPublisher) { toaster.loaf.send($0) }
 		.sheet(isPresented: $viewModel.showingSolutions) {
 			NavigationView {
 				SolutionList(solutions: viewModel.possibleSolutions)
