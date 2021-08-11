@@ -11,8 +11,8 @@ struct PossibleState {
 	let players: [PossiblePlayer]
 	let informants: Set<Card>
 
-	var solution: PossibleMysterySet {
-		players.first!.mystery
+	var solution: Solution {
+		Solution(players.first!.mystery)
 	}
 }
 
@@ -30,6 +30,12 @@ struct PossibleMysterySet {
 		self.person = person
 		self.location = location
 		self.weapon = weapon
+	}
+
+	init(_ solution: Solution) {
+		self.person = solution.person
+		self.location = solution.location
+		self.weapon = solution.weapon
 	}
 
 	init(_ mystery: MysteryCardSet) {
@@ -55,6 +61,11 @@ struct PossibleHiddenSet {
 	init(_ hidden: PrivateCardSet) {
 		self.left = hidden.leftCard!
 		self.right = hidden.rightCard!
+	}
+
+	init<C: Collection>(_ cards: C) where C.Element == Card {
+		self.left = cards.first!
+		self.right = cards.dropFirst().first!
 	}
 
 	var cards: Set<Card> {

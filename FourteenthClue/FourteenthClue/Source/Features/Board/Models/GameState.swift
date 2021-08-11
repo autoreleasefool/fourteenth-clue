@@ -176,6 +176,10 @@ struct GameState {
 		players.count
 	}
 
+	var numberOfInformants: Int {
+		secretInformants.count
+	}
+
 	func cardsVisible(toPlayer targetPlayer: Player) -> Set<Card> {
 		Set(players.flatMap { player in
 			return targetPlayer.id == player.id

@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Solution: Equatable, Comparable, Identifiable {
+struct Solution: Equatable, Comparable, Identifiable, Hashable {
 
 	let person: Card
 	let location: Card
@@ -23,8 +23,23 @@ struct Solution: Equatable, Comparable, Identifiable {
 		[person, location, weapon]
 	}
 
+	init(person: Card, location: Card, weapon: Card, probability: Double = 0) {
+		self.person = person
+		self.location = location
+		self.weapon = weapon
+		self.probability = probability
+	}
+
+	init(_ mystery: PossibleMysterySet) {
+		self.person = mystery.person
+		self.location = mystery.location
+		self.weapon = mystery.weapon
+		self.probability = 0
+	}
+
 	static func < (lhs: Solution, rhs: Solution) -> Bool {
-		lhs.probability < rhs.probability
+		(lhs.probability, lhs.person, lhs.location, lhs.weapon) <
+			(rhs.probability, rhs.person, rhs.location, rhs.weapon)
 	}
 
 }
