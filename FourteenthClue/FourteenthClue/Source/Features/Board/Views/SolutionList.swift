@@ -15,7 +15,7 @@ struct SolutionList: View {
 		List {
 			ForEach(solutions) { solution in
 				HStack {
-					Text("\(solution.probability)")
+					Text(readableProbability(solution.probability))
 
 					CardImage(card: solution.person)
 						.size(.medium)
@@ -29,6 +29,10 @@ struct SolutionList: View {
 			}
 		}
 		.navigationTitle("Solutions")
+	}
+
+	private func readableProbability(_ probability: Double) -> String {
+		String(format: "%.2f", probability * 100)
 	}
 
 }
