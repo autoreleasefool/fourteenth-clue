@@ -21,9 +21,12 @@ class PossibleStateEliminationSolver: ClueSolver {
 	override func solve(state: GameState) {
 		guard state.id == self.state?.id else { return }
 
-		let states = state.allPossibleStates()
+		let states = state.allPossibleStates(shouldCancel: {
+			state.id != self.state?.id
+		})
 		let solutions = processStatesIntoSolutions(states)
 
+		guard state.id == self.state?.id else { return }
 		subject.send(solutions.sorted())
 	}
 

@@ -10,7 +10,7 @@ import Foundation
 
 extension GameState {
 
-	func allPossibleStates() -> [PossibleState] {
+	func allPossibleStates(shouldCancel: (() -> Bool)?) -> [PossibleState] {
 		let me = players.first!
 		let possibleSolutions = allPossibleSolutions()
 		var possibleStates: [PossibleState] = []
@@ -29,7 +29,8 @@ extension GameState {
 				withBaseState: self,
 				players: [mySolution],
 				cardPairs: cardPairs,
-				into: &possibleStates
+				into: &possibleStates,
+				shouldCancel: shouldCancel
 			)
 		}
 
@@ -40,8 +41,11 @@ extension GameState {
 		withBaseState state: GameState,
 		players: [PossiblePlayer],
 		cardPairs: [Set<Card>],
-		into possibleStates: inout [PossibleState]
+		into possibleStates: inout [PossibleState],
+		shouldCancel: (() -> Bool)?
 	) {
+		guard shouldCancel?() != true else { return }
+
 		guard players.count < state.numberOfPlayers else {
 			possibleStates.append(PossibleState(
 				players: players,
@@ -61,7 +65,8 @@ extension GameState {
 				withBaseState: state,
 				players: players + [nextPlayer],
 				cardPairs: cardPairs.filter { $0.isDisjoint(with: pair) },
-				into: &possibleStates
+				into: &possibleStates,
+				shouldCancel: shouldCancel
 			)
 		}
 	}
