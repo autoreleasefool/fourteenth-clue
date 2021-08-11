@@ -21,13 +21,16 @@ class PossibleStateEliminationSolver: ClueSolver {
 	override func solve(state: GameState) {
 		guard state.id == self.state?.id else { return }
 
-		var states = state.allPossibleStates()
+		let states = state.allPossibleStates()
+		let solutions = processStatesIntoSolutions(states)
 
-		let stateCounts = states.reduce(into: [Solution:Int]()) { counts, possibleState in
+		subject.send(solutions.sorted())
+	}
+
+	private func processStatesIntoSolutions(_ states: [PossibleState]) -> [Solution] {
+		states.reduce(into: [Solution:Int]()) { counts, possibleState in
 			counts[possibleState.solution] = (counts[possibleState.solution] ?? 0) + 1
-		}
-
-		let solutions = stateCounts.map { key, value in
+		}.map { key, value in
 			Solution(
 				person: key.person,
 				location: key.location,
@@ -35,8 +38,6 @@ class PossibleStateEliminationSolver: ClueSolver {
 				probability: Double(value) / Double(states.count)
 			)
 		}
-
-		subject.send(solutions.sorted())
 	}
 
 }

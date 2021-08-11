@@ -12,11 +12,7 @@ extension GameState {
 
 	func allPossibleStates() -> [PossibleState] {
 		let me = players.first!
-		let others = Array(players.dropFirst())
-
-		let possibleCards = self.initialUnknownCards
 		let possibleSolutions = allPossibleSolutions()
-
 		var possibleStates: [PossibleState] = []
 
 		for solution in possibleSolutions {
