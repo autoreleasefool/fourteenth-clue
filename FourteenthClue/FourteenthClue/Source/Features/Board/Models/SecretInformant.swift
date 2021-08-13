@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct SecretInformant: Identifiable {
+struct SecretInformant: Identifiable, Equatable {
 
 	let id: UUID
 	let card: Card?

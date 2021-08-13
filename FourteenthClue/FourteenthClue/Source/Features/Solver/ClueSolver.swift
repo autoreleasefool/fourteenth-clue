@@ -13,7 +13,7 @@ class ClueSolver {
 	var state: GameState? = nil {
 		didSet {
 			if let state = state {
-				startSolving(state: state)
+				startSolving(state: state, prevState: oldValue)
 			} else {
 				solutionsSubject.send([])
 			}
@@ -40,15 +40,15 @@ class ClueSolver {
 		self.solutionsSubject = solutionsSubject
 	}
 
-	private func startSolving(state: GameState) {
+	private func startSolving(state: GameState, prevState: GameState?) {
 		guard isEnabled else { return }
 		queue.async { [weak self] in
 			guard state.id == self?.state?.id else { return }
-			self?.solve(state: state)
+			self?.solve(state: state, prevState: prevState)
 		}
 	}
 
-	open func solve(state: GameState) {
+	open func solve(state: GameState, prevState: GameState?) {
 		fatalError("Must be implemented")
 	}
 

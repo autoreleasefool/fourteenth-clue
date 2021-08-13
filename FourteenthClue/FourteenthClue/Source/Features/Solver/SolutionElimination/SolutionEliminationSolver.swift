@@ -18,7 +18,7 @@ class SolutionEliminationSolver: ClueSolver {
 		super.init(solutionsSubject: subject)
 	}
 
-	override func solve(state: GameState) {
+	override func solve(state: GameState, prevState: GameState?) {
 		guard state.id == self.state?.id else { return }
 		var solutions = state.allPossibleSolutions()
 		var clues = state.clues

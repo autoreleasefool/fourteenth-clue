@@ -180,6 +180,14 @@ struct GameState {
 		secretInformants.count
 	}
 
+	func isEarlierState(of nextState: GameState) -> Bool {
+		self.players == nextState.players &&
+			self.secretInformants == nextState.secretInformants &&
+			self.cards == nextState.cards &&
+			self.clues.count < nextState.clues.count &&
+			zip(self.clues, nextState.clues).allSatisfy { $0 == $1 }
+	}
+
 	func cardsVisible(toPlayer targetPlayer: Player) -> Set<Card> {
 		Set(players.flatMap { player in
 			return targetPlayer.id == player.id

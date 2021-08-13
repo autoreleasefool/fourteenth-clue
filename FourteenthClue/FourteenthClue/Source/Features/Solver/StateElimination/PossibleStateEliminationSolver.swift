@@ -12,13 +12,15 @@ class PossibleStateEliminationSolver: ClueSolver {
 
 	private let subject: PassthroughSubject<[Solution], Never>
 
+	private var possibleStatesCache: [PossibleState]?
+
 	init() {
 		let subject = PassthroughSubject<[Solution], Never>()
 		self.subject = subject
 		super.init(solutionsSubject: subject)
 	}
 
-	override func solve(state: GameState) {
+	override func solve(state: GameState, prevState: GameState?) {
 		let reporter = StepReporter()
 		guard state.id == self.state?.id else { return }
 
@@ -26,9 +28,14 @@ class PossibleStateEliminationSolver: ClueSolver {
 			state.id != self?.state?.id
 		}
 
+		if let prevState = prevState,
+			 shouldClearStateCache(prevState: prevState, nextState: state) {
+			possibleStatesCache = nil
+		}
+
 		reporter.reportStep(message: "Beginning state generation")
 
-		var states = state.allPossibleStates(shouldCancel: shouldCancelEarly)
+		var states = possibleStatesCache ?? state.allPossibleStates(shouldCancel: shouldCancelEarly)
 		reporter.reportStep(message: "Finished generating states")
 
 		var clues = state.clues
@@ -49,6 +56,7 @@ class PossibleStateEliminationSolver: ClueSolver {
 		guard state.id == self.state?.id else { return }
 
 		reporter.reportStep(message: "Finished generating \(states.count) possible states.")
+		possibleStatesCache = states
 		subject.send(solutions.sorted())
 	}
 
@@ -95,6 +103,10 @@ class PossibleStateEliminationSolver: ClueSolver {
 				probability: Double(value) / Double(states.count)
 			)
 		}
+	}
+
+	private func shouldClearStateCache(prevState: GameState, nextState: GameState) -> Bool {
+		!prevState.isEarlierState(of: nextState)
 	}
 
 }
