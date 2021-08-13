@@ -19,16 +19,70 @@ class PossibleStateEliminationSolver: ClueSolver {
 	}
 
 	override func solve(state: GameState) {
+		let reporter = StepReporter()
 		guard state.id == self.state?.id else { return }
 
-		let states = state.allPossibleStates(shouldCancel: {
-			state.id != self.state?.id
-		})
+		let shouldCancelEarly = { [weak self] in
+			state.id != self?.state?.id
+		}
+
+		reporter.reportStep(message: "Beginning state generation")
+
+		var states = state.allPossibleStates(shouldCancel: shouldCancelEarly)
+		reporter.reportStep(message: "Finished generating states")
+
+		var clues = state.clues
+
+		resolveMyAccusations(state, &clues, &states, shouldCancelEarly)
+		reporter.reportStep(message: "Finished resolving my accusations")
+
+		resolveOpponentAccusations(state, &clues, &states, shouldCancelEarly)
+		reporter.reportStep(message: "Finished resolving opponent accusations")
+
+		resolveInquisitionsInIsolation(state, &clues, &states, shouldCancelEarly)
+		reporter.reportStep(message: "Finished resolving inquisitions in isolation")
+
+		resolveInquisitionsInCombination(state, &clues, &states, shouldCancelEarly)
+		reporter.reportStep(message: "Finished resolving inquisitions in combination")
+
 		let solutions = processStatesIntoSolutions(states)
-
 		guard state.id == self.state?.id else { return }
+
+		reporter.reportStep(message: "Finished generating \(states.count) possible states.")
 		subject.send(solutions.sorted())
 	}
+
+	private func resolveMyAccusations(
+		_ state: GameState,
+		_ clues: inout [AnyClue],
+		_ possibleStates: inout [PossibleState],
+		_ shouldCancelEarly: () -> Bool
+	) {
+	}
+
+	private func resolveOpponentAccusations(
+		_ state: GameState,
+		_ clues: inout [AnyClue],
+		_ possibleStates: inout [PossibleState],
+		_ shouldCancelEarly: () -> Bool
+	) {
+	}
+
+	private func resolveInquisitionsInIsolation(
+		_ state: GameState,
+		_ clues: inout [AnyClue],
+		_ possibleStates: inout [PossibleState],
+		_ shouldCancelEarly: () -> Bool
+	) {
+	}
+
+	private func resolveInquisitionsInCombination(
+			_ state: GameState,
+			_ clues: inout [AnyClue],
+			_ possibleStates: inout [PossibleState],
+			_ shouldCancelEarly: () -> Bool
+		) {
+		}
 
 	private func processStatesIntoSolutions(_ states: [PossibleState]) -> [Solution] {
 		states.reduce(into: [Solution:Int]()) { counts, possibleState in

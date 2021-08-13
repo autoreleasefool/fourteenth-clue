@@ -31,6 +31,7 @@
 		CA85561B26C38E8700A7F1F0 /* Toaster.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA85561A26C38E8700A7F1F0 /* Toaster.swift */; };
 		CA85561E26C38ED600A7F1F0 /* LoafState.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA85561D26C38ED600A7F1F0 /* LoafState.swift */; };
 		CA85562126C38FC400A7F1F0 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA85562026C38FC400A7F1F0 /* Store.swift */; };
+		CA85562326C4317B00A7F1F0 /* StepReporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA85562226C4317B00A7F1F0 /* StepReporter.swift */; };
 		CA8C07A12689837000B50233 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8C07A02689837000B50233 /* Player.swift */; };
 		CA8C07A32689839800B50233 /* CardSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8C07A22689839800B50233 /* CardSet.swift */; };
 		CA8C07A52689842F00B50233 /* Clue.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8C07A42689842F00B50233 /* Clue.swift */; };
@@ -71,6 +72,7 @@
 		CA85561A26C38E8700A7F1F0 /* Toaster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toaster.swift; sourceTree = "<group>"; };
 		CA85561D26C38ED600A7F1F0 /* LoafState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoafState.swift; sourceTree = "<group>"; };
 		CA85562026C38FC400A7F1F0 /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
+		CA85562226C4317B00A7F1F0 /* StepReporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepReporter.swift; sourceTree = "<group>"; };
 		CA8C07A02689837000B50233 /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		CA8C07A22689839800B50233 /* CardSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardSet.swift; sourceTree = "<group>"; };
 		CA8C07A42689842F00B50233 /* Clue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Clue.swift; sourceTree = "<group>"; };
@@ -270,6 +272,7 @@
 			isa = PBXGroup;
 			children = (
 				CA85562026C38FC400A7F1F0 /* Store.swift */,
+				CA85562226C4317B00A7F1F0 /* StepReporter.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -386,6 +389,7 @@
 				CA8C07A9268993B400B50233 /* ClueForm.swift in Sources */,
 				CA2E856426823E13001BE951 /* Assets.swift in Sources */,
 				CA8C07AD268A636B00B50233 /* Solution.swift in Sources */,
+				CA85562326C4317B00A7F1F0 /* StepReporter.swift in Sources */,
 				CA8C07A726898A5800B50233 /* SecretInformant.swift in Sources */,
 				CA97C1F626968005004AC3A6 /* NavigationLink+Extensions.swift in Sources */,
 				CA2E8573268399D0001BE951 /* PlayerCardSet.swift in Sources */,
