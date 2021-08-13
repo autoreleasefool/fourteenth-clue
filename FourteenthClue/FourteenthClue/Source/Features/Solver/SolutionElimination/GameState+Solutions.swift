@@ -104,3 +104,21 @@ extension GameState {
 	"88584546":[{"name":"Butcher"},{"name":"Nurse"}]
 }
 */
+
+/*
+{
+ "Joseph": [{"name": "Sailor"},{"name":"Gun"}],
+ "Jessica": [{"name":"Florist"},{"name": "Theater"},{"name": "Poison"}],
+ "Cam": [{"name":"Maid"},{"name": "Parlor"},{"name": "Sword"}],
+ "Aaron": [{"name":"Dancer"},{"name": "Park"},{"name": "Rifle"}],
+ "Aditya": [{"name":"Officer"},{"name": "Railcar"},{"name": "Hammer"}]
+}
+ */
+/*
+ {
+	"Joseph": [{"name": "Nurse"},{"name":"Rifle"}],
+	"Jessica": [{"name":"Officer"},{"name": "Parlor"},{"name": "Knife"}],
+	"Cam": [{"name":"Maid"},{"name": "Harbor"},{"name": "Candlestick"}],
+	"Aaron": [{"name":"Duke"},{"name": "Market"},{"name": "Crossbow"}],
+ }
+ */
