@@ -9,10 +9,10 @@ import Foundation
 
 protocol Clue {
 	var id: UUID { get }
-	var player: String { get }
+	var primaryPlayer: String { get }
 	var cards: Set<Card> { get }
 
-	func description(withPlayer player: Player?) -> String
+	func description(withPlayers players: [Player]) -> String
 	func isEqual(to other: Clue) -> Bool
 }
 
@@ -32,15 +32,15 @@ struct AnyClue: Clue, Identifiable {
 	let wrappedValue: Clue
 
 	var id: UUID { wrappedValue.id }
-	var player: String { wrappedValue.player }
+	var primaryPlayer: String { wrappedValue.primaryPlayer }
 	var cards: Set<Card> { wrappedValue.cards }
 
 	init(_ clue: Clue) {
 		self.wrappedValue = clue
 	}
 
-	func description(withPlayer player: Player?) -> String {
-		wrappedValue.description(withPlayer: player)
+	func description(withPlayers players: [Player]) -> String {
+		wrappedValue.description(withPlayers: players)
 	}
 
 }
@@ -58,12 +58,14 @@ extension AnyClue: Equatable {
 struct Inquisition: Clue, Equatable {
 
 	let id = UUID()
-	let player: String
+	let askingPlayer: String
+	let answeringPlayer: String
 	let filter: Filter
 	let count: Int
 
-	init(player: String, filter: Filter, count: Int) {
-		self.player = player
+	init(askingPlayer: String, answeringPlayer: String, filter: Filter, count: Int) {
+		self.askingPlayer = askingPlayer
+		self.answeringPlayer = answeringPlayer
 		self.filter = filter
 		self.count = count
 	}
@@ -72,8 +74,14 @@ struct Inquisition: Clue, Equatable {
 		Card.allCardsMatching(filter: filter)
 	}
 
-	func description(withPlayer player: Player?) -> String {
-		"\(player?.name ?? "Somebody") sees \(count) \(filter.description) cards"
+	var primaryPlayer: String {
+		answeringPlayer
+	}
+
+	func description(withPlayers players: [Player]) -> String {
+		let askingPlayer = players.first(where: { $0.id == self.askingPlayer })!
+		let answeringPlayer = players.first(where: { $0.id == self.answeringPlayer })!
+		return "\(askingPlayer.name) asks \(answeringPlayer.name), they see \(count) \(filter.description)"
 	}
 
 }
@@ -102,23 +110,28 @@ extension Inquisition {
 struct Accusation: Clue, Equatable {
 
 	let id = UUID()
-	let player: String
+	let accusingPlayer: String
 	let accusation: MysteryCardSet
 
 	var cards: Set<Card> {
 		accusation.cards
 	}
 
-	init(player: String, accusation: MysteryCardSet) {
-		self.player = player
+	var primaryPlayer: String {
+		accusingPlayer
+	}
+
+	init(accusingPlayer: String, accusation: MysteryCardSet) {
+		self.accusingPlayer = accusingPlayer
 		self.accusation = accusation
 	}
 
-	func description(withPlayer player: Player?) -> String {
+	func description(withPlayers players: [Player]) -> String {
 		guard let person = accusation.person,
 					let location = accusation.location,
-					let weapon = accusation.weapon else { return "Invalid accusation" }
-		return "\(player?.name ?? "Somebody") has made an accusation: \(person.rawValue.capitalized), \(location.rawValue.capitalized), \(weapon.rawValue.capitalized)"
+					let weapon = accusation.weapon,
+					let player = players.first(where: { $0.id == self.primaryPlayer }) else { return "Invalid accusation" }
+		return "\(player.name) has made an accusation: \(person.rawValue.capitalized), \(location.rawValue.capitalized), \(weapon.rawValue.capitalized)"
 	}
 
 }

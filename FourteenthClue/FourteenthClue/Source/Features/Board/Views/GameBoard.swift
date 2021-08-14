@@ -29,7 +29,10 @@ struct GameBoard: View {
 			playerCards
 			List {
 				clues
-				informants
+
+				if !viewModel.secretInformants.isEmpty {
+					informants
+				}
 			}
 		}
 		.navigationBarTitle("13 Clues", displayMode: .inline)
@@ -82,7 +85,7 @@ struct GameBoard: View {
 				viewModel.addClue()
 			}
 			ForEach(viewModel.clues) { clue in
-				Text(clue.description(withPlayer: viewModel.player(withId: clue.player)))
+				Text(clue.description(withPlayers: viewModel.players))
 			}
 			.onDelete { indexSet in
 				viewModel.deleteClues(atOffsets: indexSet)

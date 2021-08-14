@@ -55,7 +55,7 @@ struct CardPicker: View {
 				CardImage(card: card)
 					.showingCardName()
 					.overridingNilName(with: "Remove card?")
-					.size(.medium)
+					.size(.small)
 					.foregroundColor(card == nil ? .red : .black)
 
 				Spacer()

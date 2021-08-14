@@ -35,7 +35,7 @@ struct AccusationForm: View {
 			Section {
 				Button("Submit") {
 					onAddClue(AnyClue(Accusation(
-						player: selectedPlayer.id,
+						accusingPlayer: selectedPlayer.id,
 						accusation: MysteryCardSet(person: person, location: location, weapon: weapon)
 					)))
 				}
@@ -65,7 +65,7 @@ struct AccusationForm: View {
 			if let card = card(for: cardPosition) {
 				CardImage(card: card)
 					.showingCardName()
-					.size(.medium)
+					.size(.small)
 			}
 		}
 	}

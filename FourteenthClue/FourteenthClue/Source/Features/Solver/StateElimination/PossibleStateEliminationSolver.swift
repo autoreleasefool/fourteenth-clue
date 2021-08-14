@@ -73,7 +73,7 @@ class PossibleStateEliminationSolver: ClueSolver {
 
 		clues.enumerated()
 			// Filter out clues from opponents
-			.filter { $0.element.player == me.id }
+			.filter { $0.element.primaryPlayer == me.id }
 			// Only look at accusations
 			.compactMap { offset, clue -> (Int, Accusation)? in
 				guard let accusation = clue.wrappedValue as? Accusation else { return nil }
@@ -102,7 +102,7 @@ class PossibleStateEliminationSolver: ClueSolver {
 
 		clues.enumerated()
 			// Filter out clues from me
-			.filter { $0.element.player != me.id }
+			.filter { $0.element.primaryPlayer != me.id }
 			// Only look at accusations
 			.compactMap { offset, clue -> (Int, Accusation)? in
 				guard let accusation = clue.wrappedValue as? Accusation else { return nil }
@@ -149,7 +149,7 @@ class PossibleStateEliminationSolver: ClueSolver {
 
 }
 
-// MARK: Isolation rules
+// MARK: - Isolation rules
 
 extension PossibleStateEliminationSolver {
 
@@ -166,7 +166,7 @@ extension PossibleStateEliminationSolver {
 
 		clues.enumerated()
 			// Filter out clues from me
-			.filter { $0.element.player != me.id }
+			.filter { $0.element.primaryPlayer != me.id }
 			// Only look at inquisitions (ignore accusations)
 			.compactMap { offset, clue -> (Int, Inquisition)? in
 				guard let inquisition = clue.wrappedValue as? Inquisition else { return nil }
@@ -196,7 +196,7 @@ extension PossibleStateEliminationSolver {
 		// Remove states where any other player has said category in their mystery (would be visible to answering player)
 		possibleStates.removeAll {
 			$0.players
-				.filter { $0.id != inquisition.player }
+				.filter { $0.id != inquisition.answeringPlayer }
 				.contains { !$0.mystery.cards.isDisjoint(with: categoryCards) }
 
 		}
@@ -204,7 +204,7 @@ extension PossibleStateEliminationSolver {
 		// Remove states where answering player has said category in their hidden (would be visible to them)
 		possibleStates.removeAll {
 			$0.players
-				.filter { $0.id == inquisition.player }
+				.filter { $0.id == inquisition.answeringPlayer }
 				.contains { !$0.hidden.cards.isDisjoint(with: categoryCards) }
 		}
 	}
@@ -222,14 +222,14 @@ extension PossibleStateEliminationSolver {
 		// Remove states where any other player has said category in their hidden (would not be visible to answering player)
 		possibleStates.removeAll {
 			$0.players
-				.filter { $0.id != inquisition.player }
+				.filter { $0.id != inquisition.answeringPlayer }
 				.contains { !$0.hidden.cards.isDisjoint(with: categoryCards) }
 		}
 
 		// Remove states where answering player has said category in their mystery (would not be visible to them)
 		possibleStates.removeAll {
 			$0.players
-				.filter { $0.id == inquisition.player }
+				.filter { $0.id == inquisition.answeringPlayer }
 				.contains { !$0.mystery.cards.isDisjoint(with: categoryCards) }
 		}
 

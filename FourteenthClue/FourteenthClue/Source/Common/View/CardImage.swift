@@ -38,7 +38,7 @@ struct CardImage: View {
 				.frame(width: size.width, height: size.height)
 
 			if let name = card?.name ?? overrideName, showingName {
-				Text(name)
+				Text(name).padding(.leading, 16)
 			}
 		}
 	}
