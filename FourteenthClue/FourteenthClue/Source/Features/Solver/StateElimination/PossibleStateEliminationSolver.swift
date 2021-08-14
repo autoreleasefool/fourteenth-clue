@@ -57,7 +57,7 @@ class PossibleStateEliminationSolver: ClueSolver {
 
 		reporter.reportStep(message: "Finished generating \(states.count) possible states.")
 		possibleStatesCache = states
-		subject.send(solutions.sorted())
+		subject.send(solutions.sorted().reversed())
 	}
 
 	private func resolveMyAccusations(
