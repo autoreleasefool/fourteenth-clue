@@ -18,13 +18,16 @@ class GameBoardViewModel: ObservableObject {
 	@Published var pickingSecretInformant: SecretInformant?
 	@Published var addingClue = false
 	@Published var showingSolutions = false
+	@Published var resettingState = false
 	@Published var possibleSolutions: [Solution] = []
 
 	private var solutionsCancellable: AnyCancellable?
 
+	private let initialState: GameState
 	private var solver: ClueSolver = PossibleStateEliminationSolver()
 
 	init(state: GameState) {
+		self.initialState = state
 		self.state = state
 	}
 
@@ -43,6 +46,19 @@ class GameBoardViewModel: ObservableObject {
 
 	func onDisappear() {
 		solutionsCancellable = nil
+	}
+
+	func promptResetState() {
+		self.resettingState = true
+	}
+
+	func resetState() {
+		self.resettingState = false
+		self.state = initialState
+	}
+
+	func cancelReset() {
+		self.resettingState = false
 	}
 
 	func addClue() {

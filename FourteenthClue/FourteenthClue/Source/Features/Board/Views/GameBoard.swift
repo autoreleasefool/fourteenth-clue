@@ -36,7 +36,7 @@ struct GameBoard: View {
 		}
 		.navigationBarTitle("13 Clues", displayMode: .inline)
 		.navigationBarBackButtonHidden(true)
-		.navigationBarItems(trailing: solutionsButton)
+		.navigationBarItems(leading: resetButton, trailing: solutionsButton)
 		.onAppear { viewModel.onAppear() }
 		.onDisappear { viewModel.onDisappear() }
 		.sheet(isPresented: $viewModel.showingSolutions) {
@@ -57,6 +57,15 @@ struct GameBoard: View {
 				}
 			}
 		}
+		.alert("Reset game?", isPresented: $viewModel.resettingState) {
+			Button("Reset", role: .destructive) {
+				viewModel.resetState()
+			}
+
+			Button("Cancel", role: .cancel) {
+				viewModel.cancelReset()
+			}
+		}
 	}
 
 	private var solutionsButton: some View {
@@ -64,6 +73,12 @@ struct GameBoard: View {
 			viewModel.showSolutions()
 		}
 		.disabled(viewModel.possibleSolutions.isEmpty)
+	}
+
+	private var resetButton: some View {
+		Button("Reset") {
+			viewModel.promptResetState()
+		}
 	}
 
 	private var playerCards: some View {
