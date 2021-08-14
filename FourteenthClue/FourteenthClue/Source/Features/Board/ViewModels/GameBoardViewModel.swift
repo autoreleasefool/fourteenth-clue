@@ -22,11 +22,6 @@ class GameBoardViewModel: ObservableObject {
 
 	private var solutionsCancellable: AnyCancellable?
 
-	private var loafSubject = PassthroughSubject<LoafState, Never>()
-	var loafPublisher: AnyPublisher<LoafState, Never> {
-		loafSubject.eraseToAnyPublisher()
-	}
-
 	private var solver: ClueSolver = PossibleStateEliminationSolver()
 
 	init(state: GameState) {
@@ -42,7 +37,6 @@ class GameBoardViewModel: ObservableObject {
 			.solutions
 			.receive(on: RunLoop.main)
 			.sink { [weak self] solutions in
-				self?.loafSubject.send(LoafState("Updated \(solutions.count) solutions", duration: .custom(0.5)))
 				self?.possibleSolutions = solutions
 			}
 	}

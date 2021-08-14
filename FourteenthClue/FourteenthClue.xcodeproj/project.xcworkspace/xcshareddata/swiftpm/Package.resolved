@@ -11,15 +11,6 @@
         }
       },
       {
-        "package": "Loaf",
-        "repositoryURL": "https://github.com/autoreleasefool/Loaf",
-        "state": {
-          "branch": "swiftui",
-          "revision": "4c5029a298487faacd58e15f2c26bec7fda4a8d4",
-          "version": null
-        }
-      },
-      {
         "package": "swift-algorithms",
         "repositoryURL": "https://github.com/apple/swift-algorithms.git",
         "state": {
