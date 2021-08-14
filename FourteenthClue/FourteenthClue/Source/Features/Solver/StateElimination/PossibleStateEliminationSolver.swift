@@ -176,10 +176,9 @@ extension PossibleStateEliminationSolver {
 				guard !shouldCancelEarly() else { return }
 
 				applyRuleIfPlayerSeesNoneOfCategory(state, inquisition, &possibleStates)
+				applyRuleIfPlayerSeesSomeOfCategory(state, inquisition, &possibleStates)
 				applyRuleIfPlayerSeesAllOfCategory(state, inquisition, &possibleStates)
 				applyRuleIfPlayerAsksAboutCategory(state, inquisition, &possibleStates)
-//				applyRuleIfPlayerSeesSameCardsOfCategoryAsMe(state, inquisition, &possibleStates)
-//				applyRuleIfPlayerSeesDifferentCardsOfCategoryThanMe(state, inquisition, &possibleStates)
 			}
 
 		clues.remove(atOffsets: cluesToRemove)
@@ -210,6 +209,24 @@ extension PossibleStateEliminationSolver {
 		}
 	}
 
+	private func applyRuleIfPlayerSeesSomeOfCategory(
+		_ state: GameState,
+		_ inquisition: Inquisition,
+		_ possibleStates: inout [PossibleState]
+	) {
+		let categoryCards = inquisition.cards.intersection(state.cards)
+		let stateCardsMatchingCategory = state.cards.matching(filter: inquisition.filter)
+
+		guard inquisition.count > 0 && inquisition.count < stateCardsMatchingCategory.count else { return }
+
+		// Remove states where cards answering player can see does not equal their stated answer
+		possibleStates.removeAll { possibleState in
+			possibleState.players
+				.filter { $0.id == inquisition.answeringPlayer }
+				.contains { possibleState.cardsVisible(toPlayer: $0.id).intersection(categoryCards).count != inquisition.count }
+		}
+	}
+
 	private func applyRuleIfPlayerSeesAllOfCategory(
 		_ state: GameState,
 		_ inquisition: Inquisition,
@@ -218,7 +235,7 @@ extension PossibleStateEliminationSolver {
 		let categoryCards = inquisition.cards.intersection(state.cards)
 		let stateCardsMatchingCategory = state.cards.matching(filter: inquisition.filter)
 
-		guard categoryCards == stateCardsMatchingCategory else { return }
+		guard inquisition.count == stateCardsMatchingCategory.count else { return }
 
 		// Remove states where any other player has said category in their hidden (would not be visible to answering player)
 		possibleStates.removeAll {
@@ -251,33 +268,8 @@ extension PossibleStateEliminationSolver {
 		possibleStates.removeAll { possibleState in
 			possibleState.players
 				.filter { $0.id == inquisition.askingPlayer }
-				.contains { possibleState.cardsVisible(toPlayer: $0.id) == categoryCards }
+				.contains { categoryCards.isSubset(of: possibleState.cardsVisible(toPlayer: $0.id)) }
 		}
 	}
 
-//	private func applyRuleIfPlayerSeesSameCardsOfCategoryAsMe(
-//		_ state: GameState,
-//		_ inquisition: Inquisition,
-//		_ possibleStates: inout [PossibleState]
-//	) {
-//		let categoryCards = inquisition.cards.intersection(state.cards)
-//		let categoryCardsISee = inquisition.cards.intersection(
-//			state.mysteryCardsVisibleToMe(excludingPlayer: inquisition.answeringPlayer)
-//		)
-//
-//		guard categoryCardsISee.count == inquisition.count else { return }
-//
-//		// Remove states where the answering player would be able to see
-//		possibleStates.removeAll {
-//
-//		}
-//	}
-//
-//	private func applyRuleIfPlayerSeesDifferentCardsOfCategoryThanMe(
-//		_ state: GameState,
-//		_ inquisition: Inquisition,
-//		_ possibleStates: inout [PossibleState]
-//	) {
-//
-//	}
 }
