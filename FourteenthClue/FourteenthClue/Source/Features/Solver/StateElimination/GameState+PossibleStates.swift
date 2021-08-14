@@ -17,6 +17,7 @@ extension GameState {
 
 		for solution in possibleSolutions {
 			let mySolution = PossiblePlayer(
+				id: me.id,
 				mystery: PossibleMysterySet(solution),
 				hidden: PossibleHiddenSet(me.privateCards)
 			)
@@ -57,6 +58,7 @@ extension GameState {
 		let nextPlayerIndex = players.count
 		cardPairs.forEach { pair in
 			let nextPlayer = PossiblePlayer(
+				id: state.players[nextPlayerIndex].id,
 				mystery: PossibleMysterySet(state.players[nextPlayerIndex].mystery),
 				hidden: PossibleHiddenSet(pair)
 			)

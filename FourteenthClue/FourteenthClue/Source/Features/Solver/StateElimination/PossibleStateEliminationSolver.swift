@@ -113,52 +113,9 @@ class PossibleStateEliminationSolver: ClueSolver {
 
 				// Remove state if any cards in the accusation appear in the solution (opponents cannot guess cards they can see)
 				possibleStates.removeAll { !$0.solution.cards.isDisjoint(with: accusation.cards) }
+
 				// Filter out accusations since they're no longer useful
 				cluesToRemove.insert(offset)
-			}
-
-		clues.remove(atOffsets: cluesToRemove)
-	}
-
-	private func resolveInquisitionsInIsolation(
-		_ state: GameState,
-		_ clues: inout [AnyClue],
-		_ possibleStates: inout [PossibleState],
-		_ shouldCancelEarly: () -> Bool
-	) {
-		guard !shouldCancelEarly() else { return }
-
-		let me = state.players.first!
-		var cluesToRemove = IndexSet()
-
-		clues.enumerated()
-			// Filter out clues from me
-			.filter { $0.element.player != me.id }
-			// Only look at inquisitions (ignore accusations)
-			.compactMap { offset, clue -> (Int, Inquisition)? in
-				guard let inquisition = clue.wrappedValue as? Inquisition else { return nil }
-				return (offset, inquisition)
-			}
-			.forEach { offset, inquisition in
-				guard !shouldCancelEarly() else { return }
-
-				// If the player sees no cards of a category, we can remove all the cards that belong to that category
-				guard inquisition.count > 0 else {
-					possibleStates.removeAll { !$0.solution.cards.isDisjoint(with: inquisition.cards) }
-					cluesToRemove.insert(offset)
-					return
-				}
-
-				let clueCards = inquisition.cards.intersection(state.cards)
-				let numberOfCardsSeen = inquisition.count
-				let cardsISeeThatPlayerSees = state.mysteryCardsVisibleToMe(excludingPlayer: inquisition.player)
-				let clueCardsISeeThatPlayerSees = cardsISeeThatPlayerSees.intersection(clueCards)
-
-				if numberOfCardsSeen <= clueCardsISeeThatPlayerSees.count {
-					// There are no cards in the category that the player sees that I can't, which means none are in my mystery
-					// so remove all solutions with those clueCards
-					possibleStates.removeAll { !$0.solution.cards.isDisjoint(with: clueCards) }
-				}
 			}
 
 		clues.remove(atOffsets: cluesToRemove)
@@ -190,4 +147,111 @@ class PossibleStateEliminationSolver: ClueSolver {
 		!prevState.isEarlierState(of: nextState)
 	}
 
+}
+
+// MARK: Isolation rules
+
+extension PossibleStateEliminationSolver {
+
+	private func resolveInquisitionsInIsolation(
+		_ state: GameState,
+		_ clues: inout [AnyClue],
+		_ possibleStates: inout [PossibleState],
+		_ shouldCancelEarly: () -> Bool
+	) {
+		guard !shouldCancelEarly() else { return }
+
+		let me = state.players.first!
+		var cluesToRemove = IndexSet()
+
+		clues.enumerated()
+			// Filter out clues from me
+			.filter { $0.element.player != me.id }
+			// Only look at inquisitions (ignore accusations)
+			.compactMap { offset, clue -> (Int, Inquisition)? in
+				guard let inquisition = clue.wrappedValue as? Inquisition else { return nil }
+				return (offset, inquisition)
+			}
+			.forEach { offset, inquisition in
+				guard !shouldCancelEarly() else { return }
+
+				applyRuleIfPlayerSeesNoneOfCategory(state, inquisition, &possibleStates)
+				applyRuleIfPlayerSeesAllOfCategory(state, inquisition, &possibleStates)
+				applyRuleIfPlayerSeesLessOrSameAmountOfCategoryThanMe(state, inquisition, &possibleStates)
+				applyRuleIfPlayerSeesMoreOfCategoryThanMe(state, inquisition, &possibleStates)
+			}
+
+		clues.remove(atOffsets: cluesToRemove)
+	}
+
+	private func applyRuleIfPlayerSeesNoneOfCategory(
+		_ state: GameState,
+		_ inquisition: Inquisition,
+		_ possibleStates: inout [PossibleState]
+	) {
+		guard inquisition.count == 0 else { return }
+
+		let categoryCards = inquisition.cards.intersection(state.cards)
+
+		// Remove states where any other player has said category in their mystery (would be visible to answering player)
+		possibleStates.removeAll {
+			$0.players
+				.filter { $0.id != inquisition.player }
+				.contains { !$0.mystery.cards.isDisjoint(with: categoryCards) }
+
+		}
+
+		// Remove states where answering player has said category in their hidden (would be visible to them)
+		possibleStates.removeAll {
+			$0.players
+				.filter { $0.id == inquisition.player }
+				.contains { !$0.hidden.cards.isDisjoint(with: categoryCards) }
+		}
+	}
+
+	private func applyRuleIfPlayerSeesAllOfCategory(
+		_ state: GameState,
+		_ inquisition: Inquisition,
+		_ possibleStates: inout [PossibleState]
+	) {
+		let categoryCards = inquisition.cards.intersection(state.cards)
+		let stateCardsMatchingCategory = state.cards.matching(filter: inquisition.filter)
+
+		guard categoryCards == stateCardsMatchingCategory else { return }
+
+		// Remove states where any other player has said category in their hidden (would not be visible to answering player)
+		possibleStates.removeAll {
+			$0.players
+				.filter { $0.id != inquisition.player }
+				.contains { !$0.hidden.cards.isDisjoint(with: categoryCards) }
+		}
+
+		// Remove states where answering player has said category in their mystery (would not be visible to them)
+		possibleStates.removeAll {
+			$0.players
+				.filter { $0.id == inquisition.player }
+				.contains { !$0.mystery.cards.isDisjoint(with: categoryCards) }
+		}
+
+		// Remove states where secret informants contain category (would not be visible to answering player)
+		possibleStates.removeAll {
+			!$0.informants.isDisjoint(with: categoryCards)
+		}
+	}
+
+	private func applyRuleIfPlayerSeesLessOrSameAmountOfCategoryThanMe(
+		_ state: GameState,
+		_ inquisition: Inquisition,
+		_ possibleStates: inout [PossibleState]
+	) {
+
+	}
+
+	private func applyRuleIfPlayerSeesMoreOfCategoryThanMe(
+		_ state: GameState,
+		_ inquisition: Inquisition,
+		_ possibleStates: inout [PossibleState]
+	) {
+
+	}
 }

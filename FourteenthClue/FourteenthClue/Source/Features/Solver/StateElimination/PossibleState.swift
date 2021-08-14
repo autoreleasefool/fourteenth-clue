@@ -17,6 +17,7 @@ struct PossibleState {
 }
 
 struct PossiblePlayer {
+	let id: String
 	let mystery: PossibleMysterySet
 	let hidden: PossibleHiddenSet
 }
