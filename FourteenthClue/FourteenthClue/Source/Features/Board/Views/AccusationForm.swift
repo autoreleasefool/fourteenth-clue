@@ -12,7 +12,7 @@ struct AccusationForm: View {
 	private let state: GameState
 	private let onAddClue: (AnyClue) -> Void
 
-	@State private var selectedPlayer: Player
+	@State private var accusingPlayer: Player
 	@State private var person: Card = Card.peopleCards.sorted().first!
 	@State private var location: Card = Card.locationsCards.sorted().first!
 	@State private var weapon: Card = Card.weaponsCards.sorted().first!
@@ -21,11 +21,20 @@ struct AccusationForm: View {
 	init(state: GameState, onAddClue: @escaping (AnyClue) -> Void) {
 		self.state = state
 		self.onAddClue = onAddClue
-		self._selectedPlayer = .init(initialValue: state.players.first!)
+		self._accusingPlayer = .init(initialValue: state.players.first!)
 	}
 
 	var body: some View {
 		Group {
+			Section {
+				Picker("Accusing Player", selection: $accusingPlayer) {
+					ForEach(state.players) { player in
+						Text(player.name)
+							.tag(player)
+					}
+				}
+			}
+
 			Section {
 				cardRow(for: .person)
 				cardRow(for: .location)
@@ -35,7 +44,7 @@ struct AccusationForm: View {
 			Section {
 				Button("Submit") {
 					onAddClue(AnyClue(Accusation(
-						accusingPlayer: selectedPlayer.id,
+						accusingPlayer: accusingPlayer.id,
 						accusation: MysteryCardSet(person: person, location: location, weapon: weapon)
 					)))
 				}

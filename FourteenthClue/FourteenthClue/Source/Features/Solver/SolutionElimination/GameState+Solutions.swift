@@ -107,18 +107,9 @@ extension GameState {
 
 /*
 {
- "Joseph": [{"name": "Sailor"},{"name":"Gun"}],
- "Jessica": [{"name":"Florist"},{"name": "Theater"},{"name": "Poison"}],
- "Cam": [{"name":"Maid"},{"name": "Parlor"},{"name": "Sword"}],
- "Aaron": [{"name":"Dancer"},{"name": "Park"},{"name": "Rifle"}],
- "Aditya": [{"name":"Officer"},{"name": "Railcar"},{"name": "Hammer"}]
+"Joseph": [{"name": "Plaza"},{"name":"Rifle"}],
+"Aaron": [{"name":"Officer"},{"name": "Harbor"},{"name": "Blowgun"}],
+"Jessica": [{"name":"Duke"},{"name": "Library"},{"name": "Sword"}],
+"Cam": [{"name":"Dancer"},{"name": "Park"},{"name": "Crossbow"}],
 }
- */
-/*
- {
-	"Joseph": [{"name": "Nurse"},{"name":"Rifle"}],
-	"Jessica": [{"name":"Officer"},{"name": "Parlor"},{"name": "Knife"}],
-	"Cam": [{"name":"Maid"},{"name": "Harbor"},{"name": "Candlestick"}],
-	"Aaron": [{"name":"Duke"},{"name": "Market"},{"name": "Crossbow"}],
- }
  */
