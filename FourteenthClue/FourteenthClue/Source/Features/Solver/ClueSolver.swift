@@ -41,7 +41,11 @@ class ClueSolver {
 	}
 
 	private func startSolving(state: GameState, prevState: GameState?) {
-		guard isEnabled else { return }
+		guard isEnabled  && state.isValidForSolving else {
+			solutionsSubject.send([])
+			return
+		}
+
 		queue.async { [weak self] in
 			guard state.id == self?.state?.id else { return }
 			self?.solve(state: state, prevState: prevState)

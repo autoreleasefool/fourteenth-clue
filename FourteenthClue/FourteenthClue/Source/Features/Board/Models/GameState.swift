@@ -180,6 +180,11 @@ struct GameState {
 		secretInformants.count
 	}
 
+	var isValidForSolving: Bool {
+		players.first?.privateCards.cards.count == 2 &&
+			players.dropFirst().allSatisfy { $0.mystery.cards.count == 3 }
+	}
+
 	func isEarlierState(of nextState: GameState) -> Bool {
 		self.players == nextState.players &&
 			self.secretInformants == nextState.secretInformants &&
