@@ -14,6 +14,16 @@ struct PossibleState {
 	var solution: Solution {
 		Solution(players.first!.mystery)
 	}
+
+	func cardsVisible(toPlayer targetPlayer: String) -> Set<Card> {
+		players.reduce(into: Set<Card>()) { cards, player in
+			cards.formUnion(
+				targetPlayer == player.id
+					? player.hidden.cards
+					: player.mystery.cards
+			)
+		}
+	}
 }
 
 struct PossiblePlayer {

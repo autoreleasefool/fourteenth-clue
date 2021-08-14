@@ -177,8 +177,9 @@ extension PossibleStateEliminationSolver {
 
 				applyRuleIfPlayerSeesNoneOfCategory(state, inquisition, &possibleStates)
 				applyRuleIfPlayerSeesAllOfCategory(state, inquisition, &possibleStates)
-				applyRuleIfPlayerSeesLessOrSameAmountOfCategoryThanMe(state, inquisition, &possibleStates)
-				applyRuleIfPlayerSeesMoreOfCategoryThanMe(state, inquisition, &possibleStates)
+				applyRuleIfPlayerAsksAboutCategory(state, inquisition, &possibleStates)
+//				applyRuleIfPlayerSeesSameCardsOfCategoryAsMe(state, inquisition, &possibleStates)
+//				applyRuleIfPlayerSeesDifferentCardsOfCategoryThanMe(state, inquisition, &possibleStates)
 			}
 
 		clues.remove(atOffsets: cluesToRemove)
@@ -239,19 +240,44 @@ extension PossibleStateEliminationSolver {
 		}
 	}
 
-	private func applyRuleIfPlayerSeesLessOrSameAmountOfCategoryThanMe(
+	private func applyRuleIfPlayerAsksAboutCategory(
 		_ state: GameState,
 		_ inquisition: Inquisition,
 		_ possibleStates: inout [PossibleState]
 	) {
+		let categoryCards = inquisition.cards.intersection(state.cards)
 
+		// Remove states where player can see all of the cards in the category
+		possibleStates.removeAll { possibleState in
+			possibleState.players
+				.filter { $0.id == inquisition.askingPlayer }
+				.contains { possibleState.cardsVisible(toPlayer: $0.id) == categoryCards }
+		}
 	}
 
-	private func applyRuleIfPlayerSeesMoreOfCategoryThanMe(
-		_ state: GameState,
-		_ inquisition: Inquisition,
-		_ possibleStates: inout [PossibleState]
-	) {
-
-	}
+//	private func applyRuleIfPlayerSeesSameCardsOfCategoryAsMe(
+//		_ state: GameState,
+//		_ inquisition: Inquisition,
+//		_ possibleStates: inout [PossibleState]
+//	) {
+//		let categoryCards = inquisition.cards.intersection(state.cards)
+//		let categoryCardsISee = inquisition.cards.intersection(
+//			state.mysteryCardsVisibleToMe(excludingPlayer: inquisition.answeringPlayer)
+//		)
+//
+//		guard categoryCardsISee.count == inquisition.count else { return }
+//
+//		// Remove states where the answering player would be able to see
+//		possibleStates.removeAll {
+//
+//		}
+//	}
+//
+//	private func applyRuleIfPlayerSeesDifferentCardsOfCategoryThanMe(
+//		_ state: GameState,
+//		_ inquisition: Inquisition,
+//		_ possibleStates: inout [PossibleState]
+//	) {
+//
+//	}
 }
