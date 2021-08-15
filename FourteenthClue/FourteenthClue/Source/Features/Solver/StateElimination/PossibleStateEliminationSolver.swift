@@ -21,7 +21,7 @@ class PossibleStateEliminationSolver: ClueSolver {
 	}
 
 	override func solve(state: GameState, prevState: GameState?) {
-		let reporter = StepReporter()
+		let reporter = StepReporter(owner: self)
 		guard state.id == self.state?.id else { return }
 
 		let shouldCancelEarly = { [weak self] in

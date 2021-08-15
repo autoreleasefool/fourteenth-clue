@@ -8,10 +8,12 @@
 import Foundation
 
 class StepReporter {
+	let ownerName: String
 	let startTime: DispatchTime
 	var steps = 0
 
-	init() {
+	init(owner: Any) {
+		self.ownerName = String(describing: owner)
 		startTime = DispatchTime.now()
 	}
 
@@ -22,6 +24,6 @@ class StepReporter {
 		let nanoTime = currentTime.uptimeNanoseconds - startTime.uptimeNanoseconds
 		let timeInterval = Double(nanoTime) / 1_000_000_000
 
-		print("[\(String(format: "%.2f", timeInterval))] \(steps). \(message)")
+		print("[\(ownerName)][\(String(format: "%.2f", timeInterval))] \(steps). \(message)")
 	}
 }
