@@ -33,7 +33,7 @@ class PossibleStateEliminationSolver: ClueSolver {
 			possibleStatesCache = nil
 		}
 
-		reporter.reportStep(message: "Beginning state generation")
+		reporter.reportStep(message: "Beginning state elimination")
 
 		var states = possibleStatesCache ?? state.allPossibleStates(shouldCancel: shouldCancelEarly)
 		reporter.reportStep(message: "Finished generating states")
