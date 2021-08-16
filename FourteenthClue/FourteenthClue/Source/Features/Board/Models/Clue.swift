@@ -101,6 +101,17 @@ extension Inquisition {
 			}
 		}
 
+		static func == (lhs: Filter, rhs: Inquiry.Category) -> Bool {
+			switch (lhs, rhs) {
+			case (.category(let left), .category(let right)):
+				return left == right
+			case (.color(let left), .color(let right)):
+				return left == right
+			case (.category, _), (.color, _):
+				return false
+			}
+		}
+
 	}
 
 }

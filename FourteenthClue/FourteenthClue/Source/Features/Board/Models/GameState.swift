@@ -193,6 +193,14 @@ struct GameState {
 			zip(self.clues, nextState.clues).allSatisfy { $0 == $1 }
 	}
 
+	func playerHasBeenAsked(inquiry: Inquiry) -> Bool {
+		clues.contains {
+			guard let inquisition = $0.wrappedValue as? Inquisition else { return false }
+			return inquisition.answeringPlayer == inquiry.player &&
+				inquisition.filter == inquiry.category
+		}
+	}
+
 	func cardsVisible(toPlayer targetPlayer: Player) -> Set<Card> {
 		Set(players.flatMap { player in
 			return targetPlayer.id == player.id

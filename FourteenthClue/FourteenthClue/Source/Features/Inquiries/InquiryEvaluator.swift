@@ -13,7 +13,7 @@ class InquiryEvaluator {
 	var seed: (baseState: GameState, possibleStates: [PossibleState])? = nil {
 		didSet {
 			if let seed = seed {
-				findOptimalInquiry(baseState: seed.baseState, seed.possibleStates)
+				findOptimalInquiry(baseState: seed.baseState, possibleStates: seed.possibleStates)
 			} else {
 				inquirySubject.send([])
 			}

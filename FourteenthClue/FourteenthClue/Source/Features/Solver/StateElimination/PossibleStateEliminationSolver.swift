@@ -11,8 +11,11 @@ import Foundation
 class PossibleStateEliminationSolver: ClueSolver {
 
 	private let subject: PassthroughSubject<[Solution], Never>
+	private let statesSubject = CurrentValueSubject<[PossibleState]?, Never>(nil)
 
-	private var possibleStatesCache: [PossibleState]?
+	var states: AnyPublisher<[PossibleState]?, Never> {
+		statesSubject.eraseToAnyPublisher()
+	}
 
 	init() {
 		let subject = PassthroughSubject<[Solution], Never>()
@@ -30,12 +33,12 @@ class PossibleStateEliminationSolver: ClueSolver {
 
 		if let prevState = prevState,
 			 shouldClearStateCache(prevState: prevState, nextState: state) {
-			possibleStatesCache = nil
+			statesSubject.send(nil)
 		}
 
 		reporter.reportStep(message: "Beginning state elimination")
 
-		var states = possibleStatesCache ?? state.allPossibleStates(shouldCancel: shouldCancelEarly)
+		var states = statesSubject.value ?? state.allPossibleStates(shouldCancel: shouldCancelEarly)
 		reporter.reportStep(message: "Finished generating states")
 
 		var clues = state.clues
@@ -56,7 +59,7 @@ class PossibleStateEliminationSolver: ClueSolver {
 		guard state.id == self.state?.id else { return }
 
 		reporter.reportStep(message: "Finished generating \(states.count) possible states.")
-		possibleStatesCache = states
+		statesSubject.send(states)
 		subject.send(solutions.sorted().reversed())
 	}
 

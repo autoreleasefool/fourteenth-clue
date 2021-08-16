@@ -21,10 +21,14 @@ class GameBoardViewModel: ObservableObject {
 	@Published var resettingState = false
 	@Published var possibleSolutions: [Solution] = []
 
-	private var solutionsCancellable: AnyCancellable?
-
 	private let initialState: GameState
-	private var solver: ClueSolver = PossibleStateEliminationSolver()
+
+	private let solver: ClueSolver = PossibleStateEliminationSolver()
+	private var solutionsCancellable: AnyCancellable?
+	private var statesCancellable: AnyCancellable?
+
+	private let inquiryEvaluator: InquiryEvaluator = BruteForceInquiryEvaluator()
+	private var inquiriesCancellable: AnyCancellable?
 
 	init(state: GameState) {
 		self.initialState = state
@@ -35,6 +39,7 @@ class GameBoardViewModel: ObservableObject {
 
 	func onAppear() {
 		print("Starting game with \(state.numberOfPlayers) players")
+
 		solver.isEnabled = true
 		solutionsCancellable = solver
 			.solutions
@@ -42,6 +47,24 @@ class GameBoardViewModel: ObservableObject {
 			.sink { [weak self] solutions in
 				self?.possibleSolutions = solutions
 			}
+
+		inquiryEvaluator.isEnabled = true
+		inquiriesCancellable = inquiryEvaluator
+			.inquiries
+			.receive(on: RunLoop.main)
+			.sink { inquiries in
+				print(inquiries)
+			}
+
+		if let stateEliminator = solver as? PossibleStateEliminationSolver {
+			statesCancellable = stateEliminator
+				.states
+				.receive(on: RunLoop.main)
+				.sink { [weak self] states in
+					guard let self = self, let states = states else { return }
+					self.inquiryEvaluator.seed = (self.state, states)
+				}
+		}
 	}
 
 	func onDisappear() {
