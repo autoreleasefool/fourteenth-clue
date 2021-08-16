@@ -88,7 +88,7 @@ enum Card: String, CaseIterable, Comparable, Hashable {
 
 extension Card {
 
-	enum Category: Hashable, Equatable, CaseIterable, Identifiable, Comparable {
+	enum Category: Hashable, Equatable, CaseIterable, CustomStringConvertible, Identifiable, Comparable {
 
 		case person(Gender)
 		case location(Presence)
@@ -132,17 +132,17 @@ extension Card {
 		var description: String {
 			switch self {
 			case .person(.man):
-				return "male"
+				return "Male"
 			case .person(.woman):
-				return "female"
+				return "Female"
 			case .location(.indoors):
-				return "indoors"
+				return "Indoors"
 			case .location(.outdoors):
-				return "outdoors"
+				return "Outdoors"
 			case .weapon(.melee):
-				return "melee"
+				return "Melee"
 			case .weapon(.ranged):
-				return "ranged"
+				return "Ranged"
 			}
 		}
 
@@ -188,6 +188,17 @@ extension Card {
 	}
 
 	static func allCardsMatching(filter: Inquisition.Filter) -> Set<Card> {
+		Set(Card.allCases.filter { card in
+			switch filter {
+			case .color(let color):
+				return color == card.color
+			case .category(let category):
+				return category == card.category
+			}
+		})
+	}
+
+	static func allCardsMatching(filter: Inquiry.Category) -> Set<Card> {
 		Set(Card.allCases.filter { card in
 			switch filter {
 			case .color(let color):
