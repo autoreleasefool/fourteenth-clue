@@ -13,7 +13,12 @@ class StepReporter {
 	var steps = 0
 
 	init(owner: Any) {
-		self.ownerName = String(describing: owner)
+		let name = String(describing: owner)
+		if let periodIndex = name.firstIndex(of: ".") {
+			self.ownerName = String(name[name.index(after: periodIndex)...])
+		} else {
+			self.ownerName = name
+		}
 		startTime = DispatchTime.now()
 	}
 
