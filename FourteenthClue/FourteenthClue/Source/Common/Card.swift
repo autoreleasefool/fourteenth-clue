@@ -346,6 +346,8 @@ extension Card {
 
 extension Set where Element == Card {
 
+	// MARK: Basic categories
+
 	var people: Set<Card> {
 		self.intersection(Card.peopleCards)
 	}
@@ -356,6 +358,74 @@ extension Set where Element == Card {
 
 	var weapons: Set<Card> {
 		self.intersection(Card.weaponsCards)
+	}
+
+	// MARK: Categories
+
+	var men: Set<Card> {
+		self.intersection(Card.menCards)
+	}
+
+	var women: Set<Card> {
+		self.intersection(Card.womenCards)
+	}
+
+	var indoors: Set<Card> {
+		self.intersection(Card.indoorsCards)
+	}
+
+	var outdoors: Set<Card> {
+		self.intersection(Card.outdoorsCards)
+	}
+
+	var ranged: Set<Card> {
+		self.intersection(Card.rangedCards)
+	}
+
+	var melee: Set<Card> {
+		self.intersection(Card.meleeCards)
+	}
+
+	// MARK: Colors
+
+	var purpleCards: Set<Card> {
+		self.intersection(Card.purpleCards)
+	}
+
+	var pinkCards: Set<Card> {
+		self.intersection(Card.pinkCards)
+	}
+
+	var redCards: Set<Card> {
+		self.intersection(Card.redCards)
+	}
+
+	var greenCards: Set<Card> {
+		self.intersection(Card.greenCards)
+	}
+
+	var yellowCards: Set<Card> {
+		self.intersection(Card.yellowCards)
+	}
+
+	var blueCards: Set<Card> {
+		self.intersection(Card.blueCards)
+	}
+
+	var orangeCards: Set<Card> {
+		self.intersection(Card.orangeCards)
+	}
+
+	var whiteCards: Set<Card> {
+		self.intersection(Card.whiteCards)
+	}
+
+	var brownCards: Set<Card> {
+		self.intersection(Card.brownCards)
+	}
+
+	var grayCards: Set<Card> {
+		self.intersection(Card.grayCards)
 	}
 
 	func matching(filter: Inquisition.Filter) -> Set<Card> {
