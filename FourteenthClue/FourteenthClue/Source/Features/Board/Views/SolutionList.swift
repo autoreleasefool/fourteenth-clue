@@ -5,6 +5,7 @@
 //  Created by Joseph Roque on 2021-06-28.
 //
 
+import FourteenthClueKit
 import SwiftUI
 
 struct SolutionList: View {

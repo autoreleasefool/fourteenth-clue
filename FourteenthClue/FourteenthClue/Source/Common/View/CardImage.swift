@@ -5,6 +5,7 @@
 //  Created by Joseph Roque on 2021-07-08.
 //
 
+import FourteenthClueKit
 import SwiftUI
 
 struct CardImage: View {

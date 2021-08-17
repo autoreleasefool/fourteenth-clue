@@ -5,6 +5,7 @@
 //  Created by Joseph Roque on 2021-06-23.
 //
 
+import FourteenthClueKit
 import SwiftUI
 
 struct PlayerCardSet: View {
@@ -12,7 +13,7 @@ struct PlayerCardSet: View {
 	@ObservedObject var viewModel: GameBoardViewModel
 	let player: Player
 
-	@State var pickingCardPosition: CardPosition?
+	@State var pickingCardPosition: Card.Position?
 
 	var body: some View {
 		GeometryReader { fullView in
@@ -56,18 +57,18 @@ struct PlayerCardSet: View {
 				HStack {
 					Spacer()
 
-					CardImage(card: player.privateCards.leftCard)
+					CardImage(card: player.hidden.left)
 						.size(.medium)
 						.onTapGesture {
-							pickingCardPosition = .leftCard
+							pickingCardPosition = .hiddenLeft
 						}
 
 					Spacer()
 
-					CardImage(card: player.privateCards.rightCard)
+					CardImage(card: player.hidden.right)
 						.size(.medium)
 						.onTapGesture {
-							pickingCardPosition = .rightCard
+							pickingCardPosition = .hiddenRight
 						}
 
 					Spacer()
@@ -76,7 +77,7 @@ struct PlayerCardSet: View {
 			.padding()
 		}
 		.sheet(item: $pickingCardPosition) { cardPosition in
-			CardPicker(categories: cardPosition.categories, fromAvailableCards: viewModel.unallocatedCards) {
+			CardPicker(categories: cardPosition.categories, fromAvailableCards: viewModel.state.unallocatedCards) {
 				pickingCardPosition = nil
 				viewModel.setCard($0, forPlayer: player, atPosition: cardPosition)
 			}

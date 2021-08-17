@@ -5,6 +5,7 @@
 //  Created by Joseph Roque on 2021-07-04.
 //
 
+import FourteenthClueKit
 import SwiftUI
 
 struct AccusationForm: View {
@@ -16,7 +17,7 @@ struct AccusationForm: View {
 	@State private var person: Card = Card.peopleCards.sorted().first!
 	@State private var location: Card = Card.locationsCards.sorted().first!
 	@State private var weapon: Card = Card.weaponsCards.sorted().first!
-	@State private var pickingCardPosition: CardPosition?
+	@State private var pickingCardPosition: Card.Position?
 
 	init(state: GameState, onAddClue: @escaping (AnyClue) -> Void) {
 		self.state = state
@@ -44,6 +45,7 @@ struct AccusationForm: View {
 			Section {
 				Button("Submit") {
 					onAddClue(AnyClue(Accusation(
+						ordinal: state.actions.count,
 						accusingPlayer: accusingPlayer.id,
 						accusation: MysteryCardSet(person: person, location: location, weapon: weapon)
 					)))
@@ -54,7 +56,7 @@ struct AccusationForm: View {
 			CardPicker(categories: cardPosition.categories, fromAvailableCards: state.allCards, allowsRemoval: false) {
 				guard let card = $0 else { return }
 				switch cardPosition {
-				case .rightCard, .leftCard:
+				case .hiddenLeft, .hiddenRight:
 					break
 				case .person:
 					person = card
@@ -67,7 +69,7 @@ struct AccusationForm: View {
 		}
 	}
 
-	private func cardRow(for cardPosition: CardPosition) -> some View {
+	private func cardRow(for cardPosition: Card.Position) -> some View {
 		Button {
 			pickingCardPosition = cardPosition
 		} label: {
@@ -79,9 +81,9 @@ struct AccusationForm: View {
 		}
 	}
 
-	private func card(for cardPosition: CardPosition) -> Card? {
+	private func card(for cardPosition: Card.Position) -> Card? {
 		switch cardPosition {
-		case .leftCard, .rightCard:
+		case .hiddenLeft, .hiddenRight:
 			return nil
 		case .person:
 			return person

@@ -5,6 +5,7 @@
 //  Created by Joseph Roque on 2021-06-27.
 //
 
+import FourteenthClueKit
 import SwiftUI
 
 struct ClueForm: View {

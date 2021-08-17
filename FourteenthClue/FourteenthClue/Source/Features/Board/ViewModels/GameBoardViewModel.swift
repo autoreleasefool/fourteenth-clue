@@ -7,28 +7,28 @@
 
 import Combine
 import Foundation
+import FourteenthClueKit
 
 class GameBoardViewModel: ObservableObject {
 
 	@Published var state: GameState {
 		didSet {
-			solver.state = state
+			startSolving(state: state)
 		}
 	}
 	@Published var pickingSecretInformant: SecretInformant?
-	@Published var addingClue = false
+	@Published var recordingAction = false
 	@Published var showingSolutions = false
 	@Published var resettingState = false
 	@Published var possibleSolutions: [Solution] = []
 
 	private let initialState: GameState
 
-	private let solver: ClueSolver = PossibleStateEliminationSolver()
-	private var solutionsCancellable: AnyCancellable?
-	private var statesCancellable: AnyCancellable?
+	private let solverQueue = DispatchQueue(label: "ca.josephroque.FourteenthClue.MysterySolver")
+	private var solver: MysterySolver = PossibleStateEliminationSolver()
 
-	private let inquiryEvaluator: InquiryEvaluator = BruteForceInquiryEvaluator()
-	private var inquiriesCancellable: AnyCancellable?
+	private let inquiryQueue = DispatchQueue(label: "ca.josephroque.FourteenthClue.InquiryEvaluator")
+	private var inquiryEvaluator: InquiryEvaluator = BruteForceInquiryEvaluator()
 
 	init(state: GameState) {
 		self.initialState = state
@@ -39,36 +39,13 @@ class GameBoardViewModel: ObservableObject {
 
 	func onAppear() {
 		print("Starting game with \(state.numberOfPlayers) players")
-
-		solver.isEnabled = true
-		solutionsCancellable = solver
-			.solutions
-			.receive(on: RunLoop.main)
-			.sink { [weak self] solutions in
-				self?.possibleSolutions = solutions
-			}
-
-		inquiryEvaluator.isEnabled = true
-		inquiriesCancellable = inquiryEvaluator
-			.inquiries
-			.receive(on: RunLoop.main)
-			.sink { inquiries in
-				print(inquiries)
-			}
-
-		if let stateEliminator = solver as? PossibleStateEliminationSolver {
-			statesCancellable = stateEliminator
-				.states
-				.receive(on: RunLoop.main)
-				.sink { [weak self] states in
-					guard let self = self, let states = states else { return }
-					self.inquiryEvaluator.seed = (self.state, states)
-				}
-		}
+		solver.delegate = self
+		inquiryEvaluator.delegate = self
 	}
 
 	func onDisappear() {
-		solutionsCancellable = nil
+		solver.cancel()
+		inquiryEvaluator.cancel()
 	}
 
 	func promptResetState() {
@@ -84,60 +61,81 @@ class GameBoardViewModel: ObservableObject {
 		self.resettingState = false
 	}
 
-	func addClue() {
-		addingClue = true
+	func recordAction() {
+		recordingAction = true
 	}
 
 	func showSolutions() {
 		showingSolutions = true
 	}
 
-	func setCard(_ card: Card?, forPlayer player: Player, atPosition position: CardPosition) {
+	func setCard(_ card: Card?, forPlayer player: Player, atPosition position: Card.Position) {
+		guard let index = state.players.firstIndex(of: player) else { return }
 		switch position {
-		case .leftCard:
-			state = state.withPlayer(player.withPrivateCard(onLeft: card))
-		case .rightCard:
-			state = state.withPlayer(player.withPrivateCard(onRight: card))
+		case .hiddenLeft:
+			state = state.with(player: player.withHiddenCard(onLeft: card), atIndex: index)
+		case .hiddenRight:
+			state = state.with(player: player.withHiddenCard(onRight: card), atIndex: index)
 		case .person:
-			state = state.withPlayer(player.withMysteryPerson(card))
+			state = state.with(player: player.withMysteryPerson(card), atIndex: index)
 		case .location:
-			state = state.withPlayer(player.withMysteryLocation(card))
+			state = state.with(player: player.withMysteryLocation(card), atIndex: index)
 		case .weapon:
-			state = state.withPlayer(player.withMysteryWeapon(card))
+			state = state.with(player: player.withMysteryWeapon(card), atIndex: index)
 		}
 	}
 
 	func setCard(_ card: Card?, forInformant informant: SecretInformant) {
-		state = state.withSecretInformant(informant.withCard(card))
+		state = state.with(secretInformant: informant.with(card: card))
 	}
 
-	func addClue(_ clue: AnyClue) {
-		state = state.addingClue(clue)
+	func addAction(_ action: AnyAction) {
+		state = state.appending(action: action)
 	}
 
-	func deleteClues(atOffsets offsets: IndexSet) {
-		state = state.removingClues(atOffsets: offsets)
-	}
-
-	var secretInformants: [(String, SecretInformant)] {
-		zip("ABCDEFGH", state.secretInformants)
-			.map { name, informant in (String(name), informant) }
-	}
-
-	var players: [Player] {
-		state.players
-	}
-
-	var clues: [AnyClue] {
-		state.clues
-	}
-
-	var unallocatedCards: Set<Card> {
-		state.unallocatedCards
+	func deleteActions(atOffsets offsets: IndexSet) {
+		state = state.removingActions(atOffsets: offsets)
 	}
 
 	func player(withId id: String) -> Player? {
 		state.players.first { $0.id == id }
 	}
 
+	private func startSolving(state: GameState) {
+		solverQueue.async { [weak self] in
+			guard let self = self else { return }
+			self.solver.solve(state: state)
+		}
+	}
+
+}
+
+extension GameBoardViewModel: PossibleStateEliminationSolverDelegate {
+	func solver(_ solver: MysterySolver, didReturnSolutions solutions: [Solution]) {
+		DispatchQueue.main.async {
+			self.possibleSolutions = solutions
+		}
+	}
+
+	func solver(_ solver: MysterySolver, didEncounterError error: MysterySolverError) {
+		DispatchQueue.main.async {
+			self.possibleSolutions = []
+		}
+	}
+
+	func solver(_ solver: MysterySolver, didGeneratePossibleStates possibleStates: [PossibleState], for state: GameState) {
+		inquiryQueue.async { [weak self] in
+			self?.inquiryEvaluator.findOptimalInquiry(in: state, withPossibleStates: possibleStates)
+		}
+	}
+}
+
+extension GameBoardViewModel: InquiryEvaluatorDelegate {
+	func evaluator(_ evaluator: InquiryEvaluator, didFindOptimalInquiries inquiries: [Inquiry]) {
+		print(inquiries)
+	}
+
+	func evaluator(_ evaluator: InquiryEvaluator, didEncounterError error: InquiryEvaluatorError) {
+
+	}
 }

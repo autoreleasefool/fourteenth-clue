@@ -6,6 +6,7 @@
 //
 
 import BottomSheet
+import FourteenthClueKit
 import SwiftUI
 
 struct GameBoard: View {
@@ -17,7 +18,7 @@ struct GameBoard: View {
 		var state = state
 		for (index, player) in state.players.enumerated() {
 			if player.name.isEmpty {
-				state = state.withPlayer(player.withName("Player \(index + 1)"))
+				state = state.with(player: player.with(name: "Player \(index + 1)"), atIndex: index)
 			}
 		}
 		self._viewModel = .init(wrappedValue: GameBoardViewModel(state: state))
@@ -27,9 +28,9 @@ struct GameBoard: View {
 		VStack(spacing: 0) {
 			playerCards
 			List {
-				clues
+				actions
 
-				if !viewModel.secretInformants.isEmpty {
+				if !viewModel.state.secretInformants.isEmpty {
 					informants
 				}
 			}
@@ -45,15 +46,15 @@ struct GameBoard: View {
 			}
 		}
 		.sheet(item: $viewModel.pickingSecretInformant) { secretInformant in
-			CardPicker(cards: viewModel.unallocatedCards.sorted()) {
+			CardPicker(cards: viewModel.state.unallocatedCards.sorted()) {
 				viewModel.pickingSecretInformant = nil
 				viewModel.setCard($0, forInformant: secretInformant)
 			}
 		}
-		.sheet(isPresented: $viewModel.addingClue) {
+		.sheet(isPresented: $viewModel.recordingAction) {
 			NavigationView {
 				ClueForm(state: viewModel.state) { newClue in
-					viewModel.addClue(newClue)
+					viewModel.addAction(AnyAction(newClue.wrappedValue))
 				}
 			}
 		}
@@ -83,7 +84,7 @@ struct GameBoard: View {
 
 	private var playerCards: some View {
 		TabView {
-			ForEach(viewModel.players) { player in
+			ForEach(viewModel.state.players) { player in
 				ScrollView {
 					PlayerCardSet(viewModel: viewModel, player: player)
 				}
@@ -93,35 +94,35 @@ struct GameBoard: View {
 		.background(Color.gray)
 	}
 
-	private var clues: some View {
-		Section("Clues") {
+	private var actions: some View {
+		Section("Actions") {
 			Button("Add new") {
-				viewModel.addClue()
+				viewModel.recordAction()
 			}
-			ForEach(viewModel.clues) { clue in
-				Text(clue.description(withPlayers: viewModel.players))
+			ForEach(viewModel.state.actions) { action in
+				Text(action.description(withState: viewModel.state))
 			}
 			.onDelete { indexSet in
-				viewModel.deleteClues(atOffsets: indexSet)
+				viewModel.deleteActions(atOffsets: indexSet)
 			}
 		}
 	}
 
 	private var informants: some View {
 		Section("Informants") {
-			ForEach(viewModel.secretInformants, id: \.0) { informant in
-				Button(label(for: informant.1, withName: informant.0)) {
-					viewModel.pickingSecretInformant = informant.1
+			ForEach(viewModel.state.secretInformants) { informant in
+				Button(label(for: informant)) {
+					viewModel.pickingSecretInformant = informant
 				}
 			}
 		}
 	}
 
-	private func label(for informant: SecretInformant, withName name: String) -> String {
+	private func label(for informant: SecretInformant) -> String {
 		if let card = informant.card {
-			return "\(name) - \(card)"
+			return "\(informant.name) - \(card)"
 		} else {
-			return "\(name) - ?"
+			return "\(informant.name) - ?"
 		}
 	}
 

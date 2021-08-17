@@ -5,6 +5,7 @@
 //  Created by Joseph Roque on 2021-07-04.
 //
 
+import FourteenthClueKit
 import SwiftUI
 
 struct InquisitionForm: View {
@@ -88,7 +89,7 @@ struct InquisitionForm: View {
 				Button("Submit") {
 					guard let count = count else { return }
 
-					let filter: Inquisition.Filter
+					let filter: Card.Filter
 					switch inquisitionType {
 					case .color:
 						filter = .color(inquisitionColor)
@@ -97,6 +98,7 @@ struct InquisitionForm: View {
 					}
 
 					onAddClue(AnyClue(Inquisition(
+						ordinal: state.actions.count,
 						askingPlayer: selectedAskingPlayer.id,
 						answeringPlayer: selectedAnsweringPlayer.id,
 						filter: filter,
