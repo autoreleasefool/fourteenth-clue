@@ -48,11 +48,11 @@ struct SetPlayerCommand: RunnableCommand {
 		}
 	}
 
-	func run(_ state: EngineState) throws -> EngineState {
+	func run(_ state: EngineState) throws {
 		guard let player = state.gameState.players.first(where: { $0.name == playerName }),
 					let playerIndex = state.gameState.players.firstIndex(of: player)
 		else {
-			return state
+			return
 		}
 
 		let updatedPlayer: Player
@@ -75,10 +75,9 @@ struct SetPlayerCommand: RunnableCommand {
 		}
 
 		let updatedState = state.gameState.with(player: updatedPlayer, atIndex: playerIndex)
+		state.updateState(to: updatedState)
 
 		print("Updated \(playerName), \(modification.description)")
-
-		return state.with(gameState: updatedState)
 	}
 
 }

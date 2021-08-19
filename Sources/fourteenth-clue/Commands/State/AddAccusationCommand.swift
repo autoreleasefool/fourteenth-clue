@@ -43,7 +43,7 @@ struct AddAccusationCommand: RunnableCommand {
 		self.weapon = weapon
 	}
 
-	func run(_ state: EngineState) throws -> EngineState {
+	func run(_ state: EngineState) throws {
 		let accusation = Accusation(
 			ordinal: state.gameState.actions.count,
 			accusingPlayer: playerName,
@@ -52,10 +52,9 @@ struct AddAccusationCommand: RunnableCommand {
 
 		let action = AnyAction(accusation)
 		let updatedState = state.gameState.appending(action: action)
+		state.updateState(to: updatedState)
 
 		print("Added action: \(action.description(withState: updatedState))" )
-
-		return state.with(gameState: updatedState)
 	}
 
 }

@@ -22,7 +22,7 @@ struct ExitCommand: RunnableCommand {
 		self.message = nil
 	}
 
-	func run(_ state: EngineState) throws -> EngineState {
+	func run(_ state: EngineState) throws {
 		if let message = message {
 			print("\nExiting, \(message)")
 		}

@@ -41,7 +41,7 @@ struct AddInquisitionCommand: RunnableCommand {
 		self.filter = filter
 	}
 
-	func run(_ state: EngineState) throws -> EngineState {
+	func run(_ state: EngineState) throws {
 		let inquisition = Inquisition(
 			ordinal: state.gameState.actions.count,
 			askingPlayer: askingPlayerName,
@@ -52,10 +52,9 @@ struct AddInquisitionCommand: RunnableCommand {
 
 		let action = AnyAction(inquisition)
 		let updatedState = state.gameState.appending(action: action)
+		state.updateState(to: updatedState)
 
 		print("Added action: \(action.description(withState: updatedState))" )
-
-		return state.with(gameState: updatedState)
 	}
 
 }

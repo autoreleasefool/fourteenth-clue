@@ -17,9 +17,8 @@ struct InvalidCommand: RunnableCommand {
 		self.command = command
 	}
 
-	func run(_ state: EngineState) throws -> EngineState {
+	func run(_ state: EngineState) throws {
 		print("`\(command)` is not a valid command (try typing `help`)")
-		return state
 	}
 
 }

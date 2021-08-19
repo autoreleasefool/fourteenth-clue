@@ -13,7 +13,7 @@ protocol RunnableCommand {
 	static var help: String { get }
 
 	init?(_ string: String)
-	func run(_ state: EngineState) throws -> EngineState
+	func run(_ state: EngineState) throws
 }
 
 let allCommandClasses: [RunnableCommand.Type] = [

@@ -17,7 +17,7 @@ struct OutputStateCommand: RunnableCommand {
 		guard string == "show" else { return nil }
 	}
 
-	func run(_ state: EngineState) throws -> EngineState {
+	func run(_ state: EngineState) throws {
 		print("=Players=")
 		state.gameState.players.forEach {
 			print("\t\($0.name)")
@@ -47,7 +47,5 @@ struct OutputStateCommand: RunnableCommand {
 				print("\t\($0.description(withState: state.gameState))")
 			}
 		}
-
-		return state
 	}
 }

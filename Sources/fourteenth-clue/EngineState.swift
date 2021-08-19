@@ -7,11 +7,17 @@
 
 import FourteenthClueKit
 
-struct EngineState {
+class EngineState {
 
-	let gameState: GameState
-	let hasShownHelp: Bool
-	let isRunning: Bool
+	private(set) var gameState: GameState
+	private(set) var hasShownHelp: Bool
+	private(set) var isRunning: Bool
+
+	private(set) var possibleStates: [PossibleState]
+	private(set) var solutions: [Solution]
+
+	private var solver: MysterySolver = PossibleStateEliminationSolver()
+	private var evaluator: InquiryEvaluator = BruteForceInquiryEvaluator()
 
 	init(
 		gameState: GameState,
@@ -21,17 +27,57 @@ struct EngineState {
 		self.gameState = gameState
 		self.hasShownHelp = hasShownHelp
 		self.isRunning = isRunning
+		self.solutions = []
+		self.possibleStates = []
+
+		solver.delegate = self
+		evaluator.delegate = self
 	}
 
-	func with(gameState: GameState) -> EngineState {
-		.init(gameState: gameState, hasShownHelp: hasShownHelp, isRunning: isRunning)
+	func updateState(to gameState: GameState) {
+		self.gameState = gameState
+		self.possibleStates = []
+		solver.solve(state: gameState)
 	}
 
-	func didShowHelp() -> EngineState {
-		.init(gameState: gameState, hasShownHelp: true, isRunning: isRunning)
+	func didShowHelp() {
+		hasShownHelp = true
 	}
 
-	func stop() -> EngineState {
-		.init(gameState: gameState, hasShownHelp: hasShownHelp, isRunning: isRunning)
+	func stop() {
+		isRunning = false
 	}
+
+}
+
+extension EngineState: PossibleStateEliminationSolverDelegate {
+
+	func solver(_ solver: MysterySolver, didReturnSolutions solutions: [Solution]) {
+		self.solutions = solutions
+	}
+
+	func solver(_ solver: MysterySolver, didEncounterError error: MysterySolverError) {
+		// TODO: output error
+		self.solutions = []
+		self.possibleStates = []
+	}
+
+	func solver(_ solver: MysterySolver, didGeneratePossibleStates possibleStates: [PossibleState], for state: GameState) {
+		guard state.id == self.gameState.id else { return }
+		self.possibleStates = possibleStates
+	}
+
+}
+
+
+extension EngineState: InquiryEvaluatorDelegate {
+
+	func evaluator(_ evaluator: InquiryEvaluator, didFindOptimalInquiries inquiries: [Inquiry]) {
+
+	}
+
+	func evaluator(_ evaluator: InquiryEvaluator, didEncounterError error: InquiryEvaluatorError) {
+		// TODO: output error
+	}
+
 }

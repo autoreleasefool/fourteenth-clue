@@ -30,13 +30,12 @@ struct SetInformantCommand: RunnableCommand {
 		self.card = Card(rawValue: components[2])
 	}
 
-	func run(_ state: EngineState) throws -> EngineState {
+	func run(_ state: EngineState) throws {
 		let informant = SecretInformant(name: informantName, card: card)
 		let updatedState = state.gameState.with(secretInformant: informant)
+		state.updateState(to: updatedState)
 
 		print("Updated \(informantName), replaced card with \(card?.name ?? "none")")
-
-		return state.with(gameState: updatedState)
 	}
 
 }

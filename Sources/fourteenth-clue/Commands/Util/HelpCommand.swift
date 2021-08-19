@@ -15,12 +15,10 @@ struct HelpCommand: RunnableCommand {
 		guard string == "help" else { return nil }
 	}
 
-	func run(_ state: EngineState) throws -> EngineState {
+	func run(_ state: EngineState) throws {
 		allCommandClasses.forEach {
 			print($0.help)
 		}
-
-		return state
 	}
 
 }

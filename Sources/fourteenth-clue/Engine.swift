@@ -25,14 +25,14 @@ struct Engine {
 			var helpMessage = ""
 			if !currentState.hasShownHelp {
 				helpMessage = " (try typing 'help')"
-				currentState = currentState.didShowHelp()
+				currentState.didShowHelp()
 			}
 
 			print("Command\(helpMessage): ", terminator: "")
 			guard let rawCommand = readLine() else { return }
 
 			let commandToRun = parseCommand(string: rawCommand.trimmingCharacters(in: .whitespacesAndNewlines))
-			currentState = try commandToRun.run(currentState)
+			try commandToRun.run(currentState)
 		}
 	}
 
