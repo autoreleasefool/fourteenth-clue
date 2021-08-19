@@ -1,0 +1,43 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "FourteenthClueKit",
+        "repositoryURL": "https://github.com/autoreleasefool/fourteenth-clue-kit",
+        "state": {
+          "branch": "main",
+          "revision": "ca0cc43f4d6b3926a12f2f1f8ce4e42cc23ff35f",
+          "version": null
+        }
+      },
+      {
+        "package": "swift-algorithms",
+        "repositoryURL": "https://github.com/apple/swift-algorithms",
+        "state": {
+          "branch": null,
+          "revision": "2327673b0e9c7e90e6b1826376526ec3627210e4",
+          "version": "0.2.1"
+        }
+      },
+      {
+        "package": "swift-argument-parser",
+        "repositoryURL": "https://github.com/apple/swift-argument-parser",
+        "state": {
+          "branch": null,
+          "revision": "83b23d940471b313427da226196661856f6ba3e0",
+          "version": "0.4.4"
+        }
+      },
+      {
+        "package": "swift-numerics",
+        "repositoryURL": "https://github.com/apple/swift-numerics",
+        "state": {
+          "branch": null,
+          "revision": "6583ac70c326c3ee080c1d42d9ca3361dca816cd",
+          "version": "0.1.0"
+        }
+      }
+    ]
+  },
+  "version": 1
+}

@@ -18,7 +18,7 @@ class GameBuilderViewModel: ObservableObject {
 
 	init(playerCount: Int) {
 		self.playerCount = playerCount
-		self.playerNames = (0..<playerCount).map { "Player \($0 + 1)" }
+		self.playerNames = (0..<playerCount).map { "Player-\($0 + 1)" }
 	}
 
 	func getTitle(forPlayer index: Int) -> String {
