@@ -52,6 +52,9 @@ struct AddInquisitionCommand: RunnableCommand {
 
 		let action = AnyAction(inquisition)
 		let updatedState = state.gameState.appending(action: action)
+
+		print("Added action: \(action.description(withState: updatedState))" )
+
 		return state.with(gameState: updatedState)
 	}
 

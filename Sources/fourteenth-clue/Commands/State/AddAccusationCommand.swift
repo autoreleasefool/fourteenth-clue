@@ -52,6 +52,9 @@ struct AddAccusationCommand: RunnableCommand {
 
 		let action = AnyAction(accusation)
 		let updatedState = state.gameState.appending(action: action)
+
+		print("Added action: \(action.description(withState: updatedState))" )
+
 		return state.with(gameState: updatedState)
 	}
 

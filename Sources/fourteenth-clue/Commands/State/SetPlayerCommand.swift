@@ -75,6 +75,9 @@ struct SetPlayerCommand: RunnableCommand {
 		}
 
 		let updatedState = state.gameState.with(player: updatedPlayer, atIndex: playerIndex)
+
+		print("Updated \(playerName), \(modification.description)")
+
 		return state.with(gameState: updatedState)
 	}
 
@@ -82,9 +85,18 @@ struct SetPlayerCommand: RunnableCommand {
 
 extension SetPlayerCommand {
 
-	enum Modification {
+	enum Modification: CustomStringConvertible {
 		case changeName(to: String)
 		case changeCard(at: Card.Position, to: Card)
+
+		var description: String {
+			switch self {
+			case .changeName(let to):
+				return "changed name to \(to)"
+			case .changeCard(let at, let to):
+				return "changed \(at) to \(to)"
+			}
+		}
 	}
 
 }
