@@ -11,7 +11,7 @@ import SwiftUI
 struct AccusationForm: View {
 
 	private let state: GameState
-	private let onAddClue: (AnyClue) -> Void
+	private let onAddAccusation: (Accusation) -> Void
 
 	@State private var accusingPlayer: Player
 	@State private var person: Card = Card.peopleCards.sorted().first!
@@ -19,9 +19,9 @@ struct AccusationForm: View {
 	@State private var weapon: Card = Card.weaponsCards.sorted().first!
 	@State private var pickingCardPosition: Card.Position?
 
-	init(state: GameState, onAddClue: @escaping (AnyClue) -> Void) {
+	init(state: GameState, onAddAccusation: @escaping (Accusation) -> Void) {
 		self.state = state
-		self.onAddClue = onAddClue
+		self.onAddAccusation = onAddAccusation
 		self._accusingPlayer = .init(initialValue: state.players.first!)
 	}
 
@@ -44,11 +44,11 @@ struct AccusationForm: View {
 
 			Section {
 				Button("Submit") {
-					onAddClue(AnyClue(Accusation(
+					onAddAccusation(Accusation(
 						ordinal: state.actions.count,
 						accusingPlayer: accusingPlayer.id,
 						accusation: MysteryCardSet(person: person, location: location, weapon: weapon)
-					)))
+					))
 				}
 			}
 		}

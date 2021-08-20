@@ -11,7 +11,7 @@ import SwiftUI
 struct InquisitionForm: View {
 
 	private let state: GameState
-	private let onAddClue: (AnyClue) -> Void
+	private let onAddInquisition: (Inquisition) -> Void
 
 	@State private var selectedAskingPlayer: Player
 	@State private var selectedAnsweringPlayer: Player
@@ -27,9 +27,9 @@ struct InquisitionForm: View {
 		return formatter
 	}()
 
-	init(state: GameState, onAddClue: @escaping (AnyClue) -> Void) {
+	init(state: GameState, onAddInquisition: @escaping (Inquisition) -> Void) {
 		self.state = state
-		self.onAddClue = onAddClue
+		self.onAddInquisition = onAddInquisition
 		self._selectedAskingPlayer = .init(initialValue: state.players.first!)
 		self._selectedAnsweringPlayer = .init(initialValue: state.players.first!)
 	}
@@ -97,13 +97,13 @@ struct InquisitionForm: View {
 						filter = .category(inquisitionCategory)
 					}
 
-					onAddClue(AnyClue(Inquisition(
+					onAddInquisition(Inquisition(
 						ordinal: state.actions.count,
 						askingPlayer: selectedAskingPlayer.id,
 						answeringPlayer: selectedAnsweringPlayer.id,
 						filter: filter,
 						count: count
-					)))
+					))
 				}
 			}
 		}

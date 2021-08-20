@@ -53,8 +53,8 @@ struct GameBoard: View {
 		}
 		.sheet(isPresented: $viewModel.recordingAction) {
 			NavigationView {
-				ClueForm(state: viewModel.state) { newClue in
-					viewModel.addAction(AnyAction(newClue.wrappedValue))
+				ActionForm(state: viewModel.state) { action in
+					viewModel.addAction(AnyAction(action))
 				}
 			}
 		}

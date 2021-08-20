@@ -19,7 +19,7 @@
 		CA582E122681AC8F00248E51 /* FourteenthClue.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA582E112681AC8F00248E51 /* FourteenthClue.swift */; };
 		CA582E162681AC9000248E51 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CA582E152681AC9000248E51 /* Assets.xcassets */; };
 		CA582E192681AC9000248E51 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CA582E182681AC9000248E51 /* Preview Assets.xcassets */; };
-		CA8C07A9268993B400B50233 /* ClueForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8C07A8268993B400B50233 /* ClueForm.swift */; };
+		CA8C07A9268993B400B50233 /* ActionForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8C07A8268993B400B50233 /* ActionForm.swift */; };
 		CA97C1F626968005004AC3A6 /* NavigationLink+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA97C1F526968005004AC3A6 /* NavigationLink+Extensions.swift */; };
 		CA97C1FB26978A76004AC3A6 /* CardImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA97C1FA26978A76004AC3A6 /* CardImage.swift */; };
 		CA97C202269A425B004AC3A6 /* Algorithms in Frameworks */ = {isa = PBXBuildFile; productRef = CA97C201269A425B004AC3A6 /* Algorithms */; };
@@ -47,7 +47,7 @@
 		CA582E112681AC8F00248E51 /* FourteenthClue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FourteenthClue.swift; sourceTree = "<group>"; };
 		CA582E152681AC9000248E51 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CA582E182681AC9000248E51 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		CA8C07A8268993B400B50233 /* ClueForm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClueForm.swift; sourceTree = "<group>"; };
+		CA8C07A8268993B400B50233 /* ActionForm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionForm.swift; sourceTree = "<group>"; };
 		CA97C1F526968005004AC3A6 /* NavigationLink+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NavigationLink+Extensions.swift"; sourceTree = "<group>"; };
 		CA97C1FA26978A76004AC3A6 /* CardImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardImage.swift; sourceTree = "<group>"; };
 		CAA61AAD26CC21CB00C2A62C /* Card+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Card+Extensions.swift"; sourceTree = "<group>"; };
@@ -137,7 +137,7 @@
 				CA2E856826826830001BE951 /* GameBoard.swift */,
 				CA2E8572268399D0001BE951 /* PlayerCardSet.swift */,
 				CAB5E4E8268AD2FD0070DD97 /* SolutionList.swift */,
-				CA8C07A8268993B400B50233 /* ClueForm.swift */,
+				CA8C07A8268993B400B50233 /* ActionForm.swift */,
 				CA35608B26927D70004B41AF /* InquisitionForm.swift */,
 				CA35608D26927D83004B41AF /* AccusationForm.swift */,
 			);
@@ -306,7 +306,7 @@
 				CA35608C26927D70004B41AF /* InquisitionForm.swift in Sources */,
 				CAA61AAE26CC21CB00C2A62C /* Card+Extensions.swift in Sources */,
 				CA2E856226823772001BE951 /* PlayerPicker.swift in Sources */,
-				CA8C07A9268993B400B50233 /* ClueForm.swift in Sources */,
+				CA8C07A9268993B400B50233 /* ActionForm.swift in Sources */,
 				CAA61AB626CC3B7900C2A62C /* GameBuilderViewModel.swift in Sources */,
 				CA2E856426823E13001BE951 /* Assets.swift in Sources */,
 				CA97C1F626968005004AC3A6 /* NavigationLink+Extensions.swift in Sources */,
