@@ -22,6 +22,8 @@ let allCommandClasses: [RunnableCommand.Type] = [
 	SetInformantCommand.self,
 	AddInquisitionCommand.self,
 	AddAccusationCommand.self,
+	SolutionsCommand.self,
+	InquiriesCommand.self,
 	OutputStateCommand.self,
 	ExitCommand.self,
 	// InvalidCommand.self, - do not include

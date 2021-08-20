@@ -10,14 +10,14 @@ import ArgumentParser
 struct ExitCommand: RunnableCommand {
 
 	static var help: String {
-		"exit: quit the program."
+		"exit [e]: quit the program."
 	}
 
 	private let exitCode: ExitCode
 	private let message: String?
 
 	init?(_ string: String) {
-		guard string == "exit" else { return nil }
+		guard string == "exit" || string == "e" else { return nil }
 		self.exitCode = ExitCode.success
 		self.message = nil
 	}

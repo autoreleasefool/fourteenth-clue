@@ -8,13 +8,13 @@
 struct OutputStateCommand: RunnableCommand {
 
 	static var help: String {
-		"show: show the current state of the game"
+		"show [s]: show the current state of the game"
 	}
 
 	static let unknown = "Unknown"
 
 	init?(_ string: String) {
-		guard string == "show" else { return nil }
+		guard string == "show" || string == "s" else { return nil }
 	}
 
 	func run(_ state: EngineState) throws {

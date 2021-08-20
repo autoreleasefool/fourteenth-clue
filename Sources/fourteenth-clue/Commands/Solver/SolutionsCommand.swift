@@ -9,15 +9,16 @@ struct SolutionsCommand: RunnableCommand {
 
 	static var help: String {
 		"""
-		solutions: show most likely solutions. USAGE:
-			- show most likely solutions: solutions <int>
+		solutions [sol]: show most likely solutions. USAGE:
+			- show <int> most likely solutions: solutions <int>
 		"""
 	}
 
 	let limit: Int
 
 	init?(_ string: String) {
-		guard string.starts(with: "solutions") else { return nil }
+		guard string.starts(with: "solutions") ||
+						string == "sol" else { return nil }
 
 		let components = string.components(separatedBy: " ")
 
@@ -39,6 +40,17 @@ struct SolutionsCommand: RunnableCommand {
 			print("Still calculating solutions...")
 			return
 		}
+
+		let solutions = limit >= 0
+			? state.solutions.prefix(limit)
+			: state.solutions[0...]
+
+		solutions.enumerated()
+			.forEach { index, solution in
+				let ordinal = "\(index + 1)".padding(toLength: 2, withPad: " ", startingAt: 0)
+				let probability = String(format: "%.2f", solution.probability)
+				print("\(ordinal). [\(probability)%] - \(solution.person.name), \(solution.location.name), \(solution.weapon.name)")
+			}
 	}
 
 }
