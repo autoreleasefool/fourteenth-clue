@@ -36,6 +36,7 @@ let allCommandClasses: [RunnableCommand.Type] = [
 	SetInformantCommand.self,
 	AddInquisitionCommand.self,
 	AddAccusationCommand.self,
+	AddExaminationCommand.self,
 	SolutionsCommand.self,
 	InquiriesCommand.self,
 	OutputStateCommand.self,
