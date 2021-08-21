@@ -9,8 +9,9 @@ import ArgumentParser
 import Foundation
 import FourteenthClueKit
 
-struct Engine {
+class Engine {
 
+	private let queue = DispatchQueue(label: "ca.josephroque.FourteenthClue.Engine")
 	let initialState: EngineState
 	var currentState: EngineState
 
@@ -19,21 +20,38 @@ struct Engine {
 		self.currentState = self.initialState
 	}
 
-	mutating func playGame() throws {
-		while currentState.isRunning {
-
-			var helpMessage = ""
-			if !currentState.hasShownHelp {
-				helpMessage = " (try typing 'help')"
-				currentState.didShowHelp()
+	func runLoop() {
+		queue.async {
+			do {
+				try self.playGame()
+			} catch {
+				if let exitCode = error as? ExitCode {
+					exit(exitCode.rawValue)
+				} else {
+					exit(ExitCode.failure.rawValue)
+				}
 			}
-
-			print("Command\(helpMessage): ", terminator: "")
-			guard let rawCommand = readLine() else { return }
-
-			let commandToRun = parseCommand(string: rawCommand.trimmingCharacters(in: .whitespacesAndNewlines))
-			try commandToRun.run(currentState)
 		}
+	}
+
+	func playGame() throws {
+		guard currentState.isRunning else {
+			throw ExitCode.success
+		}
+
+		var helpMessage = ""
+		if !currentState.hasShownHelp {
+			helpMessage = " (try typing 'help')"
+			currentState.didShowHelp()
+		}
+
+		print("Command\(helpMessage): ", terminator: "")
+		guard let rawCommand = readLine() else { return }
+
+		let commandToRun = parseCommand(string: rawCommand.trimmingCharacters(in: .whitespacesAndNewlines))
+		try commandToRun.run(currentState)
+
+		self.runLoop()
 	}
 
 }

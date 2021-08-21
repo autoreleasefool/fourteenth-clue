@@ -10,12 +10,18 @@ import FourteenthClueKit
 
 class EngineState: SolverDelegate {
 
-	private(set) var gameState: GameState
+	private(set) var gameState: GameState {
+		didSet {
+			self.solutions = []
+			self.possibleStates = []
+			self.optimalInquiries = []
+		}
+	}
 	private(set) var hasShownHelp: Bool
 	private(set) var isRunning: Bool
 
-	private(set) var possibleStates: [PossibleState]
 	private(set) var solutions: [Solution]
+	private(set) var possibleStates: [PossibleState]
 	private(set) var optimalInquiries: [Inquiry]
 
 	private var solver = Solver()
@@ -37,7 +43,6 @@ class EngineState: SolverDelegate {
 
 	func updateState(to gameState: GameState) {
 		self.gameState = gameState
-		self.possibleStates = []
 
 		guard gameState.isSolveable else { return }
 		solver.startSolving(state: gameState)
@@ -45,10 +50,6 @@ class EngineState: SolverDelegate {
 
 	func didShowHelp() {
 		hasShownHelp = true
-
-		DispatchQueue.main.async {
-			print("what the fuckl")
-		}
 	}
 
 	func stop() {
@@ -134,34 +135,23 @@ extension EngineState {
 		}
 
 		func solver(_ solver: MysterySolver, didReturnSolutions solutions: [Solution]) {
-			DispatchQueue.main.async {
-				print("what the fuck")
-				self.delegate?.solver(self.solver, didReturnSolutions: solutions)
-			}
+			self.delegate?.solver(self.solver, didReturnSolutions: solutions)
 		}
 
 		func solver(_ solver: MysterySolver, didEncounterError error: MysterySolverError) {
-			DispatchQueue.main.async {
-				self.delegate?.solver(self.solver, didEncounterError: error)
-			}
+			self.delegate?.solver(self.solver, didEncounterError: error)
 		}
 
 		func solver(_ solver: MysterySolver, didGeneratePossibleStates possibleStates: [PossibleState], for state: GameState) {
-			DispatchQueue.main.async {
-				self.delegate?.solver(self.solver, didGeneratePossibleStates: possibleStates, for: state)
-			}
+			self.delegate?.solver(self.solver, didGeneratePossibleStates: possibleStates, for: state)
 		}
 
 		func evaluator(_ evaluator: InquiryEvaluator, didEncounterError error: InquiryEvaluatorError) {
-			DispatchQueue.main.async {
-				self.delegate?.evaluator(self.evaluator, didEncounterError: error)
-			}
+			self.delegate?.evaluator(self.evaluator, didEncounterError: error)
 		}
 
 		func evaluator(_ evaluator: InquiryEvaluator, didFindOptimalInquiries inquiries: [Inquiry]) {
-			DispatchQueue.main.async {
-				self.delegate?.evaluator(self.evaluator, didFindOptimalInquiries: inquiries)
-			}
+			self.delegate?.evaluator(self.evaluator, didFindOptimalInquiries: inquiries)
 		}
 	}
 

@@ -48,7 +48,7 @@ struct SolutionsCommand: RunnableCommand {
 		solutions.enumerated()
 			.forEach { index, solution in
 				let ordinal = "\(index + 1)".padding(toLength: 2, withPad: " ", startingAt: 0)
-				let probability = String(format: "%.2f", solution.probability)
+				let probability = String(format: "%.2f", solution.probability * 100)
 				print("\(ordinal). [\(probability)%] - \(solution.person.name), \(solution.location.name), \(solution.weapon.name)")
 			}
 	}

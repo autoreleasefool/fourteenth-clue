@@ -1,4 +1,5 @@
 import ArgumentParser
+import Foundation
 import FourteenthClueKit
 
 struct FourteenthClue: ParsableCommand {
@@ -43,10 +44,13 @@ struct FourteenthClue: ParsableCommand {
 			throw ExitCode.validationFailure
 		}
 
-		var engine = Engine(state: gameState)
-		try engine.playGame()
+		let engine = Engine(state: gameState)
+		engine.runLoop()
 	}
 
 }
 
-FourteenthClue.main()
+DispatchQueue.main.async {
+	FourteenthClue.main()
+}
+RunLoop.main.run()
