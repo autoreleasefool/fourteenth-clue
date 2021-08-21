@@ -22,7 +22,7 @@ struct ActionForm: View {
 	var body: some View	{
 		Form {
 			Picker("Action", selection: $viewModel.viewState.type) {
-				ForEach(NewActionViewState.ActionType.allCases) { actionType in
+				ForEach(viewModel.viewState.enabledTypes) { actionType in
 					Text(actionType.name)
 						.tag(actionType)
 				}
@@ -40,11 +40,10 @@ struct ActionForm: View {
 					dismiss()
 				}
 			case .examination:
-//				ExaminationForm(state: state) { examination in
-//					onAddAction(AnyAction(examination))
-//					dismiss()
-//				}
-				EmptyView()
+				ExaminationForm(viewModel: viewModel) { examination in
+					onAddAction(AnyAction(examination))
+					dismiss()
+				}
 			}
 		}
 		.navigationTitle("Add action")

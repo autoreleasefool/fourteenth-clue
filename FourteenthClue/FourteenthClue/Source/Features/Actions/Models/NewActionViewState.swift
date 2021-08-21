@@ -9,15 +9,18 @@ import FourteenthClueKit
 
 struct NewActionViewState {
 
-	var type: ActionType = .inquisition
+	var enabledTypes: [ActionType]
+	var type: ActionType
 	var inquisition: NewInquisition
 	var accusation: NewAccusation
 	var examination: NewExamination
 
 	init(state: GameState) {
+		self.enabledTypes = ActionType.allCases.filter { $0.isEnabled(in: state) }
+		self.type = enabledTypes.first!
 		self.inquisition = NewInquisition(state: state)
 		self.accusation = NewAccusation(state: state)
-		self.examination = NewExamination()
+		self.examination = NewExamination(state: state)
 	}
 
 }
@@ -37,6 +40,15 @@ extension NewActionViewState {
 
 		var name: String {
 			rawValue.capitalized
+		}
+
+		func isEnabled(in state: GameState) -> Bool {
+			switch self {
+			case .inquisition, .accusation:
+				return true
+			case .examination:
+				return state.numberOfInformants > 0
+			}
 		}
 	}
 
@@ -136,6 +148,22 @@ extension NewActionViewState {
 extension NewActionViewState {
 
 	struct NewExamination {
+
+		init(state: GameState) {
+			self.examiningPlayer = state.players.first!
+			self.informant = state.secretInformants.first?.name ?? ""
+		}
+
+		var examiningPlayer: Player
+		var informant: String
+
+		func build(withState state: GameState) -> Examination {
+			Examination(
+				ordinal: state.actions.count,
+				player: examiningPlayer.name,
+				informant: informant
+			)
+		}
 
 	}
 

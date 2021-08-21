@@ -25,6 +25,7 @@
 		CA97C202269A425B004AC3A6 /* Algorithms in Frameworks */ = {isa = PBXBuildFile; productRef = CA97C201269A425B004AC3A6 /* Algorithms */; };
 		CA99B72526D0157D005F0FBB /* NewActionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA99B72426D0157D005F0FBB /* NewActionViewModel.swift */; };
 		CA99B72826D015C5005F0FBB /* NewActionViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA99B72726D015C5005F0FBB /* NewActionViewState.swift */; };
+		CA99B72A26D1B009005F0FBB /* ExaminationForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA99B72926D1B009005F0FBB /* ExaminationForm.swift */; };
 		CAA61AAB26CC219300C2A62C /* FourteenthClueKit in Frameworks */ = {isa = PBXBuildFile; productRef = CAA61AAA26CC219300C2A62C /* FourteenthClueKit */; };
 		CAA61AAE26CC21CB00C2A62C /* Card+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA61AAD26CC21CB00C2A62C /* Card+Extensions.swift */; };
 		CAA61AB126CC239100C2A62C /* Card+Position.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA61AB026CC239100C2A62C /* Card+Position.swift */; };
@@ -54,6 +55,7 @@
 		CA97C1FA26978A76004AC3A6 /* CardImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardImage.swift; sourceTree = "<group>"; };
 		CA99B72426D0157D005F0FBB /* NewActionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewActionViewModel.swift; sourceTree = "<group>"; };
 		CA99B72726D015C5005F0FBB /* NewActionViewState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewActionViewState.swift; sourceTree = "<group>"; };
+		CA99B72926D1B009005F0FBB /* ExaminationForm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExaminationForm.swift; sourceTree = "<group>"; };
 		CAA61AAD26CC21CB00C2A62C /* Card+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Card+Extensions.swift"; sourceTree = "<group>"; };
 		CAA61AB026CC239100C2A62C /* Card+Position.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Card+Position.swift"; sourceTree = "<group>"; };
 		CAA61AB226CC2D6700C2A62C /* SecretInformant+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SecretInformant+Extensions.swift"; sourceTree = "<group>"; };
@@ -213,6 +215,7 @@
 				CA8C07A8268993B400B50233 /* ActionForm.swift */,
 				CA35608B26927D70004B41AF /* InquisitionForm.swift */,
 				CA35608D26927D83004B41AF /* AccusationForm.swift */,
+				CA99B72926D1B009005F0FBB /* ExaminationForm.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -343,6 +346,7 @@
 				CA2E856C268268C7001BE951 /* GameBoardViewModel.swift in Sources */,
 				CA35608C26927D70004B41AF /* InquisitionForm.swift in Sources */,
 				CAA61AAE26CC21CB00C2A62C /* Card+Extensions.swift in Sources */,
+				CA99B72A26D1B009005F0FBB /* ExaminationForm.swift in Sources */,
 				CA2E856226823772001BE951 /* PlayerPicker.swift in Sources */,
 				CA8C07A9268993B400B50233 /* ActionForm.swift in Sources */,
 				CA99B72526D0157D005F0FBB /* NewActionViewModel.swift in Sources */,

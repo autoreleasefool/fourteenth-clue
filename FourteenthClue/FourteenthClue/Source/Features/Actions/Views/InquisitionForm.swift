@@ -29,9 +29,7 @@ struct InquisitionForm: View {
 							.tag(player)
 					}
 				}
-			}
 
-			Section {
 				Picker("Answering Player", selection: $viewModel.viewState.inquisition.answeringPlayer) {
 					ForEach(viewModel.state.players) { player in
 						Text(player.name)
@@ -42,7 +40,7 @@ struct InquisitionForm: View {
 
 			Section {
 				Picker("Type", selection: $viewModel.viewState.inquisition.type) {
-					ForEach(InquisitionType.allCases) { type in
+					ForEach(NewActionViewState.NewInquisition.InquisitionType.allCases) { type in
 						Text(type.name)
 							.tag(type)
 					}
@@ -79,21 +77,4 @@ struct InquisitionForm: View {
 			}
 		}
 	}
-}
-
-extension InquisitionForm {
-
-	enum InquisitionType: String, CaseIterable, Identifiable {
-		case color
-		case category
-
-		var id: String {
-			rawValue
-		}
-
-		var name: String {
-			rawValue.capitalized
-		}
-	}
-
 }
