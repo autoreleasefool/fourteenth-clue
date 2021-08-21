@@ -5,13 +5,23 @@
 //  Created by Joseph Roque on 2021-08-18.
 //
 
+import ConsoleKit
+
 struct SolutionsCommand: RunnableCommand {
 
-	static var help: String {
-		"""
-		solutions [sol]: show most likely solutions. USAGE:
-			- show <int> most likely solutions: solutions <int>
-		"""
+	static var name: String {
+		"solutions"
+	}
+
+	static var shortName: String? {
+		"sol"
+	}
+
+	static var help: [ConsoleTextFragment] {
+		[
+			.init(string: "show most likely solutions."),
+			.init(string: "\n  - show <int> most likely solutions: solutions <int>"),
+		]
 	}
 
 	let limit: Int
@@ -36,8 +46,13 @@ struct SolutionsCommand: RunnableCommand {
 	}
 
 	func run(_ state: EngineState) throws {
+		guard state.gameState.isSolveable else {
+			state.context.console.warning("Not enough information to solve yet.")
+			return
+		}
+
 		guard !state.solutions.isEmpty else {
-			print("Still calculating solutions...")
+			state.context.console.warning("Still calculating solution...")
 			return
 		}
 
@@ -45,12 +60,23 @@ struct SolutionsCommand: RunnableCommand {
 			? state.solutions.prefix(limit)
 			: state.solutions[0...]
 
-		solutions.enumerated()
-			.forEach { index, solution in
-				let ordinal = "\(index + 1)".padding(toLength: 2, withPad: " ", startingAt: 0)
+		let output: [ConsoleTextFragment] = solutions.enumerated()
+			.flatMap { index, solution -> [ConsoleTextFragment] in
 				let probability = String(format: "%.2f", solution.probability * 100)
-				print("\(ordinal). [\(probability)%] - \(solution.person.name), \(solution.location.name), \(solution.weapon.name)")
+
+				return [
+					[.init(string: "\n")],
+					[.init(string: "\(index + 1)".padding(toLength: 2, withPad: " ", startingAt: 0))],
+					[.init(string: ". [\(probability)%] - ")],
+					solution.person.name.consoleText(withState: state.gameState),
+					[.init(string: ", ")],
+					solution.location.name.consoleText(withState: state.gameState),
+					[.init(string: ", ")],
+					solution.weapon.name.consoleText(withState: state.gameState),
+				].flatMap { $0 }
 			}
+
+		state.context.console.output(.init(fragments: output))
 	}
 
 }

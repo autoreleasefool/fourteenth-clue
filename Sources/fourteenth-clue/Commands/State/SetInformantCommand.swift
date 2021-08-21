@@ -5,15 +5,24 @@
 //  Created by Joseph Roque on 2021-08-18.
 //
 
+import ConsoleKit
 import FourteenthClueKit
 
 struct SetInformantCommand: RunnableCommand {
 
-	static var help: String {
-		"""
-		set-informant [seti]: update an informant's properties. USAGE:
-			- set the card for an informant: set-informant <name> <card>
-		"""
+	static var name: String {
+		"set-informant"
+	}
+
+	static var shortName: String? {
+		"seti"
+	}
+
+	static var help: [ConsoleTextFragment] {
+		[
+			.init(string: "update an informant's properties"),
+			.init(string: "\n  - set the card for an informant: set-informant <name> <card>"),
+		]
 	}
 
 	let informantName: String
@@ -35,7 +44,12 @@ struct SetInformantCommand: RunnableCommand {
 		let updatedState = state.gameState.with(secretInformant: informant)
 		state.updateState(to: updatedState)
 
-		print("Updated \(informantName), replaced card with \(card?.name ?? "none")")
+		state.context.console.output(.init(fragments: [
+			[.init(string: "Updated ")],
+			[informantName.highlighted],
+			[.init(string: ", replaced card with ")],
+			card != nil ? card!.name.consoleText(withState: updatedState) : [.init(string: "none", style: .init(isBold: true))],
+		].flatMap { $0 }))
 	}
 
 }

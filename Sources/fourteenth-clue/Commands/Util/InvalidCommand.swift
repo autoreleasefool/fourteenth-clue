@@ -5,10 +5,20 @@
 //  Created by Joseph Roque on 2021-08-17.
 //
 
+import ConsoleKit
+
 struct InvalidCommand: RunnableCommand {
 
-	static var help: String {
-		"Invalid command. You shouldn't be seeing this."
+	static var name: String {
+		""
+	}
+
+	static var shortName: String? {
+		nil
+	}
+
+	static var help: [ConsoleTextFragment] {
+		[]
 	}
 
 	let command: String
@@ -18,7 +28,11 @@ struct InvalidCommand: RunnableCommand {
 	}
 
 	func run(_ state: EngineState) throws {
-		print("`\(command)` is not a valid command (try typing `help`)")
+		state.context.console.output(.init(fragments: [
+			.init(string: "\(command)", style: .init(isBold: true)),
+			.init(string: " is not a valid command", style: .error),
+			.init(string: " (try typing 'help')", style: .info)
+		]))
 	}
 
 }

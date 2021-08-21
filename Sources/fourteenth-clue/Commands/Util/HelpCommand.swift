@@ -5,10 +5,20 @@
 //  Created by Joseph Roque on 2021-08-17.
 //
 
+import ConsoleKit
+
 struct HelpCommand: RunnableCommand {
 
-	static var help: String {
-		"help [h]: print all the available commands."
+	static var name: String {
+		"help"
+	}
+
+	static var shortName: String? {
+		"h"
+	}
+
+	static var help: [ConsoleTextFragment] {
+		[.init(string: "print all the available commands.")]
 	}
 
 	init?(_ string: String) {
@@ -17,7 +27,7 @@ struct HelpCommand: RunnableCommand {
 
 	func run(_ state: EngineState) throws {
 		allCommandClasses.forEach {
-			print($0.help)
+			state.context.console.output(.init(fragments: $0.buildHelp()))
 		}
 	}
 

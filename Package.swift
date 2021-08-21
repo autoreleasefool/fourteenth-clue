@@ -5,9 +5,12 @@ import PackageDescription
 
 let package = Package(
 	name: "fourteenth-clue",
+	platforms: [
+		.macOS(.v10_15),
+	],
 	dependencies: [
 		.package(url: "https://github.com/autoreleasefool/fourteenth-clue-kit", branch: "main"),
-		.package(url: "https://github.com/apple/swift-argument-parser", from: "0.4.0"),
+		.package(url: "https://github.com/vapor/console-kit", from: "4.2.7"),
 	],
 	targets: [
 		// Targets are the basic building blocks of a package. A target can define a module or a test suite.
@@ -16,7 +19,7 @@ let package = Package(
 			name: "fourteenth-clue",
 			dependencies: [
 				.product(name: "FourteenthClueKit", package: "fourteenth-clue-kit"),
-				.product(name: "ArgumentParser", package: "swift-argument-parser"),
+				.product(name: "ConsoleKit", package: "console-kit"),
 			]
 		),
 		.testTarget(

@@ -5,6 +5,7 @@
 //  Created by Joseph Roque on 2021-08-18.
 //
 
+import ConsoleKit
 import Foundation
 import FourteenthClueKit
 
@@ -17,6 +18,7 @@ class EngineState: SolverDelegate {
 			self.optimalInquiries = []
 		}
 	}
+	let context: CommandContext
 	private(set) var hasShownHelp: Bool
 	private(set) var isRunning: Bool
 
@@ -28,10 +30,12 @@ class EngineState: SolverDelegate {
 
 	init(
 		gameState: GameState,
+		context: CommandContext,
 		hasShownHelp: Bool = false,
 		isRunning: Bool = true
 	) {
 		self.gameState = gameState
+		self.context = context
 		self.hasShownHelp = hasShownHelp
 		self.isRunning = isRunning
 		self.solutions = []

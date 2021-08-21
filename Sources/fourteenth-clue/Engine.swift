@@ -5,19 +5,17 @@
 //  Created by Joseph Roque on 2021-08-17.
 //
 
-import ArgumentParser
+import ConsoleKit
 import Foundation
 import FourteenthClueKit
 
 class Engine {
 
 	private let queue = DispatchQueue(label: "ca.josephroque.FourteenthClue.Engine")
-	let initialState: EngineState
-	var currentState: EngineState
+	let state: EngineState
 
-	init(state: GameState) {
-		self.initialState = EngineState(gameState: state)
-		self.currentState = self.initialState
+	init(state: GameState, context: CommandContext) {
+		self.state = EngineState(gameState: state, context: context)
 	}
 
 	func runLoop() {
@@ -35,21 +33,19 @@ class Engine {
 	}
 
 	func playGame() throws {
-		guard currentState.isRunning else {
+		guard state.isRunning else {
 			throw ExitCode.success
 		}
 
 		var helpMessage = ""
-		if !currentState.hasShownHelp {
+		if !state.hasShownHelp {
 			helpMessage = " (try typing 'help')"
-			currentState.didShowHelp()
+			state.didShowHelp()
 		}
 
-		print("Command\(helpMessage): ", terminator: "")
-		guard let rawCommand = readLine() else { return }
-
-		let commandToRun = parseCommand(string: rawCommand.trimmingCharacters(in: .whitespacesAndNewlines))
-		try commandToRun.run(currentState)
+		let command = state.context.console.ask("Enter a command\(helpMessage):".consoleText(.info))
+		let commandToRun = parseCommand(string: command)
+		try commandToRun.run(state)
 
 		self.runLoop()
 	}

@@ -5,12 +5,20 @@
 //  Created by Joseph Roque on 2021-08-17.
 //
 
-import ArgumentParser
+import ConsoleKit
 
 struct ExitCommand: RunnableCommand {
 
-	static var help: String {
-		"exit [e]: quit the program."
+	static var name: String {
+		"exit"
+	}
+
+	static var shortName: String? {
+		"e"
+	}
+
+	static var help: [ConsoleTextFragment] {
+		[.init(string: "quit the program.", style: .error)]
 	}
 
 	private let exitCode: ExitCode
@@ -24,7 +32,7 @@ struct ExitCommand: RunnableCommand {
 
 	func run(_ state: EngineState) throws {
 		if let message = message {
-			print("\nExiting, \(message)")
+			state.context.console.output("\nExiting, \(message)", style: .error)
 		}
 
 		throw exitCode

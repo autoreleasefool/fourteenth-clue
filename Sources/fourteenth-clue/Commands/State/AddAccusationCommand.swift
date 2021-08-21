@@ -5,16 +5,24 @@
 //  Created by Joseph Roque on 2021-08-18.
 //
 
+import ConsoleKit
 import FourteenthClueKit
 
 struct AddAccusationCommand: RunnableCommand {
 
-	static var help: String {
-		"""
-		add-accusation [adda]: add a new accusation. USAGE:
-			- add an accusation:
-				add-accusation <player> <person> <location> <weapon>
-		"""
+	static var name: String {
+		"add-accusation"
+	}
+
+	static var shortName: String? {
+		"adda"
+	}
+
+	static var help: [ConsoleTextFragment] {
+		[
+			.init(string: "add a new accusation."),
+			.init(string: "\n  - add an accusation: add-accusation <player> <person> <location> <weapon>"),
+		]
 	}
 
 	let playerName: String
@@ -54,7 +62,11 @@ struct AddAccusationCommand: RunnableCommand {
 		let updatedState = state.gameState.appending(action: action)
 		state.updateState(to: updatedState)
 
-		print("Added action: \(action.description(withState: updatedState))" )
+		state.context.console.output(
+			.init(
+				fragments: "Added action: \(action.description(withState: updatedState))".consoleText(withState: state.gameState)
+			)
+		)
 	}
 
 }

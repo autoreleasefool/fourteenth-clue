@@ -1,56 +1,82 @@
-import ArgumentParser
+//
+//  main.swift
+//  FourteenthClue
+//
+//  Created by Joseph Roque on 2021-08-18.
+//
+
+import ConsoleKit
 import Foundation
 import FourteenthClueKit
 
-struct FourteenthClue: ParsableCommand {
+enum ExitCode: Int32, Error {
 
-	@Option(help: "The state to seed the game with, from BoardGameArena.")
-	var initialState: String?
+	case success = 0
+	case failure = 1
+	case validationFailure = 2
 
-	@Option(help: "The number of players in the game")
-	var numberOfPlayers: Int?
+}
 
-	mutating func validate() throws {
-		guard numberOfPlayers != nil || initialState != nil else {
-			throw ValidationError("Please specify one of number of players, or initial state.")
-		}
+struct FourteenthClue: Command {
+	struct Signature: CommandSignature {
+		@Option(name: "initial-state", short: "i", help: "Pass an initial seed state")
+		var initialState: String?
 
-		guard !(numberOfPlayers != nil && initialState != nil) else {
-			throw ValidationError("Please only specify number of players, or initial state.")
-		}
-
-		if let numberOfPlayers = numberOfPlayers {
-			guard (2...6).contains(numberOfPlayers) else {
-				throw ValidationError("Games must have between 2 and 6 players.")
-			}
-		}
-
-		if let initialState = initialState {
-			guard let _ = GameState(seed: initialState) else {
-				throw ValidationError("Failed to parse state.")
-			}
-		}
+		@Option(name: "number-of-players", short: "p", help: "Set a number of players")
+		var numberOfPlayers: Int?
 	}
 
-	mutating func run() throws {
+	var help: String {
+		"Play a game of 13 Clues, with a little help."
+	}
+
+	func run(using context: CommandContext, signature: Signature) throws {
+		guard signature.numberOfPlayers != nil || signature.initialState != nil else {
+			throw ExitCode.validationFailure
+		}
+
+		guard !(signature.numberOfPlayers != nil && signature.initialState != nil) else {
+			throw ExitCode.validationFailure
+		}
+
 		var state: GameState?
-		if let numberOfPlayers = numberOfPlayers {
+
+		if let numberOfPlayers = signature.numberOfPlayers {
+			guard (2...6).contains(numberOfPlayers) else {
+				throw ExitCode.validationFailure
+			}
 			state = GameState(playerCount: numberOfPlayers)
-		} else if let initialState = initialState {
-			state = GameState(seed: initialState)
+		}
+
+		if let initialState = signature.initialState {
+			guard let gameState = GameState(seed: initialState) else {
+				throw ExitCode.validationFailure
+			}
+			state = gameState
 		}
 
 		guard let gameState = state else {
 			throw ExitCode.validationFailure
 		}
 
-		let engine = Engine(state: gameState)
+		let engine = Engine(state: gameState, context: context)
 		engine.runLoop()
 	}
-
 }
 
-DispatchQueue.main.async {
-	FourteenthClue.main()
+let console: Console = Terminal()
+var input = CommandInput(arguments: CommandLine.arguments)
+var context = CommandContext(console: console, input: input)
+
+var commands = Commands(enableAutocomplete: true)
+commands.use(FourteenthClue(), as: "fourteenth-clue", isDefault: false)
+
+do {
+	let group = commands.group(help: "Play a game of 13 Clues.")
+	try console.run(group, input: input)
+} catch let error {
+	console.error("\(error)")
+	exit(1)
 }
+
 RunLoop.main.run()

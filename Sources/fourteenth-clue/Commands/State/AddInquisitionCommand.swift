@@ -5,17 +5,24 @@
 //  Created by Joseph Roque on 2021-08-18.
 //
 
+import ConsoleKit
 import FourteenthClueKit
 
 struct AddInquisitionCommand: RunnableCommand {
 
-	static var help: String {
-		"""
-		add-inquisition [addi]: add a new inquisition. USAGE:
-			- add an inquisition:
-				add-inquisition <asking-player> <answering-player>
-					<category> <count>
-		"""
+	static var name: String {
+		"add-inquisition"
+	}
+
+	static var shortName: String? {
+		"addi"
+	}
+
+	static var help: [ConsoleTextFragment] {
+		[
+			.init(string: "add a new inquisition."),
+			.init(string: "\n  - add an inquisition: add-inquisition <asking-player> <answering-player> <category> <count>"),
+		]
 	}
 
 	let askingPlayerName: String
@@ -54,7 +61,12 @@ struct AddInquisitionCommand: RunnableCommand {
 		let updatedState = state.gameState.appending(action: action)
 		state.updateState(to: updatedState)
 
-		print("Added action: \(action.description(withState: updatedState))" )
+		state.context.console.output(
+			.init(
+				fragments: [.init(string: "Added action:", style: .init(isBold: true))] +
+					action.description(withState: updatedState).consoleText(withState: updatedState)
+			)
+		)
 	}
 
 }

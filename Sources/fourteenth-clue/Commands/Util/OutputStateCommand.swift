@@ -5,10 +5,20 @@
 //  Created by Joseph Roque on 2021-08-18.
 //
 
+import ConsoleKit
+
 struct OutputStateCommand: RunnableCommand {
 
-	static var help: String {
-		"show [s]: show the current state of the game"
+	static var name: String {
+		"show"
+	}
+
+	static var shortName: String? {
+		"s"
+	}
+
+	static var help: [ConsoleTextFragment] {
+		[.init(string: "show the current state of the game.")]
 	}
 
 	static let unknown = "Unknown"
@@ -18,34 +28,30 @@ struct OutputStateCommand: RunnableCommand {
 	}
 
 	func run(_ state: EngineState) throws {
-		print("=Players=")
-		state.gameState.players.forEach {
-			print("\t\($0.name)")
-			print("""
-					Mystery: \
-			\($0.mystery.person?.name ?? Self.unknown), \
-			\($0.mystery.location?.name ?? Self.unknown), \
-			\($0.mystery.weapon?.name ?? Self.unknown)
-			""")
-			print("""
-					Hidden: \
-			\($0.hidden.left?.name ?? Self.unknown), \
-			\($0.hidden.right?.name ?? Self.unknown)
-			""")
-		}
+		var output: [ConsoleTextFragment] = [
+			.init(string: "Players", style: .success),
+		]
+
+		output.append(contentsOf: state.gameState.players.flatMap {
+			"\n  \($0.name)".consoleText(withState: state.gameState)
+				+ "\n    Mystery: \($0.mystery.person?.name ?? Self.unknown), \($0.mystery.location?.name ?? Self.unknown), \($0.mystery.weapon?.name ?? Self.unknown)".consoleText(withState: state.gameState)
+				+ "\n    Hidden: \($0.hidden.left?.name ?? Self.unknown), \($0.hidden.right?.name ?? Self.unknown)".consoleText(withState: state.gameState)
+		})
 
 		if !state.gameState.secretInformants.isEmpty {
-			print("=Informants=")
-			state.gameState.secretInformants.forEach {
-				print("\t\($0.name): \($0.card?.name ?? Self.unknown)")
-			}
+			output.append(.init(string: "\nInformants", style: .success))
+			output.append(contentsOf: state.gameState.secretInformants.flatMap {
+				"\n  \($0.name): \($0.card?.name ?? Self.unknown)".consoleText(withState: state.gameState)
+			})
 		}
 
 		if !state.gameState.actions.isEmpty {
-			print("=Actions=")
-			state.gameState.actions.forEach {
-				print("\t\($0.description(withState: state.gameState))")
-			}
+			output.append(.init(string: "\nActions", style: .success))
+			output.append(contentsOf: state.gameState.actions.flatMap {
+				"\n  \($0.description(withState: state.gameState))".consoleText(withState: state.gameState)
+			})
 		}
+
+		state.context.console.output(.init(fragments: output))
 	}
 }

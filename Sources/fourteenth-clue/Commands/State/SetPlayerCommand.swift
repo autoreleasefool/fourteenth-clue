@@ -5,19 +5,27 @@
 //  Created by Joseph Roque on 2021-08-17.
 //
 
+import ConsoleKit
 import Foundation
 import FourteenthClueKit
 
 struct SetPlayerCommand: RunnableCommand {
 
-	static var help: String {
-		let cardPositions = Card.Position.allCases.map { $0.rawValue }.joined(separator: "|")
+	static var name: String {
+			"set-player"
+		}
 
-		return """
-		set-player [setp]: update a player's properties. USAGE:
-			- change player's name: set-player <name> name:newName
-			- change a player's cards: set-player <name> <\(cardPositions)>:cardName
-		"""
+		static var shortName: String? {
+			"setp"
+		}
+
+	static var help: [ConsoleTextFragment] {
+		let cardPositions = Card.Position.allCases.map { $0.rawValue }.joined(separator: "|")
+		return [
+			.init(string: "update a player's properties."),
+			.init(string: "\n  - change player's name: set-player <name> name:<newName>"),
+			.init(string: "\n  - change a player's cards: set-player <name> <\(cardPositions)>:<cardName>"),
+		]
 	}
 
 	let playerName: String
@@ -77,7 +85,12 @@ struct SetPlayerCommand: RunnableCommand {
 		let updatedState = state.gameState.with(player: updatedPlayer, atIndex: playerIndex)
 		state.updateState(to: updatedState)
 
-		print("Updated \(playerName), \(modification.description)")
+		state.context.console.output(.init(fragments: [
+			[.init(string: "Updated ")],
+			[playerName.highlighted],
+			[.init(string: ", ")],
+			modification.description.consoleText(withState: updatedState),
+		].flatMap { $0 }))
 	}
 
 }

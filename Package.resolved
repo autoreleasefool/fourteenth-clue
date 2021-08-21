@@ -2,6 +2,15 @@
   "object": {
     "pins": [
       {
+        "package": "console-kit",
+        "repositoryURL": "https://github.com/vapor/console-kit",
+        "state": {
+          "branch": null,
+          "revision": "75ea3b627d88221440b878e5dfccc73fd06842ed",
+          "version": "4.2.7"
+        }
+      },
+      {
         "package": "FourteenthClueKit",
         "repositoryURL": "https://github.com/autoreleasefool/fourteenth-clue-kit",
         "state": {
@@ -20,12 +29,12 @@
         }
       },
       {
-        "package": "swift-argument-parser",
-        "repositoryURL": "https://github.com/apple/swift-argument-parser",
+        "package": "swift-log",
+        "repositoryURL": "https://github.com/apple/swift-log.git",
         "state": {
           "branch": null,
-          "revision": "83b23d940471b313427da226196661856f6ba3e0",
-          "version": "0.4.4"
+          "revision": "5d66f7ba25daf4f94100e7022febf3c75e37a6c7",
+          "version": "1.4.2"
         }
       },
       {
