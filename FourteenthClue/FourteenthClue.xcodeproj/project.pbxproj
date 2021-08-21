@@ -23,6 +23,8 @@
 		CA97C1F626968005004AC3A6 /* NavigationLink+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA97C1F526968005004AC3A6 /* NavigationLink+Extensions.swift */; };
 		CA97C1FB26978A76004AC3A6 /* CardImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA97C1FA26978A76004AC3A6 /* CardImage.swift */; };
 		CA97C202269A425B004AC3A6 /* Algorithms in Frameworks */ = {isa = PBXBuildFile; productRef = CA97C201269A425B004AC3A6 /* Algorithms */; };
+		CA99B72526D0157D005F0FBB /* NewActionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA99B72426D0157D005F0FBB /* NewActionViewModel.swift */; };
+		CA99B72826D015C5005F0FBB /* NewActionViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA99B72726D015C5005F0FBB /* NewActionViewState.swift */; };
 		CAA61AAB26CC219300C2A62C /* FourteenthClueKit in Frameworks */ = {isa = PBXBuildFile; productRef = CAA61AAA26CC219300C2A62C /* FourteenthClueKit */; };
 		CAA61AAE26CC21CB00C2A62C /* Card+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA61AAD26CC21CB00C2A62C /* Card+Extensions.swift */; };
 		CAA61AB126CC239100C2A62C /* Card+Position.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA61AB026CC239100C2A62C /* Card+Position.swift */; };
@@ -50,6 +52,8 @@
 		CA8C07A8268993B400B50233 /* ActionForm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionForm.swift; sourceTree = "<group>"; };
 		CA97C1F526968005004AC3A6 /* NavigationLink+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NavigationLink+Extensions.swift"; sourceTree = "<group>"; };
 		CA97C1FA26978A76004AC3A6 /* CardImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardImage.swift; sourceTree = "<group>"; };
+		CA99B72426D0157D005F0FBB /* NewActionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewActionViewModel.swift; sourceTree = "<group>"; };
+		CA99B72726D015C5005F0FBB /* NewActionViewState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewActionViewState.swift; sourceTree = "<group>"; };
 		CAA61AAD26CC21CB00C2A62C /* Card+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Card+Extensions.swift"; sourceTree = "<group>"; };
 		CAA61AB026CC239100C2A62C /* Card+Position.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Card+Position.swift"; sourceTree = "<group>"; };
 		CAA61AB226CC2D6700C2A62C /* SecretInformant+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SecretInformant+Extensions.swift"; sourceTree = "<group>"; };
@@ -86,8 +90,9 @@
 		CA2E855A2681AE5E001BE951 /* Features */ = {
 			isa = PBXGroup;
 			children = (
-				CA2E855D2681AEC9001BE951 /* Home */,
+				CA99B72126D0153B005F0FBB /* Actions */,
 				CA2E855C2681AEB3001BE951 /* Board */,
+				CA2E855D2681AEC9001BE951 /* Home */,
 			);
 			path = Features;
 			sourceTree = "<group>";
@@ -137,9 +142,6 @@
 				CA2E856826826830001BE951 /* GameBoard.swift */,
 				CA2E8572268399D0001BE951 /* PlayerCardSet.swift */,
 				CAB5E4E8268AD2FD0070DD97 /* SolutionList.swift */,
-				CA8C07A8268993B400B50233 /* ActionForm.swift */,
-				CA35608B26927D70004B41AF /* InquisitionForm.swift */,
-				CA35608D26927D83004B41AF /* AccusationForm.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -193,6 +195,42 @@
 				CA97C1FA26978A76004AC3A6 /* CardImage.swift */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		CA99B72126D0153B005F0FBB /* Actions */ = {
+			isa = PBXGroup;
+			children = (
+				CA99B72626D015BC005F0FBB /* Models */,
+				CA99B72326D0156E005F0FBB /* ViewModels */,
+				CA99B72226D01553005F0FBB /* Views */,
+			);
+			path = Actions;
+			sourceTree = "<group>";
+		};
+		CA99B72226D01553005F0FBB /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				CA8C07A8268993B400B50233 /* ActionForm.swift */,
+				CA35608B26927D70004B41AF /* InquisitionForm.swift */,
+				CA35608D26927D83004B41AF /* AccusationForm.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		CA99B72326D0156E005F0FBB /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				CA99B72426D0157D005F0FBB /* NewActionViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		CA99B72626D015BC005F0FBB /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				CA99B72726D015C5005F0FBB /* NewActionViewState.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 		CAA61AAC26CC21BB00C2A62C /* Extensions */ = {
@@ -307,8 +345,10 @@
 				CAA61AAE26CC21CB00C2A62C /* Card+Extensions.swift in Sources */,
 				CA2E856226823772001BE951 /* PlayerPicker.swift in Sources */,
 				CA8C07A9268993B400B50233 /* ActionForm.swift in Sources */,
+				CA99B72526D0157D005F0FBB /* NewActionViewModel.swift in Sources */,
 				CAA61AB626CC3B7900C2A62C /* GameBuilderViewModel.swift in Sources */,
 				CA2E856426823E13001BE951 /* Assets.swift in Sources */,
+				CA99B72826D015C5005F0FBB /* NewActionViewState.swift in Sources */,
 				CA97C1F626968005004AC3A6 /* NavigationLink+Extensions.swift in Sources */,
 				CA2E8573268399D0001BE951 /* PlayerCardSet.swift in Sources */,
 				CAED72F7268447190060086A /* CardPicker.swift in Sources */,

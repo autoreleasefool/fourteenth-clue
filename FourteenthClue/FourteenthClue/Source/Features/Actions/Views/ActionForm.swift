@@ -11,28 +11,31 @@ import SwiftUI
 struct ActionForm: View {
 	@Environment(\.dismiss) private var dismiss
 
-	let state: GameState
+	@StateObject var viewModel: NewActionViewModel
 	let onAddAction: (AnyAction) -> Void
 
-	@State private var actionType: ActionType = .inquisition
+	init(state: GameState, onAddAction: @escaping (AnyAction) -> Void) {
+		self._viewModel = .init(wrappedValue: .init(state: state))
+		self.onAddAction = onAddAction
+	}
 
 	var body: some View	{
 		Form {
-			Picker("Action", selection: $actionType) {
-				ForEach(ActionType.allCases) { actionType in
+			Picker("Action", selection: $viewModel.viewState.type) {
+				ForEach(NewActionViewState.ActionType.allCases) { actionType in
 					Text(actionType.name)
 						.tag(actionType)
 				}
 			}
 
-			switch actionType {
+			switch viewModel.viewState.type {
 			case .inquisition:
-				InquisitionForm(state: state) { inquisition in
+				InquisitionForm(viewModel: viewModel) { inquisition in
 					onAddAction(AnyAction(inquisition))
 					dismiss()
 				}
 			case .accusation:
-				AccusationForm(state: state) { accusation in
+				AccusationForm(viewModel: viewModel) { accusation in
 					onAddAction(AnyAction(accusation))
 					dismiss()
 				}

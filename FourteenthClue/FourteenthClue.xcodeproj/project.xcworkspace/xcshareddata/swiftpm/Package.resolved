@@ -15,8 +15,17 @@
         "repositoryURL": "https://github.com/autoreleasefool/fourteenth-clue-kit",
         "state": {
           "branch": "main",
-          "revision": "ba4e98c534e9a2b2c9d98c93cdbcbb021b4ffb4f",
+          "revision": "62b06bf4face50f13d2ef40ed471631eff321ba3",
           "version": null
+        }
+      },
+      {
+        "package": "swift-algorithms",
+        "repositoryURL": "https://github.com/apple/swift-algorithms.git",
+        "state": {
+          "branch": null,
+          "revision": "2327673b0e9c7e90e6b1826376526ec3627210e4",
+          "version": "0.2.1"
         }
       },
       {

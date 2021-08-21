@@ -1,0 +1,142 @@
+//
+//  NewActionViewState.swift
+//  NewActionViewState
+//
+//  Created by Joseph Roque on 2021-08-20.
+//
+
+import FourteenthClueKit
+
+struct NewActionViewState {
+
+	var type: ActionType = .inquisition
+	var inquisition: NewInquisition
+	var accusation: NewAccusation
+	var examination: NewExamination
+
+	init(state: GameState) {
+		self.inquisition = NewInquisition(state: state)
+		self.accusation = NewAccusation(state: state)
+		self.examination = NewExamination()
+	}
+
+}
+
+// MARK: - ActionType
+
+extension NewActionViewState {
+
+	enum ActionType: String, CaseIterable, Identifiable {
+		case inquisition
+		case accusation
+		case examination
+
+		var id: String {
+			rawValue
+		}
+
+		var name: String {
+			rawValue.capitalized
+		}
+	}
+
+}
+
+// MARK: - NewInquisition
+
+extension NewActionViewState {
+
+	struct NewInquisition {
+
+		init(state: GameState) {
+			self.askingPlayer = state.players.first!
+			self.answeringPlayer = state.players.first!
+		}
+
+		var askingPlayer: Player
+		var answeringPlayer: Player
+		var type: InquisitionType = .color
+		var color: Card.Color = Card.Color.allCases.first!
+		var category: Card.Category = Card.Category.allCases.first!
+		var count: Int?
+
+		func build(withState state: GameState) -> Inquisition? {
+			guard let count = count else { return nil }
+
+			let filter: Card.Filter
+			switch type {
+			case .color:
+				filter = .color(color)
+			case .category:
+				filter = .category(category)
+			}
+
+			return Inquisition(
+				ordinal: state.actions.count,
+				askingPlayer: askingPlayer.name,
+				answeringPlayer: answeringPlayer.name,
+				filter: filter,
+				count: count
+			)
+		}
+	}
+
+}
+
+extension NewActionViewState.NewInquisition {
+
+	enum InquisitionType: String, CaseIterable, Identifiable {
+		case color
+		case category
+
+		var id: String {
+			rawValue
+		}
+
+		var name: String {
+			rawValue.capitalized
+		}
+	}
+
+}
+
+// MARK: - NewAccusation
+
+extension NewActionViewState {
+
+	struct NewAccusation {
+
+		init(state: GameState) {
+			self.accusingPlayer = state.players.first!
+		}
+
+		var accusingPlayer: Player
+		var person: Card = Card.peopleCards.sorted().first!
+		var location: Card = Card.locationsCards.sorted().first!
+		var weapon: Card = Card.weaponsCards.sorted().first!
+		var pickingCardPosition: Card.Position?
+
+		func build(withState state: GameState) -> Accusation {
+			Accusation(
+				ordinal: state.actions.count,
+				accusingPlayer: accusingPlayer.name,
+				accusation: MysteryCardSet(
+					person: person,
+					location: location,
+					weapon: weapon
+				)
+			)
+		}
+	}
+
+}
+
+// MARK: - NewExamination
+
+extension NewActionViewState {
+
+	struct NewExamination {
+
+	}
+
+}
