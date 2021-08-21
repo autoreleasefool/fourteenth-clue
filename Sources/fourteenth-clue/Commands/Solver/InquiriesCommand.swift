@@ -27,7 +27,9 @@ struct InquiriesCommand: RunnableCommand {
 
 	func run(_ state: EngineState) throws {
 		guard !state.optimalInquiries.isEmpty else {
-			state.context.console.warning("Still calculating optimal inquiry...")
+			let progress = state.evaluatorProgress ?? 0
+			let progressString = String(format: "%.2f", progress * 100)
+			state.context.console.warning("Still calculating optimal inquiry (\(progressString))...")
 			return
 		}
 

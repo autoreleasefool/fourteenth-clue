@@ -61,6 +61,14 @@ class EngineState: SolverDelegate {
 		solver.cancel()
 	}
 
+	var solverProgress: Double? {
+		solver.solverProgress
+	}
+
+	var evaluatorProgress: Double? {
+		solver.evaluatorProgress
+	}
+
 }
 
 // MARK: PossibleStateEliminationSolverDelegate
@@ -119,6 +127,14 @@ extension EngineState {
 		init() {
 			solver.delegate = self
 			evaluator.delegate = self
+		}
+
+		var solverProgress: Double? {
+			solver.progress
+		}
+
+		var evaluatorProgress: Double? {
+			evaluator.progress
 		}
 
 		func cancel() {

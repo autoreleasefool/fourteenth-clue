@@ -28,6 +28,7 @@ struct SolutionsCommand: RunnableCommand {
 
 	init?(_ string: String) {
 		guard string.starts(with: "solutions") ||
+						string.starts(with: "sol ") ||
 						string == "sol" else { return nil }
 
 		let components = string.components(separatedBy: " ")
@@ -52,7 +53,9 @@ struct SolutionsCommand: RunnableCommand {
 		}
 
 		guard !state.solutions.isEmpty else {
-			state.context.console.warning("Still calculating solution...")
+			let progress = state.solverProgress ?? 0
+			let progressString = String(format: "%.2f", progress * 100)
+			state.context.console.warning("Still calculating solution (\(progressString))...")
 			return
 		}
 
@@ -60,21 +63,23 @@ struct SolutionsCommand: RunnableCommand {
 			? state.solutions.prefix(limit)
 			: state.solutions[0...]
 
-		let output: [ConsoleTextFragment] = solutions.enumerated()
-			.flatMap { index, solution -> [ConsoleTextFragment] in
-				let probability = String(format: "%.2f", solution.probability * 100)
+		let output: [ConsoleTextFragment] = Array(
+			solutions.enumerated()
+				.flatMap { index, solution -> [ConsoleTextFragment] in
+					let probability = String(format: "%.2f", solution.probability * 100)
 
-				return [
-					[.init(string: "\n")],
-					[.init(string: "\(index + 1)".padding(toLength: 2, withPad: " ", startingAt: 0))],
-					[.init(string: ". [\(probability)%] - ")],
-					solution.person.name.consoleText(withState: state.gameState),
-					[.init(string: ", ")],
-					solution.location.name.consoleText(withState: state.gameState),
-					[.init(string: ", ")],
-					solution.weapon.name.consoleText(withState: state.gameState),
-				].flatMap { $0 }
-			}
+					return [
+						[.init(string: "\n")],
+						[.init(string: "\(index + 1)".padding(toLength: 2, withPad: " ", startingAt: 0))],
+						[.init(string: ". [\(probability)%] - ")],
+						solution.person.name.consoleText(withState: state.gameState),
+						[.init(string: ", ")],
+						solution.location.name.consoleText(withState: state.gameState),
+						[.init(string: ", ")],
+						solution.weapon.name.consoleText(withState: state.gameState),
+					].flatMap { $0 }
+				}.dropFirst()
+		)
 
 		state.context.console.output(.init(fragments: output))
 	}
