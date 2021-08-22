@@ -28,11 +28,19 @@ class GameBoardViewModel: ObservableObject {
 	private var solver: MysterySolver = PossibleStateEliminationSolver(maxConcurrentTasks: ProcessInfo.processInfo.activeProcessorCount)
 
 	private let inquiryQueue = DispatchQueue(label: "ca.josephroque.FourteenthClue.InquiryEvaluator")
-	private var inquiryEvaluator: InquiryEvaluator = BruteForceInquiryEvaluator(maxConcurrentTasks: ProcessInfo.processInfo.activeProcessorCount)
+	private var inquiryEvaluator: InquiryEvaluator = SamplingInquiryEvaluator(
+		baseEvaluator: BruteForceInquiryEvaluator(
+			evaluator: ExpectedStatesRemovedEvaluator.self,
+			maxConcurrentTasks: ProcessInfo.processInfo.activeProcessorCount
+		),
+		sampleRate: 0.1
+	)
+
 
 	init(state: GameState) {
 		self.initialState = state
 		self.state = state
+		self.inquiryEvaluator.isStreamingInquiries = true
 	}
 
 	// MARK: View actions
@@ -132,7 +140,7 @@ extension GameBoardViewModel: PossibleStateEliminationSolverDelegate {
 
 extension GameBoardViewModel: InquiryEvaluatorDelegate {
 	func evaluator(_ evaluator: InquiryEvaluator, didFindOptimalInquiries inquiries: [Inquiry], forState: GameState) {
-		print(inquiries)
+		print("Updated best inquiries: \(inquiries)")
 	}
 
 	func evaluator(_ evaluator: InquiryEvaluator, didEncounterError error: InquiryEvaluatorError, forState: GameState) {

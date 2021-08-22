@@ -33,6 +33,10 @@ struct InquiriesCommand: RunnableCommand {
 			return
 		}
 
+		if !state.finishedEvaluatingInquiries {
+			state.context.console.warning("Still evaluating optimal inquiry. Partial results:")
+		}
+
 		state.optimalInquiries.enumerated()
 			.forEach { index, inquiry in
 				state.context.console.output(.init(fragments:

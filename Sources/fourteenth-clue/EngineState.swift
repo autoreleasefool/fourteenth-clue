@@ -25,6 +25,7 @@ class EngineState: SolverDelegate {
 	private(set) var solutions: [Solution]
 	private(set) var possibleStates: [PossibleState]
 	private(set) var optimalInquiries: [Inquiry]
+	private(set) var finishedEvaluatingInquiries: Bool = false
 
 	private var solver = Solver()
 
@@ -89,6 +90,7 @@ extension EngineState: PossibleStateEliminationSolverDelegate {
 	func solver(_ solver: MysterySolver, didGeneratePossibleStates possibleStates: [PossibleState], forState state: GameState) {
 		guard state.id == self.gameState.id else { return }
 		self.possibleStates = possibleStates
+		self.finishedEvaluatingInquiries = false
 		self.solver.findOptimalInquiry(in: state, withPossibleStates: possibleStates)
 	}
 
@@ -103,8 +105,12 @@ extension EngineState: InquiryEvaluatorDelegate {
 	}
 
 	func evaluator(_ evaluator: InquiryEvaluator, didEncounterError error: InquiryEvaluatorError,  forState state: GameState) {
-		// TODO: output error
-		self.optimalInquiries = []
+		switch error {
+		case .completed:
+			self.finishedEvaluatingInquiries = true
+		case .cancelled:
+			self.optimalInquiries = []
+		}
 	}
 
 }
@@ -120,13 +126,20 @@ extension EngineState {
 		private let evaluatorQueue = DispatchQueue(label: "ca.josephroque.FourteenthClue.Evaluator")
 
 		private var solver: MysterySolver = PossibleStateEliminationSolver()
-		private var evaluator: InquiryEvaluator = BruteForceInquiryEvaluator()
+		private var evaluator: InquiryEvaluator = SamplingInquiryEvaluator(
+			baseEvaluator: BruteForceInquiryEvaluator(
+				evaluator: ExpectedStatesRemovedEvaluator.self,
+				maxConcurrentTasks: ProcessInfo.processInfo.activeProcessorCount
+			),
+			sampleRate: 0.1
+		)
 
 		weak var delegate: SolverDelegate?
 
 		init() {
 			solver.delegate = self
 			evaluator.delegate = self
+			evaluator.isStreamingInquiries = true
 		}
 
 		func progressSolving(state: GameState) -> Double? {
