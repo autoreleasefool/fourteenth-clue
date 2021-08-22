@@ -33,9 +33,20 @@ struct ShowCommand: RunnableCommand {
 		]
 
 		output.append(contentsOf: state.gameState.players.flatMap {
-			"\n  \($0.name)".consoleText(withState: state.gameState)
-				+ "\n    Mystery: \($0.mystery.person?.name ?? Self.unknown), \($0.mystery.location?.name ?? Self.unknown), \($0.mystery.weapon?.name ?? Self.unknown)".consoleText(withState: state.gameState)
-				+ "\n    Hidden: \($0.hidden.left?.name ?? Self.unknown), \($0.hidden.right?.name ?? Self.unknown)".consoleText(withState: state.gameState)
+			[
+				[.init(string: "\n  ")],
+				[$0.name.highlighted],
+				[.init(string: "\n    Mystery: ")],
+				($0.mystery.person?.name ?? Self.unknown).consoleText(withState: state.gameState),
+				[.init(string: ", ")],
+				($0.mystery.location?.name ?? Self.unknown).consoleText(withState: state.gameState),
+				[.init(string: ", ")],
+				($0.mystery.weapon?.name ?? Self.unknown).consoleText(withState: state.gameState),
+				[.init(string: "\n    Hidden: ")],
+				($0.hidden.left?.name ?? Self.unknown).consoleText(withState: state.gameState),
+				[.init(string: ", ")],
+				($0.hidden.right?.name ?? Self.unknown).consoleText(withState: state.gameState),
+			].flatMap { $0 }
 		})
 
 		if !state.gameState.secretInformants.isEmpty {
