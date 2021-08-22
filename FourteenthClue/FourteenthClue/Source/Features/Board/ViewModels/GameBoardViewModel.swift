@@ -25,10 +25,10 @@ class GameBoardViewModel: ObservableObject {
 	private let initialState: GameState
 
 	private let solverQueue = DispatchQueue(label: "ca.josephroque.FourteenthClue.MysterySolver")
-	private var solver: MysterySolver = PossibleStateEliminationSolver()
+	private var solver: MysterySolver = PossibleStateEliminationSolver(maxConcurrentTasks: ProcessInfo.processInfo.activeProcessorCount)
 
 	private let inquiryQueue = DispatchQueue(label: "ca.josephroque.FourteenthClue.InquiryEvaluator")
-	private var inquiryEvaluator: InquiryEvaluator = BruteForceInquiryEvaluator()
+	private var inquiryEvaluator: InquiryEvaluator = BruteForceInquiryEvaluator(maxConcurrentTasks: ProcessInfo.processInfo.activeProcessorCount)
 
 	init(state: GameState) {
 		self.initialState = state
@@ -44,8 +44,8 @@ class GameBoardViewModel: ObservableObject {
 	}
 
 	func onDisappear() {
-		solver.cancel()
-		inquiryEvaluator.cancel()
+		solver.cancelSolving(state: state)
+		inquiryEvaluator.cancelEvaluating(state: state)
 	}
 
 	func promptResetState() {
@@ -111,19 +111,19 @@ class GameBoardViewModel: ObservableObject {
 }
 
 extension GameBoardViewModel: PossibleStateEliminationSolverDelegate {
-	func solver(_ solver: MysterySolver, didReturnSolutions solutions: [Solution]) {
+	func solver(_ solver: MysterySolver, didReturnSolutions solutions: [Solution], forState state: GameState) {
 		DispatchQueue.main.async {
 			self.possibleSolutions = solutions
 		}
 	}
 
-	func solver(_ solver: MysterySolver, didEncounterError error: MysterySolverError) {
+	func solver(_ solver: MysterySolver, didEncounterError error: MysterySolverError, forState state: GameState) {
 		DispatchQueue.main.async {
 			self.possibleSolutions = []
 		}
 	}
 
-	func solver(_ solver: MysterySolver, didGeneratePossibleStates possibleStates: [PossibleState], for state: GameState) {
+	func solver(_ solver: MysterySolver, didGeneratePossibleStates possibleStates: [PossibleState], forState state: GameState) {
 		inquiryQueue.async { [weak self] in
 			self?.inquiryEvaluator.findOptimalInquiry(in: state, withPossibleStates: possibleStates)
 		}
@@ -131,11 +131,11 @@ extension GameBoardViewModel: PossibleStateEliminationSolverDelegate {
 }
 
 extension GameBoardViewModel: InquiryEvaluatorDelegate {
-	func evaluator(_ evaluator: InquiryEvaluator, didFindOptimalInquiries inquiries: [Inquiry]) {
+	func evaluator(_ evaluator: InquiryEvaluator, didFindOptimalInquiries inquiries: [Inquiry], forState: GameState) {
 		print(inquiries)
 	}
 
-	func evaluator(_ evaluator: InquiryEvaluator, didEncounterError error: InquiryEvaluatorError) {
+	func evaluator(_ evaluator: InquiryEvaluator, didEncounterError error: InquiryEvaluatorError, forState: GameState) {
 
 	}
 }
