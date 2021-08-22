@@ -1,5 +1,5 @@
 //
-//  OutputStateCommand.swift
+//  ShowCommand.swift
 //  FourteenthClue
 //
 //  Created by Joseph Roque on 2021-08-18.
@@ -7,7 +7,7 @@
 
 import ConsoleKit
 
-struct OutputStateCommand: RunnableCommand {
+struct ShowCommand: RunnableCommand {
 
 	static var name: String {
 		"show"

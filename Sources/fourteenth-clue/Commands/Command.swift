@@ -39,7 +39,7 @@ let allCommandClasses: [RunnableCommand.Type] = [
 	AddExaminationCommand.self,
 	SolutionsCommand.self,
 	InquiriesCommand.self,
-	OutputStateCommand.self,
+	ShowCommand.self,
 	ExitCommand.self,
 	// InvalidCommand.self, - do not include
 ]
