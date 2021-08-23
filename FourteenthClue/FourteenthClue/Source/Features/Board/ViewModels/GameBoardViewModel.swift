@@ -28,12 +28,9 @@ class GameBoardViewModel: ObservableObject {
 	private var solver: MysterySolver = PossibleStateEliminationSolver(maxConcurrentTasks: ProcessInfo.processInfo.activeProcessorCount)
 
 	private let inquiryQueue = DispatchQueue(label: "ca.josephroque.FourteenthClue.InquiryEvaluator")
-	private var inquiryEvaluator: InquiryEvaluator = SamplingInquiryEvaluator(
-		baseEvaluator: BruteForceInquiryEvaluator(
-			evaluator: ExpectedStatesRemovedEvaluator.self,
-			maxConcurrentTasks: ProcessInfo.processInfo.activeProcessorCount
-		),
-		sampleRate: 0.1
+	private var inquiryEvaluator: InquiryEvaluator = BruteForceInquiryEvaluator(
+		evaluator: ExpectedStatesRemovedEvaluator.self,
+		maxConcurrentTasks: ProcessInfo.processInfo.activeProcessorCount
 	)
 
 
