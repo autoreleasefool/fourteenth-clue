@@ -12,9 +12,9 @@ struct ActionForm: View {
 	@Environment(\.dismiss) private var dismiss
 
 	@StateObject var viewModel: NewActionViewModel
-	let onAddAction: (AnyAction) -> Void
+	let onAddAction: (Action) -> Void
 
-	init(state: GameState, onAddAction: @escaping (AnyAction) -> Void) {
+	init(state: GameState, onAddAction: @escaping (Action) -> Void) {
 		self._viewModel = .init(wrappedValue: .init(state: state))
 		self.onAddAction = onAddAction
 	}
@@ -31,17 +31,17 @@ struct ActionForm: View {
 			switch viewModel.viewState.type {
 			case .inquisition:
 				InquisitionForm(viewModel: viewModel) { inquisition in
-					onAddAction(AnyAction(inquisition))
+					onAddAction(.inquire(inquisition))
 					dismiss()
 				}
 			case .accusation:
 				AccusationForm(viewModel: viewModel) { accusation in
-					onAddAction(AnyAction(accusation))
+					onAddAction(.accuse(accusation))
 					dismiss()
 				}
 			case .examination:
 				ExaminationForm(viewModel: viewModel) { examination in
-					onAddAction(AnyAction(examination))
+					onAddAction(.examine(examination))
 					dismiss()
 				}
 			}

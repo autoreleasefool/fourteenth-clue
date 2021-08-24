@@ -25,11 +25,12 @@ class GameBoardViewModel: ObservableObject {
 	private let initialState: GameState
 
 	private let solverQueue = DispatchQueue(label: "ca.josephroque.FourteenthClue.MysterySolver")
-	private var solver: MysterySolver = PossibleStateEliminationSolver(maxConcurrentTasks: ProcessInfo.processInfo.activeProcessorCount)
+	private var solver: MysterySolver =
+		PossibleStateEliminationSolver(maxConcurrentTasks: ProcessInfo.processInfo.activeProcessorCount)
 
-	private let inquiryQueue = DispatchQueue(label: "ca.josephroque.FourteenthClue.InquiryEvaluator")
-	private var inquiryEvaluator: InquiryEvaluator = BruteForceInquiryEvaluator(
-		evaluator: ExpectedStatesRemovedEvaluator.self,
+	private let actionsQueue = DispatchQueue(label: "ca.josephroque.FourteenthClue.ActionEvaluator")
+	private var actionsEvaluator: PotentialActionEvaluator = BruteForceActionEvaluator(
+		evaluator: ExpectedStates.RemovedByActionEvaluator.self,
 		maxConcurrentTasks: ProcessInfo.processInfo.activeProcessorCount
 	)
 
@@ -37,7 +38,7 @@ class GameBoardViewModel: ObservableObject {
 	init(state: GameState) {
 		self.initialState = state
 		self.state = state
-		self.inquiryEvaluator.isStreamingInquiries = true
+		self.actionsEvaluator.isStreamingActions = true
 	}
 
 	// MARK: View actions
@@ -45,12 +46,12 @@ class GameBoardViewModel: ObservableObject {
 	func onAppear() {
 		print("Starting game with \(state.numberOfPlayers) players")
 		solver.delegate = self
-		inquiryEvaluator.delegate = self
+		actionsEvaluator.delegate = self
 	}
 
 	func onDisappear() {
 		solver.cancelSolving(state: state)
-		inquiryEvaluator.cancelEvaluating(state: state)
+		actionsEvaluator.cancelEvaluating(state: state)
 	}
 
 	func promptResetState() {
@@ -94,7 +95,7 @@ class GameBoardViewModel: ObservableObject {
 		state = state.with(secretInformant: informant.with(card: card))
 	}
 
-	func addAction(_ action: AnyAction) {
+	func addAction(_ action: Action) {
 		state = state.appending(action: action)
 	}
 
@@ -129,18 +130,18 @@ extension GameBoardViewModel: PossibleStateEliminationSolverDelegate {
 	}
 
 	func solver(_ solver: MysterySolver, didGeneratePossibleStates possibleStates: [PossibleState], forState state: GameState) {
-		inquiryQueue.async { [weak self] in
-			self?.inquiryEvaluator.findOptimalInquiry(in: state, withPossibleStates: possibleStates)
+		actionsQueue.async { [weak self] in
+			self?.actionsEvaluator.findOptimalAction(in: state, withPossibleStates: possibleStates)
 		}
 	}
 }
 
-extension GameBoardViewModel: InquiryEvaluatorDelegate {
-	func evaluator(_ evaluator: InquiryEvaluator, didFindOptimalInquiries inquiries: [Inquiry], forState: GameState) {
-		print("Updated best inquiries: \(inquiries)")
+extension GameBoardViewModel: PotentialActionEvaluatorDelegate {
+	func evaluator(_ evaluator: PotentialActionEvaluator, didFindOptimalActions actions: [PotentialAction], forState: GameState) {
+		print("Updated best actions: \(actions)")
 	}
 
-	func evaluator(_ evaluator: InquiryEvaluator, didEncounterError error: InquiryEvaluatorError, forState: GameState) {
+	func evaluator(_ evaluator: PotentialActionEvaluator, didEncounterError error: PotentialActionEvaluatorError, forState: GameState) {
 
 	}
 }

@@ -57,7 +57,7 @@ struct AddInquisitionCommand: RunnableCommand {
 			count: count
 		)
 
-		let action = AnyAction(inquisition)
+		let action: Action = .inquire(inquisition)
 		let updatedState = state.gameState.appending(action: action)
 		state.updateState(to: updatedState)
 

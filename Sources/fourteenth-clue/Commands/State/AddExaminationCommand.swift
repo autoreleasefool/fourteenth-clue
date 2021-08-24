@@ -46,7 +46,7 @@ struct AddExaminationCommand: RunnableCommand {
 			informant: informantName
 		)
 
-		let action = AnyAction(examination)
+		let action: Action = .examine(examination)
 		let updatedState = state.gameState.appending(action: action)
 		state.updateState(to: updatedState)
 

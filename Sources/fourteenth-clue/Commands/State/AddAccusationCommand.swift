@@ -58,7 +58,7 @@ struct AddAccusationCommand: RunnableCommand {
 			accusation: .init(person: person, location: location, weapon: weapon)
 		)
 
-		let action = AnyAction(accusation)
+		let action: Action = .accuse(accusation)
 		let updatedState = state.gameState.appending(action: action)
 		state.updateState(to: updatedState)
 

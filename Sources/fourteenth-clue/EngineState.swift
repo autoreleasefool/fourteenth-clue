@@ -128,7 +128,7 @@ extension EngineState {
 		private var solver: MysterySolver = PossibleStateEliminationSolver()
 		private var evaluator: InquiryEvaluator = SamplingInquiryEvaluator(
 			baseEvaluator: BruteForceInquiryEvaluator(
-				evaluator: ExpectedStatesRemovedEvaluator.self,
+				evaluator: ExpectedStates.RemovedByInquiryEvaluator.self,
 				maxConcurrentTasks: ProcessInfo.processInfo.activeProcessorCount
 			),
 			sampleRate: 0.1
