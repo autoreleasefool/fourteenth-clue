@@ -19,7 +19,7 @@ struct ActionForm: View {
 		self.onAddAction = onAddAction
 	}
 
-	var body: some View	{
+	var body: some View {
 		Form {
 			Picker("Action", selection: $viewModel.viewState.type) {
 				ForEach(viewModel.viewState.enabledTypes) { actionType in

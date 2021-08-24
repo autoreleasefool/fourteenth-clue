@@ -16,10 +16,8 @@ struct GameBoard: View {
 
 	init(state: GameState) {
 		var state = state
-		for (index, player) in state.players.enumerated() {
-			if player.name.isEmpty {
-				state = state.with(player: player.with(name: "Player \(index + 1)"), atIndex: index)
-			}
+		for (index, player) in state.players.enumerated() where player.name.isEmpty {
+			state = state.with(player: player.with(name: "Player \(index + 1)"), atIndex: index)
 		}
 		self._viewModel = .init(wrappedValue: GameBoardViewModel(state: state))
 	}

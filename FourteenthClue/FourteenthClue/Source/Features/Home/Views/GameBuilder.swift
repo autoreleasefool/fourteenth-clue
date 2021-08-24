@@ -31,7 +31,7 @@ struct GameBuilder: View {
 			Section(header: Text("Initial state")) {
 				TextEditor(text: $viewModel.initialJSONState)
 					.font(.caption)
-					.onChange(of:  viewModel.initialJSONState) { _ in
+					.onChange(of: viewModel.initialJSONState) { _ in
 						viewModel.formatJSON()
 					}
 			}

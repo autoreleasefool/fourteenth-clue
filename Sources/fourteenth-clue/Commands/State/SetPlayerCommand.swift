@@ -44,7 +44,7 @@ struct SetPlayerCommand: RunnableCommand {
 		guard propertyChange.count == 2 else { return nil }
 
 		if propertyChange[0] == "name" {
-			self.modification = .changeName(to: propertyChange[1])
+			self.modification = .changeName(toName: propertyChange[1])
 		} else {
 			guard let position = Card.Position(rawValue: propertyChange[0]),
 						let card = Card(rawValue: propertyChange[1])
@@ -52,7 +52,7 @@ struct SetPlayerCommand: RunnableCommand {
 				return nil
 			}
 
-			self.modification = .changeCard(at: position, to: card)
+			self.modification = .changeCard(atPosition: position, toCard: card)
 		}
 	}
 
@@ -65,20 +65,20 @@ struct SetPlayerCommand: RunnableCommand {
 
 		let updatedPlayer: Player
 		switch modification {
-		case .changeName(let to):
-			updatedPlayer = player.with(name: to)
-		case .changeCard(let at, let to):
-			switch at {
+		case .changeName(let toName):
+			updatedPlayer = player.with(name: toName)
+		case .changeCard(let atPosition, let toCard):
+			switch atPosition {
 			case .hiddenLeft:
-				updatedPlayer = player.withHiddenCard(onLeft: to)
+				updatedPlayer = player.withHiddenCard(onLeft: toCard)
 			case .hiddenRight:
-				updatedPlayer = player.withHiddenCard(onRight: to)
+				updatedPlayer = player.withHiddenCard(onRight: toCard)
 			case .person:
-				updatedPlayer = player.withMysteryPerson(to)
+				updatedPlayer = player.withMysteryPerson(toCard)
 			case .location:
-				updatedPlayer = player.withMysteryLocation(to)
+				updatedPlayer = player.withMysteryLocation(toCard)
 			case .weapon:
-				updatedPlayer = player.withMysteryWeapon(to)
+				updatedPlayer = player.withMysteryWeapon(toCard)
 			}
 		}
 
@@ -98,15 +98,15 @@ struct SetPlayerCommand: RunnableCommand {
 extension SetPlayerCommand {
 
 	enum Modification: CustomStringConvertible {
-		case changeName(to: String)
-		case changeCard(at: Card.Position, to: Card)
+		case changeName(toName: String)
+		case changeCard(atPosition: Card.Position, toCard: Card)
 
 		var description: String {
 			switch self {
-			case .changeName(let to):
-				return "changed name to \(to)"
-			case .changeCard(let at, let to):
-				return "changed \(at) to \(to)"
+			case .changeName(let toCard):
+				return "changed name to \(toCard)"
+			case .changeCard(let atPosition, let toCard):
+				return "changed \(atPosition) to \(toCard)"
 			}
 		}
 	}

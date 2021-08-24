@@ -34,7 +34,6 @@ class GameBoardViewModel: ObservableObject {
 		maxConcurrentTasks: ProcessInfo.processInfo.activeProcessorCount
 	)
 
-
 	init(state: GameState) {
 		self.initialState = state
 		self.state = state
@@ -129,7 +128,11 @@ extension GameBoardViewModel: PossibleStateEliminationSolverDelegate {
 		}
 	}
 
-	func solver(_ solver: MysterySolver, didGeneratePossibleStates possibleStates: [PossibleState], forState state: GameState) {
+	func solver(
+		_ solver: MysterySolver,
+		didGeneratePossibleStates possibleStates: [PossibleState],
+		forState state: GameState
+	) {
 		actionsQueue.async { [weak self] in
 			self?.actionsEvaluator.findOptimalAction(in: state, withPossibleStates: possibleStates)
 		}
@@ -137,11 +140,19 @@ extension GameBoardViewModel: PossibleStateEliminationSolverDelegate {
 }
 
 extension GameBoardViewModel: PotentialActionEvaluatorDelegate {
-	func evaluator(_ evaluator: PotentialActionEvaluator, didFindOptimalActions actions: [PotentialAction], forState: GameState) {
+	func evaluator(
+		_ evaluator: PotentialActionEvaluator,
+		didFindOptimalActions actions: [PotentialAction],
+		forState: GameState
+	) {
 		print("Updated best actions: \(actions)")
 	}
 
-	func evaluator(_ evaluator: PotentialActionEvaluator, didEncounterError error: PotentialActionEvaluatorError, forState: GameState) {
+	func evaluator(
+		_ evaluator: PotentialActionEvaluator,
+		didEncounterError error: PotentialActionEvaluatorError,
+		forState: GameState
+	) {
 
 	}
 }

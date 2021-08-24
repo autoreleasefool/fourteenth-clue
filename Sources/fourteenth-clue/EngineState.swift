@@ -81,13 +81,16 @@ extension EngineState: PossibleStateEliminationSolverDelegate {
 	}
 
 	func solver(_ solver: MysterySolver, didEncounterError error: MysterySolverError, forState state: GameState) {
-		// TODO: output error
 		self.solutions = []
 		self.possibleStates = []
 		self.optimalInquiries = []
 	}
 
-	func solver(_ solver: MysterySolver, didGeneratePossibleStates possibleStates: [PossibleState], forState state: GameState) {
+	func solver(
+		_ solver: MysterySolver,
+		didGeneratePossibleStates possibleStates: [PossibleState],
+		forState state: GameState
+	) {
 		guard state.id == self.gameState.id else { return }
 		self.possibleStates = possibleStates
 		self.finishedEvaluatingInquiries = false
@@ -100,11 +103,19 @@ extension EngineState: PossibleStateEliminationSolverDelegate {
 
 extension EngineState: InquiryEvaluatorDelegate {
 
-	func evaluator(_ evaluator: InquiryEvaluator, didFindOptimalInquiries inquiries: [Inquiry], forState state: GameState) {
+	func evaluator(
+		_ evaluator: InquiryEvaluator,
+		didFindOptimalInquiries inquiries: [Inquiry],
+		forState state: GameState
+	) {
 		self.optimalInquiries = inquiries
 	}
 
-	func evaluator(_ evaluator: InquiryEvaluator, didEncounterError error: InquiryEvaluatorError,  forState state: GameState) {
+	func evaluator(
+		_ evaluator: InquiryEvaluator,
+		didEncounterError error: InquiryEvaluatorError,
+		forState state: GameState
+	) {
 		switch error {
 		case .completed:
 			self.finishedEvaluatingInquiries = true
@@ -175,15 +186,27 @@ extension EngineState {
 			self.delegate?.solver(self.solver, didEncounterError: error, forState: state)
 		}
 
-		func solver(_ solver: MysterySolver, didGeneratePossibleStates possibleStates: [PossibleState], forState state: GameState) {
+		func solver(
+			_ solver: MysterySolver,
+			didGeneratePossibleStates possibleStates: [PossibleState],
+			forState state: GameState
+		) {
 			self.delegate?.solver(self.solver, didGeneratePossibleStates: possibleStates, forState: state)
 		}
 
-		func evaluator(_ evaluator: InquiryEvaluator, didEncounterError error: InquiryEvaluatorError, forState state: GameState) {
+		func evaluator(
+			_ evaluator: InquiryEvaluator,
+			didEncounterError error: InquiryEvaluatorError,
+			forState state: GameState
+		) {
 			self.delegate?.evaluator(self.evaluator, didEncounterError: error, forState: state)
 		}
 
-		func evaluator(_ evaluator: InquiryEvaluator, didFindOptimalInquiries inquiries: [Inquiry], forState state: GameState) {
+		func evaluator(
+			_ evaluator: InquiryEvaluator,
+			didFindOptimalInquiries inquiries: [Inquiry],
+			forState state: GameState
+		) {
 			self.delegate?.evaluator(self.evaluator, didFindOptimalInquiries: inquiries, forState: state)
 		}
 	}

@@ -21,20 +21,18 @@ extension Card {
 		}
 
 		var categories: Set<Card.Category> {
-				switch self {
-				case .hiddenLeft, .hiddenRight:
-					return []
-				case .person:
-					return [.person(.man), .person(.woman)]
-				case .location:
-					return [.location(.indoors), .location(.outdoors)]
-				case .weapon:
-					return [.weapon(.melee), .weapon(.ranged)]
-				}
+			switch self {
+			case .hiddenLeft, .hiddenRight:
+				return []
+			case .person:
+				return [.person(.man), .person(.woman)]
+			case .location:
+				return [.location(.indoors), .location(.outdoors)]
+			case .weapon:
+				return [.weapon(.melee), .weapon(.ranged)]
 			}
+		}
+
 	}
 
 }
-
-
-

@@ -75,7 +75,7 @@ extension Card.Color {
 		case .green:
 			return .custom(r: 34, g: 139, b: 34)
 		case .purple:
-			return .custom(r: 138,g: 43, b: 226)
+			return .custom(r: 138, g: 43, b: 226)
 		case .brown:
 			return .custom(r: 139, g: 69, b: 19)
 		case .gray:

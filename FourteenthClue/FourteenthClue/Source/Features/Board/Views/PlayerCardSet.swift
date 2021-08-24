@@ -16,7 +16,7 @@ struct PlayerCardSet: View {
 	@State var pickingCardPosition: Card.Position?
 
 	var body: some View {
-		GeometryReader { fullView in
+		GeometryReader { _ in
 			VStack {
 				HStack {
 					Text(player.name)

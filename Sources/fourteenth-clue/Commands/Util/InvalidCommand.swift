@@ -31,7 +31,7 @@ struct InvalidCommand: RunnableCommand {
 		state.context.console.output(.init(fragments: [
 			.init(string: "\(command)", style: .init(isBold: true)),
 			.init(string: " is not a valid command", style: .error),
-			.init(string: " (try typing 'help')", style: .info)
+			.init(string: " (try typing 'help')", style: .info),
 		]))
 	}
 
