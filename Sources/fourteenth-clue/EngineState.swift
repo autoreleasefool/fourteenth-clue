@@ -154,7 +154,7 @@ extension EngineState {
 		}
 
 		func progressSolving(state: GameState) -> Double? {
-			solver.progressSolving(state: state)
+			solver.progressSolving(gameState: state)
 		}
 
 		func progressEvaluating(state: GameState) -> Double? {
@@ -162,13 +162,13 @@ extension EngineState {
 		}
 
 		func cancel(state: GameState) {
-			self.solver.cancelSolving(state: state)
+			self.solver.cancelSolving(gameState: state)
 			self.evaluator.cancelEvaluating(state: state)
 		}
 
 		func startSolving(state: GameState) {
 			solverQueue.async { [weak self] in
-				self?.solver.solve(state: state)
+				self?.solver.solve(gameState: state)
 			}
 		}
 
