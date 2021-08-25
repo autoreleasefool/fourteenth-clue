@@ -49,7 +49,7 @@ class GameBoardViewModel: ObservableObject {
 	}
 
 	func onDisappear() {
-		solver.cancelSolving(state: state)
+		solver.cancelSolving(gameState: state)
 		actionsEvaluator.cancelEvaluating(state: state)
 	}
 
@@ -109,7 +109,7 @@ class GameBoardViewModel: ObservableObject {
 	private func startSolving(state: GameState) {
 		solverQueue.async { [weak self] in
 			guard let self = self else { return }
-			self.solver.solve(state: state)
+			self.solver.solve(gameState: state)
 		}
 	}
 

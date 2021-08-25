@@ -23,14 +23,12 @@ struct GameBoard: View {
 	}
 
 	var body: some View {
-		VStack(spacing: 0) {
+		List {
 			playerCards
-			List {
-				actions
+			actions
 
-				if !viewModel.state.secretInformants.isEmpty {
-					informants
-				}
+			if !viewModel.state.secretInformants.isEmpty {
+				informants
 			}
 		}
 		.navigationBarTitle("13 Clues", displayMode: .inline)
@@ -81,15 +79,13 @@ struct GameBoard: View {
 	}
 
 	private var playerCards: some View {
-		TabView {
-			ForEach(viewModel.state.players) { player in
-				ScrollView {
+		ScrollView(.horizontal) {
+			HStack {
+				ForEach(viewModel.state.players) { player in
 					PlayerCardSet(viewModel: viewModel, player: player)
 				}
 			}
 		}
-		.tabViewStyle(.page)
-		.background(Color.gray)
 	}
 
 	private var actions: some View {

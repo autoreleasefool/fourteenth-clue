@@ -16,66 +16,64 @@ struct PlayerCardSet: View {
 	@State var pickingCardPosition: Card.Position?
 
 	var body: some View {
-		GeometryReader { _ in
-			VStack {
-				HStack {
-					Text(player.name)
-						.font(.headline)
-						.padding(.vertical, 8)
-						.padding(.leading, 16)
-					Spacer()
-				}
-
-				HStack {
-					Spacer()
-
-					CardImage(card: player.mystery.person)
-						.size(.large)
-						.onTapGesture {
-							pickingCardPosition = .person
-						}
-
-					Spacer()
-
-					CardImage(card: player.mystery.location)
-						.size(.large)
-						.onTapGesture {
-							pickingCardPosition = .location
-						}
-
-					Spacer()
-
-					CardImage(card: player.mystery.weapon)
-						.size(.large)
-						.onTapGesture {
-							pickingCardPosition = .weapon
-						}
-
-					Spacer()
-				}
-
-				HStack {
-					Spacer()
-
-					CardImage(card: player.hidden.left)
-						.size(.medium)
-						.onTapGesture {
-							pickingCardPosition = .hiddenLeft
-						}
-
-					Spacer()
-
-					CardImage(card: player.hidden.right)
-						.size(.medium)
-						.onTapGesture {
-							pickingCardPosition = .hiddenRight
-						}
-
-					Spacer()
-				}
+		VStack {
+			HStack {
+				Text(player.name)
+					.font(.headline)
+					.padding(.vertical, 8)
+					.padding(.leading, 16)
+				Spacer()
 			}
-			.padding()
+
+			HStack {
+				Spacer()
+
+				CardImage(card: player.mystery.person)
+					.size(.medium)
+					.onTapGesture {
+						pickingCardPosition = .person
+					}
+
+				Spacer()
+
+				CardImage(card: player.mystery.location)
+					.size(.medium)
+					.onTapGesture {
+						pickingCardPosition = .location
+					}
+
+				Spacer()
+
+				CardImage(card: player.mystery.weapon)
+					.size(.medium)
+					.onTapGesture {
+						pickingCardPosition = .weapon
+					}
+
+				Spacer()
+			}
+
+			HStack {
+				Spacer()
+
+				CardImage(card: player.hidden.left)
+					.size(.small)
+					.onTapGesture {
+						pickingCardPosition = .hiddenLeft
+					}
+
+				Spacer()
+
+				CardImage(card: player.hidden.right)
+					.size(.small)
+					.onTapGesture {
+						pickingCardPosition = .hiddenRight
+					}
+
+				Spacer()
+			}
 		}
+		.padding()
 		.sheet(item: $pickingCardPosition) { cardPosition in
 			CardPicker(categories: cardPosition.categories, fromAvailableCards: viewModel.state.unallocatedCards) {
 				pickingCardPosition = nil

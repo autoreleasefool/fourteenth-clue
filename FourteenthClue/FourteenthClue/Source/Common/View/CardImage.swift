@@ -37,6 +37,10 @@ struct CardImage: View {
 				.resizable()
 				.clipShape(RoundedRectangle(cornerRadius: 8))
 				.frame(width: size.width, height: size.height)
+				.overlay(
+					RoundedRectangle(cornerRadius: 8)
+						.stroke(.black, lineWidth: 2)
+				)
 
 			if let name = card?.name ?? overrideName, showingName {
 				Text(name).padding(.leading, 16)
