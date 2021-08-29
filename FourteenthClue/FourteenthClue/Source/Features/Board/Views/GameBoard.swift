@@ -25,6 +25,7 @@ struct GameBoard: View {
 	var body: some View {
 		List {
 			playerCards
+			notifications
 			actions
 
 			if !viewModel.state.secretInformants.isEmpty {
@@ -83,6 +84,19 @@ struct GameBoard: View {
 			HStack {
 				ForEach(viewModel.state.players) { player in
 					PlayerCardSet(viewModel: viewModel, player: player)
+				}
+			}
+		}
+	}
+
+	@ViewBuilder
+	private var notifications: some View {
+		if !viewModel.notifications.isEmpty {
+			Section {
+				ForEach(viewModel.notifications) { notification in
+					GameNotificationBanner(notification: notification) {
+						viewModel.removeNotification(notification)
+					}
 				}
 			}
 		}

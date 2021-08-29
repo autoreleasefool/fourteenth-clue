@@ -11,6 +11,9 @@ import FourteenthClueKit
 
 class GameBoardViewModel: ObservableObject {
 
+	private static let solutionsNotificationID = UUID()
+	private static let actionNotificationID = UUID()
+
 	@Published var state: GameState {
 		didSet {
 			startSolving(state: state)
@@ -21,6 +24,7 @@ class GameBoardViewModel: ObservableObject {
 	@Published var showingSolutions = false
 	@Published var resettingState = false
 	@Published var possibleSolutions: [Solution] = []
+	@Published var notifications: [GameNotification] = []
 
 	private let initialState: GameState
 
@@ -106,6 +110,14 @@ class GameBoardViewModel: ObservableObject {
 		state.players.first { $0.id == id }
 	}
 
+	func removeNotification(_ notification: GameNotification) {
+		notifications.removeAll { $0.id == notification.id }
+	}
+
+	func removeNotification(byId notificationId: UUID) {
+		notifications.removeAll { $0.id == notificationId }
+	}
+
 	private func startSolving(state: GameState) {
 		solverQueue.async { [weak self] in
 			guard let self = self else { return }
@@ -116,15 +128,33 @@ class GameBoardViewModel: ObservableObject {
 }
 
 extension GameBoardViewModel: PossibleStateEliminationSolverDelegate {
+
 	func solver(_ solver: MysterySolver, didReturnSolutions solutions: [Solution], forState state: GameState) {
+		guard state.id == self.state.id else { return }
 		DispatchQueue.main.async {
 			self.possibleSolutions = solutions
+
+			self.removeNotification(byId: Self.solutionsNotificationID)
+
+			guard let topSolution = solutions.first else { return }
+			let topSolutionsCount = solutions
+				.filter { $0.probability == topSolution.probability }
+				.count
+
+			self.notifications.append(GameNotification(
+				id: Self.solutionsNotificationID,
+				title: topSolutionsCount == 1 ? "Top solution" : "Top \(topSolutionsCount) solutions",
+				message: topSolution.description,
+				style: .information
+			))
 		}
 	}
 
 	func solver(_ solver: MysterySolver, didEncounterError error: MysterySolverError, forState state: GameState) {
+		guard state.id == self.state.id, case .cancelled = error else { return }
 		DispatchQueue.main.async {
 			self.possibleSolutions = []
+			self.removeNotification(byId: Self.solutionsNotificationID)
 		}
 	}
 
@@ -133,26 +163,48 @@ extension GameBoardViewModel: PossibleStateEliminationSolverDelegate {
 		didGeneratePossibleStates possibleStates: [PossibleState],
 		forState state: GameState
 	) {
+		guard state.id == self.state.id else { return }
 		actionsQueue.async { [weak self] in
 			self?.actionsEvaluator.findOptimalAction(in: state, withPossibleStates: possibleStates)
 		}
 	}
+
 }
 
 extension GameBoardViewModel: PotentialActionEvaluatorDelegate {
+
 	func evaluator(
 		_ evaluator: PotentialActionEvaluator,
 		didFindOptimalActions actions: [PotentialAction],
-		forState: GameState
+		forState state: GameState
 	) {
-		print("Updated best actions: \(actions)")
+		guard state.id == self.state.id else { return }
+		DispatchQueue.main.async {
+			self.removeNotification(byId: Self.actionNotificationID)
+
+			guard let optimalAction = actions.first else { return }
+
+			self.notifications.append(GameNotification(
+				id: Self.actionNotificationID,
+				title: "Optimal action",
+				message: optimalAction.description,
+				style: .information
+			))
+		}
 	}
 
 	func evaluator(
 		_ evaluator: PotentialActionEvaluator,
 		didEncounterError error: PotentialActionEvaluatorError,
-		forState: GameState
+		forState state: GameState
 	) {
+		guard state.id == self.state.id, case .cancelled = error else {
+			return
+		}
 
+		DispatchQueue.main.async {
+			self.removeNotification(byId: Self.actionNotificationID)
+		}
 	}
+
 }
