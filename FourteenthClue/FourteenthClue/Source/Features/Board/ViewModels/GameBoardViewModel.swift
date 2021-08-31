@@ -16,6 +16,7 @@ class GameBoardViewModel: ObservableObject {
 
 	@Published var state: GameState {
 		didSet {
+			guard state.isSolveable else { return }
 			startSolving(state: state)
 		}
 	}

@@ -64,6 +64,17 @@ struct InquisitionForm: View {
 				}
 			}
 
+			if viewModel.state.numberOfPlayers == 2 {
+				Section {
+					Picker("Including which hidden card?", selection: $viewModel.viewState.inquisition.includingCardOnSide) {
+						ForEach(Card.HiddenCardPosition.allCases) { position in
+							Text(position.description.capitalized)
+								.tag(position)
+						}
+					}
+				}
+			}
+
 			Section {
 				TextField("Count", value: $viewModel.viewState.inquisition.count, formatter: countFormatter)
 					.keyboardType(.numberPad)

@@ -70,6 +70,7 @@ extension NewActionViewState {
 		var type: InquisitionType = .color
 		var color: Card.Color = Card.Color.allCases.first!
 		var category: Card.Category = Card.Category.allCases.first!
+		var includingCardOnSide: Card.HiddenCardPosition = .left
 		var count: Int?
 
 		func build(withState state: GameState) -> Inquisition? {
@@ -88,6 +89,7 @@ extension NewActionViewState {
 				askingPlayer: askingPlayer.name,
 				answeringPlayer: answeringPlayer.name,
 				filter: filter,
+				includingCardOnSide: state.numberOfPlayers == 2 ? includingCardOnSide : nil,
 				count: count
 			)
 		}
