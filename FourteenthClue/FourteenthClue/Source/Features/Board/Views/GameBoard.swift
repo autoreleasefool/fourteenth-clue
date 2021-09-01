@@ -83,7 +83,7 @@ struct GameBoard: View {
 		ScrollView(.horizontal) {
 			HStack {
 				ForEach(viewModel.state.players) { player in
-					PlayerCardSet(viewModel: viewModel, player: player)
+					PlayerBoard(viewModel: viewModel, player: player)
 				}
 			}
 		}

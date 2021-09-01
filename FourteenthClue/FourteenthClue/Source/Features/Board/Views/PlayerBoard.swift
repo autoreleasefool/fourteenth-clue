@@ -1,5 +1,5 @@
 //
-//  PlayerCardSet.swift
+//  PlayerBoard.swift
 //  Fourteenth Clue
 //
 //  Created by Joseph Roque on 2021-06-23.
@@ -8,7 +8,7 @@
 import FourteenthClueKit
 import SwiftUI
 
-struct PlayerCardSet: View {
+struct PlayerBoard: View {
 
 	@ObservedObject var viewModel: GameBoardViewModel
 	let player: Player
@@ -16,13 +16,17 @@ struct PlayerCardSet: View {
 	@State var pickingCardPosition: Card.Position?
 
 	var body: some View {
-		VStack {
-			HStack {
-				Text(player.name)
-					.font(.headline)
-					.padding(.vertical, 8)
+		VStack(alignment: .leading) {
+			Text(player.name)
+				.font(.headline)
+				.padding(.vertical, 8)
+				.padding(.leading, 16)
+
+			if viewModel.state.isTrackingMagnifyingGlasses {
+				Text("Magnifying glasses: \(player.magnifyingGlasses)")
+					.font(.caption)
+					.padding(.bottom, 8)
 					.padding(.leading, 16)
-				Spacer()
 			}
 
 			HStack {
