@@ -10,7 +10,7 @@ import FourteenthClueKit
 import SwiftUI
 
 struct GameBoard: View {
-	@Environment(\.presentationMode) var presentation
+	@Environment(\.dismiss) private var dismiss
 
 	@StateObject var viewModel: GameBoardViewModel
 
@@ -37,6 +37,9 @@ struct GameBoard: View {
 		.navigationBarItems(leading: resetButton, trailing: solutionsButton)
 		.onAppear { viewModel.onAppear() }
 		.onDisappear { viewModel.onDisappear() }
+		.onReceive(viewModel.newGamePublisher) {
+			dismiss()
+		}
 		.sheet(isPresented: $viewModel.showingSolutions) {
 			NavigationView {
 				SolutionList(solutions: viewModel.possibleSolutions)
@@ -58,6 +61,10 @@ struct GameBoard: View {
 		.alert("Reset game?", isPresented: $viewModel.resettingState) {
 			Button("Reset", role: .destructive) {
 				viewModel.resetState()
+			}
+
+			Button("New game", role: .destructive) {
+				viewModel.newGame()
 			}
 
 			Button("Cancel", role: .cancel) {

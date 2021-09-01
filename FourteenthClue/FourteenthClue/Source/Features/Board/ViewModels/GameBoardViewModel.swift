@@ -27,6 +27,11 @@ class GameBoardViewModel: ObservableObject {
 	@Published var possibleSolutions: [Solution] = []
 	@Published var notifications: [GameNotification] = []
 
+	private var newGameSubject = PassthroughSubject<Void, Never>()
+	var newGamePublisher: AnyPublisher<Void, Never> {
+		newGameSubject.eraseToAnyPublisher()
+	}
+
 	private let initialState: GameState
 
 	private let solverQueue = DispatchQueue(label: "ca.josephroque.FourteenthClue.MysterySolver")
@@ -59,12 +64,17 @@ class GameBoardViewModel: ObservableObject {
 	}
 
 	func promptResetState() {
-		self.resettingState = true
+		resettingState = true
 	}
 
 	func resetState() {
-		self.resettingState = false
-		self.state = initialState
+		resettingState = false
+		state = initialState
+	}
+
+	func newGame() {
+		resettingState = false
+		newGameSubject.send()
 	}
 
 	func cancelReset() {
