@@ -46,7 +46,13 @@ struct ShowCommand: RunnableCommand {
 				($0.hidden.left?.name ?? Self.unknown).consoleText(withState: state.gameState),
 				[.init(string: ", ")],
 				($0.hidden.right?.name ?? Self.unknown).consoleText(withState: state.gameState),
-			].flatMap { $0 }
+				[
+					state.gameState.isTrackingMagnifyingGlasses
+						? .init(string: "\n    Magnifying glasses: \($0.magnifyingGlasses)")
+						: .init(string: ""),
+				],
+			]
+				.flatMap { $0 }
 		})
 
 		if !state.gameState.secretInformants.isEmpty {
