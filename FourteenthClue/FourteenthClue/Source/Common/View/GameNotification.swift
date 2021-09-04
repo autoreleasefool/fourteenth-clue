@@ -13,6 +13,7 @@ struct GameNotification: Identifiable {
 	let title: String
 	let message: String
 	let style: Style
+	let action: (() -> Void)?
 
 }
 
@@ -51,6 +52,18 @@ struct GameNotificationBanner: View {
 	let onDismiss: (() -> Void)?
 
 	var body: some View {
+		if notification.action == nil {
+			content
+		} else {
+			Button {
+				notification.action?()
+			} label: {
+				content
+			}
+		}
+	}
+
+	private var content: some View {
 		VStack(alignment: .leading) {
 			Text(notification.title)
 				.font(.headline)
@@ -62,10 +75,6 @@ struct GameNotificationBanner: View {
 				.foregroundColor(notification.style.textColor)
 		}
 		.padding()
-		.background(
-			RoundedRectangle(cornerRadius: 16)
-				.fill(notification.style.backgroundColor)
-		)
 		.overlay {
 			if onDismiss != nil {
 				VStack {
@@ -122,7 +131,8 @@ struct GameNotificationBannerPreview: PreviewProvider {
 					id: UUID(),
 					title: "Information",
 					message: "An informative banner with a lot of text in it that will probably wrap to at least the second line.",
-					style: .information
+					style: .information,
+					action: { }
 				)
 			) { }
 
@@ -131,7 +141,8 @@ struct GameNotificationBannerPreview: PreviewProvider {
 					id: UUID(),
 					title: "Success",
 					message: "A short success banner",
-					style: .success
+					style: .success,
+					action: { }
 				)
 			) { }
 
@@ -140,7 +151,8 @@ struct GameNotificationBannerPreview: PreviewProvider {
 					id: UUID(),
 					title: "Error",
 					message: "Whoops",
-					style: .error
+					style: .error,
+					action: { }
 				)
 			) { }
 
@@ -149,7 +161,8 @@ struct GameNotificationBannerPreview: PreviewProvider {
 					id: UUID(),
 					title: "Warning",
 					message: "Watch out!",
-					style: .warning
+					style: .warning,
+					action: { }
 				)
 			) { }
 		}

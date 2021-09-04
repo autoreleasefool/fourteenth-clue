@@ -53,7 +53,7 @@ struct GameBoard: View {
 		}
 		.sheet(isPresented: $viewModel.recordingAction) {
 			NavigationView {
-				ActionForm(state: viewModel.state) { action in
+				ActionForm(state: viewModel.state, initialAction: viewModel.initialAction) { action in
 					viewModel.addAction(action)
 				}
 			}

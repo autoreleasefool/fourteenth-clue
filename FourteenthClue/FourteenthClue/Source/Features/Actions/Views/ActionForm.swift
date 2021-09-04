@@ -14,8 +14,8 @@ struct ActionForm: View {
 	@StateObject var viewModel: NewActionViewModel
 	let onAddAction: (Action) -> Void
 
-	init(state: GameState, onAddAction: @escaping (Action) -> Void) {
-		self._viewModel = .init(wrappedValue: .init(state: state))
+	init(state: GameState, initialAction: NewActionViewState?, onAddAction: @escaping (Action) -> Void) {
+		self._viewModel = .init(wrappedValue: .init(state: state, initialViewState: initialAction))
 		self.onAddAction = onAddAction
 	}
 

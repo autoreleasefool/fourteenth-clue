@@ -21,11 +21,13 @@ class GameBoardViewModel: ObservableObject {
 		}
 	}
 	@Published var pickingSecretInformant: SecretInformant?
-	@Published var recordingAction = false
 	@Published var showingSolutions = false
 	@Published var resettingState = false
 	@Published var possibleSolutions: [Solution] = []
 	@Published var notifications: [GameNotification] = []
+
+	@Published var recordingAction = false
+	@Published var initialAction: NewActionViewState?
 
 	private var newGameSubject = PassthroughSubject<Void, Never>()
 	var newGamePublisher: AnyPublisher<Void, Never> {
@@ -156,7 +158,11 @@ extension GameBoardViewModel: PossibleStateEliminationSolverDelegate {
 				id: Self.solutionsNotificationID,
 				title: topSolutionsCount == 1 ? "Top solution" : "Top \(topSolutionsCount) solutions",
 				message: topSolution.description,
-				style: .information
+				style: .information,
+				action: { [unowned self] in
+					self.initialAction = NewActionViewState.startAccusation(topSolution, state: self.state)
+					self.recordingAction = true
+				}
 			))
 		}
 	}
@@ -199,7 +205,11 @@ extension GameBoardViewModel: PotentialActionEvaluatorDelegate {
 				id: Self.actionNotificationID,
 				title: "Optimal action",
 				message: optimalAction.description,
-				style: .information
+				style: .information,
+				action: { [unowned self] in
+					self.initialAction = NewActionViewState.from(action: optimalAction, state: self.state)
+					self.recordingAction = true
+				}
 			))
 		}
 	}
