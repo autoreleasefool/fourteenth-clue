@@ -24,9 +24,9 @@ class Engine {
 				try self.playGame()
 			} catch {
 				if let exitCode = error as? ExitCode {
-					exit(exitCode.rawValue)
+					exit(exitCode.errorCode)
 				} else {
-					exit(ExitCode.failure.rawValue)
+					exit(ExitCode.failure(reason: "\(error)").errorCode)
 				}
 			}
 		}
