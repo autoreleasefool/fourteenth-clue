@@ -16,21 +16,25 @@ struct ExaminationForm: View {
 	var body: some View {
 		Group {
 			Section {
-				Picker("Examining Player", selection: $viewModel.viewState.examination.examiningPlayer) {
-					ForEach(viewModel.state.players) { player in
-						Text(player.name)
-							.tag(player)
-					}
+				CirclePicker(
+					pickableItems: viewModel.state.players,
+					selectedItem: $viewModel.viewState.examination.examiningPlayer
+				) { player in
+					Text(player.name.prefix(2).capitalized)
 				}
+				.titled("Examining Player")
+				.padding(.vertical)
 			}
 
 			Section {
-				Picker("Informant", selection: $viewModel.viewState.examination.informant) {
-					ForEach(viewModel.state.secretInformants) { informant in
-						Text(informant.name)
-							.tag(informant)
-					}
+				CirclePicker(
+					pickableItems: viewModel.state.secretInformants,
+					selectedItem: $viewModel.viewState.examination.informant
+				) { informant in
+					Text(informant.name.prefix(2).capitalized)
 				}
+				.titled("Informant")
+				.padding(.vertical)
 			}
 
 			Section {
@@ -43,3 +47,20 @@ struct ExaminationForm: View {
 	}
 
 }
+
+#if DEBUG
+struct ExaminationFormPreview: PreviewProvider {
+	static let gameState = GameState(playerCount: 4)
+
+	static var previews: some View {
+		Form {
+			ExaminationForm(
+				viewModel: .init(
+					state: gameState,
+					initialViewState: .init(state: gameState)
+				)
+			) { _ in }
+		}
+	}
+}
+#endif

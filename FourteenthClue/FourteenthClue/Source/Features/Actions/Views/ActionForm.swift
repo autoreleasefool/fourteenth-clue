@@ -21,12 +21,14 @@ struct ActionForm: View {
 
 	var body: some View {
 		Form {
-			Picker("Action", selection: $viewModel.viewState.type) {
-				ForEach(viewModel.viewState.enabledTypes) { actionType in
-					Text(actionType.name)
-						.tag(actionType)
-				}
+			CirclePicker(
+				pickableItems: viewModel.viewState.enabledTypes,
+				selectedItem: $viewModel.viewState.type
+			) { actionType in
+				Text(actionType.name.prefix(1).capitalized)
 			}
+			.titled("Action")
+			.padding(.vertical)
 
 			switch viewModel.viewState.type {
 			case .inquisition:
@@ -68,3 +70,16 @@ extension ActionForm {
 	}
 
 }
+
+#if DEBUG
+struct ActionFormPreview: PreviewProvider {
+	static let gameState = GameState(playerCount: 4)
+
+	static var previews: some View {
+		ActionForm(
+			state: gameState,
+			initialAction: .init(state: gameState)
+		) { _ in }
+	}
+}
+#endif

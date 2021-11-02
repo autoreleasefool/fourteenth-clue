@@ -70,6 +70,7 @@ extension NewActionViewState {
 		var type: InquisitionType = .color
 		var color: Card.Color = Card.Color.allCases.first!
 		var category: Card.Category = Card.Category.allCases.first!
+		var property: Card.Property = Card.Property.allCases.first!
 		var includingCardOnSide: Card.HiddenCardPosition = .left
 		var count: Int?
 
@@ -153,17 +154,17 @@ extension NewActionViewState {
 
 		init(state: GameState) {
 			self.examiningPlayer = state.players.first!
-			self.informant = state.secretInformants.first?.name ?? ""
+			self.informant = state.secretInformants.first!
 		}
 
 		var examiningPlayer: Player
-		var informant: String
+		var informant: SecretInformant
 
 		func build(withState state: GameState) -> Examination {
 			Examination(
 				ordinal: state.actions.count,
 				player: examiningPlayer.name,
-				informant: informant
+				informant: informant.name
 			)
 		}
 
@@ -228,7 +229,7 @@ extension NewActionViewState {
 		viewState.type = .examination
 		viewState.examination = .init(state: state)
 		viewState.examination.examiningPlayer = state.players.first!
-		viewState.examination.informant = informing.informant
+		viewState.examination.informant = state.secretInformants.first { $0.name == informing.informant }!
 		return viewState
 	}
 

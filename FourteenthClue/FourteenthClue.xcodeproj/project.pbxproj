@@ -19,6 +19,8 @@
 		CA582E122681AC8F00248E51 /* FourteenthClue.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA582E112681AC8F00248E51 /* FourteenthClue.swift */; };
 		CA582E162681AC9000248E51 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CA582E152681AC9000248E51 /* Assets.xcassets */; };
 		CA582E192681AC9000248E51 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CA582E182681AC9000248E51 /* Preview Assets.xcassets */; };
+		CA860817272DF1AA00F32D15 /* CirclePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA860816272DF1AA00F32D15 /* CirclePicker.swift */; };
+		CA860819272DF1B200F32D15 /* CirclePickerCircle.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA860818272DF1B200F32D15 /* CirclePickerCircle.swift */; };
 		CA8C07A9268993B400B50233 /* ActionForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8C07A8268993B400B50233 /* ActionForm.swift */; };
 		CA97C1F626968005004AC3A6 /* NavigationLink+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA97C1F526968005004AC3A6 /* NavigationLink+Extensions.swift */; };
 		CA97C1FB26978A76004AC3A6 /* CardImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA97C1FA26978A76004AC3A6 /* CardImage.swift */; };
@@ -35,6 +37,8 @@
 		CAED72F7268447190060086A /* CardPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAED72F6268447190060086A /* CardPicker.swift */; };
 		CAED72FA268447680060086A /* BottomSheet in Frameworks */ = {isa = PBXBuildFile; productRef = CAED72F9268447680060086A /* BottomSheet */; };
 		CAEE019D26D6CF510079D854 /* GameNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAEE019C26D6CF510079D854 /* GameNotification.swift */; };
+		CAF7A4ED2730E594007FA9D3 /* Color+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF7A4EC2730E594007FA9D3 /* Color+Extensions.swift */; };
+		CAF7A4EF2730F1DF007FA9D3 /* GameState+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF7A4EE2730F1DF007FA9D3 /* GameState+Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -51,6 +55,8 @@
 		CA582E112681AC8F00248E51 /* FourteenthClue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FourteenthClue.swift; sourceTree = "<group>"; };
 		CA582E152681AC9000248E51 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CA582E182681AC9000248E51 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		CA860816272DF1AA00F32D15 /* CirclePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CirclePicker.swift; sourceTree = "<group>"; };
+		CA860818272DF1B200F32D15 /* CirclePickerCircle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CirclePickerCircle.swift; sourceTree = "<group>"; };
 		CA8C07A8268993B400B50233 /* ActionForm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionForm.swift; sourceTree = "<group>"; };
 		CA97C1F526968005004AC3A6 /* NavigationLink+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NavigationLink+Extensions.swift"; sourceTree = "<group>"; };
 		CA97C1FA26978A76004AC3A6 /* CardImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardImage.swift; sourceTree = "<group>"; };
@@ -64,6 +70,8 @@
 		CAB5E4E8268AD2FD0070DD97 /* SolutionList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolutionList.swift; sourceTree = "<group>"; };
 		CAED72F6268447190060086A /* CardPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardPicker.swift; sourceTree = "<group>"; };
 		CAEE019C26D6CF510079D854 /* GameNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameNotification.swift; sourceTree = "<group>"; };
+		CAF7A4EC2730E594007FA9D3 /* Color+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Extensions.swift"; sourceTree = "<group>"; };
+		CAF7A4EE2730F1DF007FA9D3 /* GameState+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GameState+Extensions.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -192,9 +200,19 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
+		CA860815272DF19A00F32D15 /* CirclePicker */ = {
+			isa = PBXGroup;
+			children = (
+				CA860816272DF1AA00F32D15 /* CirclePicker.swift */,
+				CA860818272DF1B200F32D15 /* CirclePickerCircle.swift */,
+			);
+			path = CirclePicker;
+			sourceTree = "<group>";
+		};
 		CA97C1F426967FB8004AC3A6 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				CA860815272DF19A00F32D15 /* CirclePicker */,
 				CA97C1F526968005004AC3A6 /* NavigationLink+Extensions.swift */,
 				CA97C1FA26978A76004AC3A6 /* CardImage.swift */,
 				CAEE019C26D6CF510079D854 /* GameNotification.swift */,
@@ -235,6 +253,8 @@
 			isa = PBXGroup;
 			children = (
 				CAA61AAD26CC21CB00C2A62C /* Card+Extensions.swift */,
+				CAF7A4EC2730E594007FA9D3 /* Color+Extensions.swift */,
+				CAF7A4EE2730F1DF007FA9D3 /* GameState+Extensions.swift */,
 				CAA61AB226CC2D6700C2A62C /* SecretInformant+Extensions.swift */,
 			);
 			path = Extensions;
@@ -351,6 +371,7 @@
 				CAA61AAE26CC21CB00C2A62C /* Card+Extensions.swift in Sources */,
 				CA99B72A26D1B009005F0FBB /* ExaminationForm.swift in Sources */,
 				CA2E856226823772001BE951 /* PlayerPicker.swift in Sources */,
+				CAF7A4ED2730E594007FA9D3 /* Color+Extensions.swift in Sources */,
 				CA8C07A9268993B400B50233 /* ActionForm.swift in Sources */,
 				CA99B72526D0157D005F0FBB /* NewActionViewModel.swift in Sources */,
 				CAA61AB626CC3B7900C2A62C /* GameBuilderViewModel.swift in Sources */,
@@ -360,11 +381,14 @@
 				CA2E8573268399D0001BE951 /* PlayerBoard.swift in Sources */,
 				CAED72F7268447190060086A /* CardPicker.swift in Sources */,
 				CA2E856926826830001BE951 /* GameBoard.swift in Sources */,
+				CA860819272DF1B200F32D15 /* CirclePickerCircle.swift in Sources */,
 				CAA61AB326CC2D6700C2A62C /* SecretInformant+Extensions.swift in Sources */,
 				CA97C1FB26978A76004AC3A6 /* CardImage.swift in Sources */,
 				CA2E85772683CFDF001BE951 /* GameBuilder.swift in Sources */,
 				CAB5E4E9268AD2FD0070DD97 /* SolutionList.swift in Sources */,
 				CAEE019D26D6CF510079D854 /* GameNotification.swift in Sources */,
+				CAF7A4EF2730F1DF007FA9D3 /* GameState+Extensions.swift in Sources */,
+				CA860817272DF1AA00F32D15 /* CirclePicker.swift in Sources */,
 				CA582E122681AC8F00248E51 /* FourteenthClue.swift in Sources */,
 				CA35608E26927D83004B41AF /* AccusationForm.swift in Sources */,
 			);

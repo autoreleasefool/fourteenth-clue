@@ -23,55 +23,52 @@ struct InquisitionForm: View {
 	var body: some View {
 		Group {
 			Section {
-				Picker("Asking Player", selection: $viewModel.viewState.inquisition.askingPlayer) {
-					ForEach(viewModel.state.players) { player in
-						Text(player.name)
-							.tag(player)
-					}
+				CirclePicker(
+					pickableItems: viewModel.state.players,
+					selectedItem: $viewModel.viewState.inquisition.askingPlayer
+				) { player in
+					Text(player.name.prefix(2).capitalized)
 				}
+				.titled("Asking Player")
+				.padding(.vertical)
 
-				Picker("Answering Player", selection: $viewModel.viewState.inquisition.answeringPlayer) {
-					ForEach(viewModel.state.players) { player in
-						Text(player.name)
-							.tag(player)
-					}
+				CirclePicker(
+					pickableItems: viewModel.state.players,
+					selectedItem: $viewModel.viewState.inquisition.answeringPlayer
+				) { player in
+					Text(player.name.prefix(2).capitalized)
 				}
+				.titled("Answering Player")
+				.padding(.vertical)
 			}
 
 			Section {
-				Picker("Type", selection: $viewModel.viewState.inquisition.type) {
-					ForEach(NewActionViewState.NewInquisition.InquisitionType.allCases) { type in
-						Text(type.name)
-							.tag(type)
+				CirclePicker(
+					pickableItems: Card.Property.allCases,
+					selectedItem: $viewModel.viewState.inquisition.property
+				) { property in
+					switch property {
+					case .color(let color):
+						Circle()
+							.fill(color.fillColor)
+					case .category(let category):
+						Image(uiImage: category.icon)
+							.resizable()
 					}
 				}
-
-				switch viewModel.viewState.inquisition.type {
-				case .color:
-					Picker("Color", selection: $viewModel.viewState.inquisition.color) {
-						ForEach(Card.Color.allCases) { color in
-							Text(color.description.capitalized)
-								.tag(color)
-						}
-					}
-				case .category:
-					Picker("Category", selection: $viewModel.viewState.inquisition.category) {
-						ForEach(Card.Category.allCases) { category in
-							Text(category.description.capitalized)
-								.tag(category)
-						}
-					}
-				}
+				.titled("Category")
+				.padding(.vertical)
 			}
 
-			if viewModel.state.numberOfPlayers == 2 {
+			if viewModel.state.numberOfPlayers == 4 {
 				Section {
-					Picker("Including which hidden card?", selection: $viewModel.viewState.inquisition.includingCardOnSide) {
-						ForEach(Card.HiddenCardPosition.allCases) { position in
-							Text(position.description.capitalized)
-								.tag(position)
-						}
+					CirclePicker(
+						pickableItems: Card.HiddenCardPosition.allCases,
+						selectedItem: $viewModel.viewState.inquisition.includingCardOnSide
+					) { position in
+						Text(position.description.prefix(1).capitalized)
 					}
+					.titled("Including which hidden card?")
 				}
 			}
 
@@ -89,3 +86,20 @@ struct InquisitionForm: View {
 		}
 	}
 }
+
+#if DEBUG
+struct InquisitionFormPreview: PreviewProvider {
+	static let gameState = GameState(playerCount: 4)
+
+	static var previews: some View {
+		Form {
+			InquisitionForm(
+				viewModel: .init(
+					state: gameState,
+					initialViewState: .init(state: gameState)
+				)
+			) { _ in }
+		}
+	}
+}
+#endif

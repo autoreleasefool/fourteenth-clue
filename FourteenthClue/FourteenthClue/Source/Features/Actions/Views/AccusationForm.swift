@@ -16,18 +16,46 @@ struct AccusationForm: View {
 	var body: some View {
 		Group {
 			Section {
-				Picker("Accusing Player", selection: $viewModel.viewState.accusation.accusingPlayer) {
-					ForEach(viewModel.state.players) { player in
-						Text(player.name)
-							.tag(player)
-					}
+				CirclePicker(
+					pickableItems: viewModel.state.players,
+					selectedItem: $viewModel.viewState.accusation.accusingPlayer
+				) { player in
+					Text(player.name.prefix(2).capitalized)
 				}
+				.titled("Accusing Player")
+				.padding(.vertical)
 			}
 
 			Section {
-				cardRow(for: .person)
-				cardRow(for: .location)
-				cardRow(for: .weapon)
+				CirclePicker(
+					pickableItems: viewModel.state.peopleCards.sorted(),
+					selectedItem: $viewModel.viewState.accusation.person
+				) { card in
+					Image(uiImage: card.image)
+						.resizable()
+				}
+				.titled("Person")
+				.padding(.vertical)
+
+				CirclePicker(
+					pickableItems: viewModel.state.locationsCards.sorted(),
+					selectedItem: $viewModel.viewState.accusation.location
+				) { card in
+					Image(uiImage: card.image)
+						.resizable()
+				}
+				.titled("Location")
+				.padding(.vertical)
+
+				CirclePicker(
+					pickableItems: viewModel.state.weaponsCards.sorted(),
+					selectedItem: $viewModel.viewState.accusation.weapon
+				) { card in
+					Image(uiImage: card.image)
+						.resizable()
+				}
+				.titled("Weapon")
+				.padding(.vertical)
 			}
 
 			Section {
@@ -80,3 +108,20 @@ struct AccusationForm: View {
 	}
 
 }
+
+#if DEBUG
+struct AccusationnFormPreview: PreviewProvider {
+	static let gameState = GameState(playerCount: 4)
+
+	static var previews: some View {
+		Form {
+			AccusationForm(
+				viewModel: .init(
+					state: gameState,
+					initialViewState: .init(state: gameState)
+				)
+			) { _ in }
+		}
+	}
+}
+#endif
