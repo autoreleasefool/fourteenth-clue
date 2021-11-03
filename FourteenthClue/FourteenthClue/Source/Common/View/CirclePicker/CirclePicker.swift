@@ -15,14 +15,37 @@ struct CirclePicker<Pickable: Identifiable, Content: View>: View {
 	@Binding
 	var selectedItem: Pickable
 
+	var subtitle: ((Pickable) -> String)?
+
 	@ViewBuilder
 	var pickableView: (Pickable) -> Content
+
+	init(
+		pickableItems: [Pickable],
+		selectedItem: Binding<Pickable>,
+		subtitle: ((Pickable) -> String)? = nil,
+		@ViewBuilder pickableView: @escaping (Pickable) -> Content
+	) {
+		self.pickableItems = pickableItems
+		self._selectedItem = selectedItem
+		self.subtitle = subtitle
+		self.pickableView = pickableView
+	}
 
 	var body: some View {
 		LazyVGrid(columns: [GridItem(.adaptive(minimum: 44, maximum: 120))], spacing: 16) {
 			ForEach(pickableItems) { item in
-				CirclePickerCircle(isSelected: item.id == selectedItem.id) {
-					pickableView(item)
+				VStack(spacing: 4) {
+					CirclePickerCircle(isSelected: item.id == selectedItem.id) {
+						pickableView(item)
+					}
+
+					if let subtitle = subtitle {
+						Text(subtitle(item))
+							.font(.footnote)
+							.truncationMode(.tail)
+							.lineLimit(1)
+					}
 				}
 				.onTapGesture {
 					selectedItem = item
@@ -53,11 +76,13 @@ struct CirclePickerPreview: PreviewProvider {
 		Form {
 			CirclePicker(
 				pickableItems: viewModel.state.players,
-				selectedItem: .constant(viewModel.viewState.inquisition.askingPlayer)
-			) { player in
-				Text(String(player.name.first!) + String(player.name.dropFirst().first!))
-					.padding()
-			}
+				selectedItem: .constant(viewModel.viewState.inquisition.askingPlayer),
+				subtitle: { $0.name },
+				pickableView: { player in
+					Text(String(player.name.first!) + String(player.name.dropFirst().first!))
+						.padding()
+				}
+			)
 		}
 	}
 

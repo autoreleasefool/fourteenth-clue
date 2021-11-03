@@ -20,6 +20,10 @@ extension Card {
 			rawValue
 		}
 
+		var name: String {
+			rawValue.capitalized
+		}
+
 		var categories: Set<Card.Category> {
 				switch self {
 				case .hiddenLeft, .hiddenRight:

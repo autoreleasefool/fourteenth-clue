@@ -27,35 +27,9 @@ struct AccusationForm: View {
 			}
 
 			Section {
-				CirclePicker(
-					pickableItems: viewModel.state.peopleCards.sorted(),
-					selectedItem: $viewModel.viewState.accusation.person
-				) { card in
-					Image(uiImage: card.image)
-						.resizable()
-				}
-				.titled("Person")
-				.padding(.vertical)
-
-				CirclePicker(
-					pickableItems: viewModel.state.locationsCards.sorted(),
-					selectedItem: $viewModel.viewState.accusation.location
-				) { card in
-					Image(uiImage: card.image)
-						.resizable()
-				}
-				.titled("Location")
-				.padding(.vertical)
-
-				CirclePicker(
-					pickableItems: viewModel.state.weaponsCards.sorted(),
-					selectedItem: $viewModel.viewState.accusation.weapon
-				) { card in
-					Image(uiImage: card.image)
-						.resizable()
-				}
-				.titled("Weapon")
-				.padding(.vertical)
+				cardPicker(for: .person)
+				cardPicker(for: .location)
+				cardPicker(for: .weapon)
 			}
 
 			Section {
@@ -82,28 +56,43 @@ struct AccusationForm: View {
 		}
 	}
 
-	private func cardRow(for cardPosition: Card.Position) -> some View {
-		Button {
-			viewModel.viewState.accusation.pickingCardPosition = cardPosition
-		} label: {
-			if let card = card(for: cardPosition) {
-				CardImage(card: card)
-					.showingCardName()
-					.size(.small)
+	private func cardPicker(for cardPosition: Card.Position) -> some View {
+		return CirclePicker(
+			pickableItems: cards(for: cardPosition),
+			selectedItem: cardBinding(for: cardPosition),
+			subtitle: { $0.name },
+			pickableView: { card in
+				Image(uiImage: card.image)
+					.resizable()
 			}
+		)
+		.titled(cardPosition.name)
+		.padding(.vertical)
+	}
+
+	private func cards(for cardPosition: Card.Position) -> [Card] {
+		switch cardPosition {
+		case .hiddenLeft, .hiddenRight:
+			return []
+		case .person:
+			return viewModel.state.peopleCards.sorted()
+		case .location:
+			return viewModel.state.locationsCards.sorted()
+		case .weapon:
+			return viewModel.state.weaponsCards.sorted()
 		}
 	}
 
-	private func card(for cardPosition: Card.Position) -> Card? {
+	private func cardBinding(for cardPosition: Card.Position) -> Binding<Card> {
 		switch cardPosition {
 		case .hiddenLeft, .hiddenRight:
-			return nil
+			fatalError("Unable to provide binding for \(cardPosition)")
 		case .person:
-			return viewModel.viewState.accusation.person
+			return $viewModel.viewState.accusation.person
 		case .location:
-			return viewModel.viewState.accusation.location
+			return $viewModel.viewState.accusation.location
 		case .weapon:
-			return viewModel.viewState.accusation.weapon
+			return $viewModel.viewState.accusation.weapon
 		}
 	}
 
